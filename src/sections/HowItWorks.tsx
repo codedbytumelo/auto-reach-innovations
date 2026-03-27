@@ -28,7 +28,8 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section className="relative py-20 md:py-24 overflow-hidden bg-black">
+    // Added the id="how-it-works" attribute to the section element
+    <section id="how-it-works" className="relative py-20 md:py-24 overflow-hidden bg-black">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Section Header */}
         <motion.div

@@ -4,7 +4,7 @@ import HowItWorks from '@/sections/HowItWorks';
 import CallToAction from '@/sections/CallToAction';
 import About from '@/sections/About';
 import Services from '@/sections/Services';
-import Team from '@/sections/Team';
+import Industries from '@/sections/Industries';
 import CTA from '@/sections/CTA';
 import Contact from '@/sections/Contact';
 import Footer from '@/sections/Footer';
@@ -18,7 +18,7 @@ export default function Home() {
             <CallToAction />
             <About />
             <Services />
-            <Team />
+            <Industries />
             <CTA />
             <Contact />
             <Footer />

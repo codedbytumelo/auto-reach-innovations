@@ -1,3 +1,4 @@
+// components/Contact.tsx
 "use client";
 
 import { useState } from "react";
@@ -22,8 +23,15 @@ const Contact = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log("Form submitted:", formData);
+    
+    // Create mailto link with form data
+    const subject = `Contact Form Submission from ${formData.name}`;
+    const body = `Name: ${formData.name}\nCompany: ${formData.company}\nEmail: ${formData.email}\nPhone: ${formData.phone}\n\nMessage:\n${formData.message}`;
+    const mailtoLink = `mailto:sales@autoreachinnovations.co.za?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    
+    // Open email client with pre-filled information
+    window.location.href = mailtoLink;
+    
     // Reset form after submission
     setFormData({
       name: "",
@@ -35,7 +43,8 @@ const Contact = () => {
   };
 
   return (
-    <section className="relative py-20 md:py-24 overflow-hidden bg-neutral-950">
+    // Added id="contact" for navbar linking
+    <section id="contact" className="relative py-20 md:py-24 overflow-hidden bg-neutral-950">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Section Header */}
         <motion.div
@@ -86,15 +95,7 @@ const Contact = () => {
               </li>
             </ul>
             
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-              <p className="text-white font-medium mb-2">Or email us directly:</p>
-              <a 
-                href="mailto:autoreachinnovations@gmail.com" 
-                className="text-[#ff5c5c] hover:text-[#ff5c5c]/80 transition-colors duration-300"
-              >
-                autoreachinnovations@gmail.com
-              </a>
-            </div>
+            {/* "Or email us directly" section removed */}
           </motion.div>
 
           {/* Right Side - Form */}

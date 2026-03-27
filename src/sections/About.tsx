@@ -6,7 +6,8 @@ import Link from "next/link";
 
 const About = () => {
   return (
-    <section className="relative py-20 md:py-24 overflow-hidden bg-neutral-950">
+    // Added the id="about" attribute to the section element
+    <section id="about" className="relative py-20 md:py-24 overflow-hidden bg-neutral-950">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Section Header */}
         <motion.div
