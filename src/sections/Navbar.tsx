@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { SVGProps } from "react";
 import { useTheme } from "../app/context/ThemeContext";
 
-// Icon components (unchanged)
+// Icon components
 const MenuIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} className={`w-6 h-6 ${props.className ?? ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -33,7 +33,7 @@ const MoonIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-// Animation variants (unchanged)
+// Animation variants
 const menuVariants = {
   hidden: {
     opacity: 0,
@@ -109,27 +109,17 @@ export default function Navbar() {
             : 'bg-transparent border-b border-neutral-200'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Increased navbar height to accommodate larger logo */}
-          <div className="flex justify-between items-center h-24">
+          <div className="flex justify-between items-center h-20">
             <div className="flex items-center flex-shrink-0">
               <Link href="/" className="flex items-center">
-                {/* Logo container with background for better visibility */}
-                <div className={`p-2 rounded-lg transition-all duration-300 ${
-                  hasScrolled 
-                    ? 'bg-transparent' 
-                    : isDark 
-                      ? 'bg-black/20 backdrop-blur-sm' 
-                      : 'bg-white/20 backdrop-blur-sm'
-                }`}>
-                  <Image 
-                    src={logoSrc} 
-                    alt="Auto Reach Innovations" 
-                    width={300} 
-                    height={100} 
-                    className="h-20 w-auto" // Increased from h-16 to h-20 (80px)
-                    priority 
-                  />
-                </div>
+                <Image 
+                  src={logoSrc} 
+                  alt="Auto Reach Innovations" 
+                  width={240} 
+                  height={80} 
+                  className="h-16 w-auto" 
+                  priority 
+                />
               </Link>
             </div>
             <div className="flex items-center space-x-3">
@@ -163,7 +153,7 @@ export default function Navbar() {
         {isMenuOpen && (
           <motion.div 
             className={`fixed inset-0 z-50 overflow-hidden ${
-              isDark ? 'bg-[#ff5c5c]' : 'bg-blue-500'
+              isDark ? 'bg-[#ff5c5c]' : 'bg-[#ff5c5c]' // Changed from blue to brand red
             }`} 
             initial="hidden" 
             animate="visible" 
@@ -177,7 +167,7 @@ export default function Navbar() {
                   className={`inline-flex items-center justify-center p-3 rounded-lg transition-all duration-300 ${
                     isDark 
                       ? 'bg-black text-[#ff5c5c] hover:bg-black/80' 
-                      : 'bg-white text-blue-500 hover:bg-white/80'
+                      : 'bg-black text-[#ff5c5c] hover:bg-black/80' // Changed from white to black for light mode
                   }`}
                 >
                   <CloseIcon />
@@ -197,7 +187,7 @@ export default function Navbar() {
                           className={`block px-6 py-3 text-lg font-medium rounded-lg border-2 transition-all duration-300 ${
                             isDark
                               ? 'text-black border-black hover:bg-black hover:text-[#ff5c5c]'
-                              : 'text-white border-white hover:bg-white hover:text-blue-500'
+                              : 'text-black border-black hover:bg-black hover:text-[#ff5c5c]' // Changed from white to black for light mode
                           }`}
                         >
                           {item}
@@ -211,7 +201,7 @@ export default function Navbar() {
                         className={`block px-8 py-4 text-lg font-semibold rounded-lg transition-all duration-300 text-center ${
                           isDark
                             ? 'bg-black text-[#ff5c5c] hover:bg-black/80'
-                            : 'bg-white text-blue-500 hover:bg-white/80'
+                            : 'bg-black text-[#ff5c5c] hover:bg-black/80' // Changed from white to black for light mode
                         }`}
                       >
                         Get Leads
@@ -221,49 +211,33 @@ export default function Navbar() {
                 </motion.div>
                 <motion.div 
                   className={`hidden lg:block lg:w-96 lg:pl-12 lg:sticky lg:top-8 lg:h-fit border-l ${
-                    isDark ? 'border-black/20' : 'border-white/20'
+                    isDark ? 'border-black/20' : 'border-black/20' // Changed from white/20 to black/20 for consistency
                   }`} 
                   variants={itemVariants}
                 >
-                  <h3 className={`text-2xl font-bold mb-6 ${
-                    isDark ? 'text-black' : 'text-white'
-                  }`}>Start generating leads today</h3>
-                  <p className={`mb-8 ${
-                    isDark ? 'text-black/70' : 'text-white/70'
-                  }`}>Our field sales and campaign activation solutions help you connect with potential customers and grow your automotive business. Get in touch with our team to learn more.</p>
+                  <h3 className={`text-2xl font-bold mb-6 ${isDark ? 'text-black' : 'text-black'}`}>Start generating leads today</h3>
+                  <p className={`mb-8 ${isDark ? 'text-black/70' : 'text-black/70'}`}>Our field sales and campaign activation solutions help you connect with potential customers and grow your automotive business. Get in touch with our team to learn more.</p>
                   <div className="space-y-4">
                     <div className="flex items-center space-x-3">
                       <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                        isDark ? 'bg-black/10' : 'bg-white/10'
+                        isDark ? 'bg-black/10' : 'bg-black/10' // Changed from white/10 to black/10 for consistency
                       }`}>
-                        <span className={`font-bold ${
-                          isDark ? 'text-black' : 'text-white'
-                        }`}>📧</span>
+                        <span className={`font-bold ${isDark ? 'text-black' : 'text-black'}`}>📧</span>
                       </div>
                       <div>
-                        <div className={`font-medium ${
-                          isDark ? 'text-black' : 'text-white'
-                        }`}>Email</div>
-                        <div className={
-                          isDark ? 'text-black/70' : 'text-white/70'
-                        }>sales@autoreachinnovations.co.za</div>
+                        <div className={`font-medium ${isDark ? 'text-black' : 'text-black'}`}>Email</div>
+                        <div className={isDark ? 'text-black/70' : 'text-black/70'}>sales@autoreachinnovations.co.za</div>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3">
                       <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                        isDark ? 'bg-black/10' : 'bg-white/10'
+                        isDark ? 'bg-black/10' : 'bg-black/10' // Changed from white/10 to black/10 for consistency
                       }`}>
-                        <span className={`font-bold ${
-                          isDark ? 'text-black' : 'text-white'
-                        }`}>📞</span>
+                        <span className={`font-bold ${isDark ? 'text-black' : 'text-black'}`}>📞</span>
                       </div>
                       <div>
-                        <div className={`font-medium ${
-                          isDark ? 'text-black' : 'text-white'
-                        }`}>Phone</div>
-                        <div className={
-                          isDark ? 'text-black/70' : 'text-white/70'
-                        }>+1 (555) 987-6543</div>
+                        <div className={`font-medium ${isDark ? 'text-black' : 'text-black'}`}>Phone</div>
+                        <div className={isDark ? 'text-black/70' : 'text-black/70'}>+1 (555) 987-6543</div>
                       </div>
                     </div>
                   </div>
