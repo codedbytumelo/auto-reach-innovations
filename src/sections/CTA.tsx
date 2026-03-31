@@ -67,29 +67,29 @@ const CTA = () => {
               Partner with Auto Reach Innovations and start generating real, qualified leads today.
             </motion.p>
 
-            {/* CTA Buttons - Improved responsiveness */}
+            {/* CTA Buttons - Completely redesigned for better mobile experience */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
               viewport={{ once: true }}
-              className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center"
+              className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-stretch sm:items-center max-w-md mx-auto sm:max-w-none"
             >
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full sm:w-auto">
                 <Link
                   href="/get-leads"
                   onClick={handleGetLeads}
-                  className="block w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-black text-[#ff5c5c] font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-base sm:text-lg text-center"
+                  className="block w-full px-8 py-4 sm:px-10 bg-black text-[#ff5c5c] font-bold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 text-lg sm:text-xl text-center transform hover:scale-105"
                 >
                   Get Leads Now
                 </Link>
               </motion.div>
               
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full sm:w-auto">
                 <Link
                   href="/schedule-call"
                   onClick={handleScheduleCall}
-                  className="block w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-transparent text-black font-semibold rounded-lg border-2 border-black hover:bg-black hover:text-[#ff5c5c] transition-all duration-300 text-base sm:text-lg text-center"
+                  className="block w-full px-8 py-4 sm:px-10 bg-white text-black font-bold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 text-lg sm:text-xl text-center border-2 border-black/20 hover:border-black transform hover:scale-105"
                 >
                   Schedule a Call
                 </Link>
@@ -102,34 +102,34 @@ const CTA = () => {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.8 }}
               viewport={{ once: true }}
-              className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-black/20 dark:border-white/20"
+              className="mt-10 sm:mt-12 pt-6 sm:pt-8 border-t border-black/20 dark:border-white/20"
             >
-              <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 md:gap-8">
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-6 sm:gap-8 md:gap-12">
                 <div className="flex items-center">
-                  <div className="w-8 h-8 sm:w-10 bg-black/20 dark:bg-white/20 rounded-full flex items-center justify-center mr-2 sm:mr-3">
-                    <svg className="w-4 h-4 sm:w-5 text-black dark:text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <div className="w-10 h-10 sm:w-12 bg-black/20 dark:bg-white/20 rounded-full flex items-center justify-center mr-3 sm:mr-4">
+                    <svg className="w-5 h-5 sm:w-6 text-black dark:text-white" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                   </div>
-                  <span className="text-xs sm:text-sm text-black dark:text-white font-medium">No long-term contracts</span>
+                  <span className="text-sm sm:text-base text-black dark:text-white font-medium">No long-term contracts</span>
                 </div>
                 
                 <div className="flex items-center">
-                  <div className="w-8 h-8 sm:w-10 bg-black/20 dark:bg-white/20 rounded-full flex items-center justify-center mr-2 sm:mr-3">
-                    <svg className="w-4 h-4 sm:w-5 text-black dark:text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <div className="w-10 h-10 sm:w-12 bg-black/20 dark:bg-white/20 rounded-full flex items-center justify-center mr-3 sm:mr-4">
+                    <svg className="w-5 h-5 sm:w-6 text-black dark:text-white" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                   </div>
-                  <span className="text-xs sm:text-sm text-black dark:text-white font-medium">Results guaranteed</span>
+                  <span className="text-sm sm:text-base text-black dark:text-white font-medium">Results guaranteed</span>
                 </div>
                 
                 <div className="flex items-center">
-                  <div className="w-8 h-8 sm:w-10 bg-black/20 dark:bg-white/20 rounded-full flex items-center justify-center mr-2 sm:mr-3">
-                    <svg className="w-4 h-4 sm:w-5 text-black dark:text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <div className="w-10 h-10 sm:w-12 bg-black/20 dark:bg-white/20 rounded-full flex items-center justify-center mr-3 sm:mr-4">
+                    <svg className="w-5 h-5 sm:w-6 text-black dark:text-white" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                   </div>
-                  <span className="text-xs sm:text-sm text-black dark:text-white font-medium">Quick setup</span>
+                  <span className="text-sm sm:text-base text-black dark:text-white font-medium">Quick setup</span>
                 </div>
               </div>
             </motion.div>
