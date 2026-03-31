@@ -131,16 +131,6 @@ const Footer = () => {
               </div>
               
               <div className="flex items-start">
-                <span className="text-[#ff5c5c] mr-2">📞</span>
-                <div>
-                  <p className="text-sm text-white/70">Phone:</p>
-                  <a href="tel:+27123456789" className="text-sm text-white hover:text-[#ff5c5c] transition-colors duration-300">
-                    +27 12 345 6789
-                  </a>
-                </div>
-              </div>
-              
-              <div className="flex items-start">
                 <span className="text-[#ff5c5c] mr-2">📍</span>
                 <div>
                   <p className="text-sm text-white/70">Location:</p>

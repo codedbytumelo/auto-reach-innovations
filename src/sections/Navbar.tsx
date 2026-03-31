@@ -229,17 +229,7 @@ export default function Navbar() {
                         <div className={isDark ? 'text-black/70' : 'text-black/70'}>sales@autoreachinnovations.co.za</div>
                       </div>
                     </div>
-                    <div className="flex items-center space-x-3">
-                      <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                        isDark ? 'bg-black/10' : 'bg-black/10' // Changed from white/10 to black/10 for consistency
-                      }`}>
-                        <span className={`font-bold ${isDark ? 'text-black' : 'text-black'}`}>📞</span>
-                      </div>
-                      <div>
-                        <div className={`font-medium ${isDark ? 'text-black' : 'text-black'}`}>Phone</div>
-                        <div className={isDark ? 'text-black/70' : 'text-black/70'}>+1 (555) 987-6543</div>
-                      </div>
-                    </div>
+                    
                   </div>
                 </motion.div>
               </div>
