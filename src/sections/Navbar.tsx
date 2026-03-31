@@ -6,8 +6,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { SVGProps } from "react";
+import { useTheme } from "../app/context/ThemeContext";
 
-// Icon components
+// Icon components (unchanged)
 const MenuIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} className={`w-6 h-6 ${props.className ?? ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -20,7 +21,19 @@ const CloseIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-// Animation variants
+const SunIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg {...props} className={`w-5 h-5 ${props.className ?? ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+  </svg>
+);
+
+const MoonIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg {...props} className={`w-5 h-5 ${props.className ?? ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+  </svg>
+);
+
+// Animation variants (unchanged)
 const menuVariants = {
   hidden: {
     opacity: 0,
@@ -55,6 +68,7 @@ const itemVariants = {
 };
 
 export default function Navbar() {
+  const { theme, toggleTheme } = useTheme();
   const [hasScrolled, setHasScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -74,189 +88,182 @@ export default function Navbar() {
     };
   }, [handleScroll]);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
-
-  const handleLinkClick = () => {
-    closeMenu();
-  };
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const closeMenu = () => setIsMenuOpen(false);
+  const handleLinkClick = () => closeMenu();
+  
+  const isDark = theme === 'dark';
+  const logoSrc = isDark 
+    ? "/assets/images/logos/Logo-dark.png" 
+    : "/assets/images/logos/Logo-light.png";
 
   return (
     <>
-      {/* Main Navigation Bar - Only Logo and Menu Toggle */}
       <nav className={`sticky top-0 z-40 transition-all duration-300 ${
         hasScrolled 
-          ? 'bg-black/80 backdrop-blur-xl shadow-lg border-b border-neutral-800/50' 
-          : 'bg-transparent border-b border-neutral-900'
+          ? isDark 
+            ? 'bg-black/80 backdrop-blur-xl shadow-lg border-b border-neutral-800/50' 
+            : 'bg-white/80 backdrop-blur-xl shadow-lg border-b border-neutral-200/50'
+          : isDark 
+            ? 'bg-transparent border-b border-neutral-900'
+            : 'bg-transparent border-b border-neutral-200'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
+          {/* Increased navbar height to accommodate larger logo */}
+          <div className="flex justify-between items-center h-24">
             <div className="flex items-center flex-shrink-0">
               <Link href="/" className="flex items-center">
-                <Image 
-                  src="/assets/images/ari-logo.png" // Update with your logo path
-                  alt="Auto Reach Innovations" 
-                  width={180}
-                  height={60}
-                  className="h-12 w-auto"
-                  priority
-                />
+                {/* Logo container with background for better visibility */}
+                <div className={`p-2 rounded-lg transition-all duration-300 ${
+                  hasScrolled 
+                    ? 'bg-transparent' 
+                    : isDark 
+                      ? 'bg-black/20 backdrop-blur-sm' 
+                      : 'bg-white/20 backdrop-blur-sm'
+                }`}>
+                  <Image 
+                    src={logoSrc} 
+                    alt="Auto Reach Innovations" 
+                    width={300} 
+                    height={100} 
+                    className="h-20 w-auto" // Increased from h-16 to h-20 (80px)
+                    priority 
+                  />
+                </div>
               </Link>
             </div>
-
-            {/* Menu Toggle Button */}
-            <button
-              onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-lg border border-[#ff5c5c] text-[#ff5c5c] hover:bg-[#ff5c5c] hover:text-black transition-all duration-300"
-            >
-              {isMenuOpen ? <CloseIcon /> : <MenuIcon />}
-            </button>
+            <div className="flex items-center space-x-3">
+              <button
+                onClick={toggleTheme}
+                className={`inline-flex items-center justify-center p-2 rounded-lg transition-all duration-300 ${
+                  isDark 
+                    ? 'border border-[#ff5c5c] text-[#ff5c5c] hover:bg-[#ff5c5c] hover:text-black'
+                    : 'border border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-white'
+                }`}
+                aria-label="Toggle theme"
+              >
+                {isDark ? <SunIcon /> : <MoonIcon />}
+              </button>
+              <button 
+                onClick={toggleMenu} 
+                className={`inline-flex items-center justify-center p-2 rounded-lg transition-all duration-300 ${
+                  isDark 
+                    ? 'border border-[#ff5c5c] text-[#ff5c5c] hover:bg-[#ff5c5c] hover:text-black' 
+                    : 'border border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-white'
+                }`}
+              >
+                {isMenuOpen ? <CloseIcon /> : <MenuIcon />}
+              </button>
+            </div>
           </div>
         </div>
       </nav>
 
-      {/* Full Screen Menu Overlay */}
       <AnimatePresence>
         {isMenuOpen && (
-          <motion.div
-            className="fixed inset-0 z-50 bg-[#ff5c5c] overflow-hidden"
-            initial="hidden"
-            animate="visible"
-            exit="exit"
+          <motion.div 
+            className={`fixed inset-0 z-50 overflow-hidden ${
+              isDark ? 'bg-[#ff5c5c]' : 'bg-blue-500'
+            }`} 
+            initial="hidden" 
+            animate="visible" 
+            exit="exit" 
             variants={menuVariants}
           >
             <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-              {/* Close Button */}
               <div className="flex justify-end mb-8">
-                <button
-                  onClick={closeMenu}
-                  className="inline-flex items-center justify-center p-3 rounded-lg bg-black text-[#ff5c5c] hover:bg-black/80 transition-all duration-300"
+                <button 
+                  onClick={closeMenu} 
+                  className={`inline-flex items-center justify-center p-3 rounded-lg transition-all duration-300 ${
+                    isDark 
+                      ? 'bg-black text-[#ff5c5c] hover:bg-black/80' 
+                      : 'bg-white text-blue-500 hover:bg-white/80'
+                  }`}
                 >
                   <CloseIcon />
                 </button>
               </div>
-
-              {/* Menu Content */}
               <div className="flex flex-col lg:flex-row h-full">
-                {/* Left Side - Scrollable Navigation Items */}
                 <motion.div 
-                  className="flex-1 lg:pr-12 overflow-y-auto scrollbar-thin scrollbar-thumb-black/30 scrollbar-track-black/10"
+                  className="flex-1 lg:pr-12 overflow-y-auto scrollbar-thin scrollbar-thumb-black/30 scrollbar-track-black/10" 
                   variants={itemVariants}
                 >
                   <div className="space-y-4 pb-8">
-                    {/* Home */}
-                    <motion.div variants={itemVariants}>
-                      <Link
-                        href="/"
-                        onClick={handleLinkClick}
-                        className="block px-6 py-3 text-lg font-medium rounded-lg border-2 text-black border-black hover:bg-black hover:text-[#ff5c5c] transition-all duration-300"
-                      >
-                        Home
-                      </Link>
-                    </motion.div>
-
-                    {/* How It Works */}
-                    <motion.div variants={itemVariants}>
-                      <Link
-                        href="#how-it-works"
-                        onClick={handleLinkClick}
-                        className="block px-6 py-3 text-lg font-medium rounded-lg border-2 text-black border-black hover:bg-black hover:text-[#ff5c5c] transition-all duration-300"
-                      >
-                        How It Works
-                      </Link>
-                    </motion.div>
-
-                    {/* Services */}
-                    <motion.div variants={itemVariants}>
-                      <Link
-                        href="#services"
-                        onClick={handleLinkClick}
-                        className="block px-6 py-3 text-lg font-medium rounded-lg border-2 text-black border-black hover:bg-black hover:text-[#ff5c5c] transition-all duration-300"
-                      >
-                        Services
-                      </Link>
-                    </motion.div>
-
-                    {/* Industries */}
-                    <motion.div variants={itemVariants}>
-                      <Link
-                        href="#industries"
-                        onClick={handleLinkClick}
-                        className="block px-6 py-3 text-lg font-medium rounded-lg border-2 text-black border-black hover:bg-black hover:text-[#ff5c5c] transition-all duration-300"
-                      >
-                        Industries
-                      </Link>
-                    </motion.div>
-
-                    {/* About */}
-                    <motion.div variants={itemVariants}>
-                      <Link
-                        href="#about"
-                        onClick={handleLinkClick}
-                        className="block px-6 py-3 text-lg font-medium rounded-lg border-2 text-black border-black hover:bg-black hover:text-[#ff5c5c] transition-all duration-300"
-                      >
-                        About
-                      </Link>
-                    </motion.div>
-
-                    {/* Contact */}
-                    <motion.div variants={itemVariants}>
-                      <Link
-                        href="#contact"
-                        onClick={handleLinkClick}
-                        className="block px-6 py-3 text-lg font-medium rounded-lg border-2 text-black border-black hover:bg-black hover:text-[#ff5c5c] transition-all duration-300"
-                      >
-                        Contact
-                      </Link>
-                    </motion.div>
-
-                    {/* Get Leads Button */}
+                    {['Home', 'How It Works', 'Services', 'Industries', 'About', 'Contact'].map((item) => (
+                      <motion.div key={item} variants={itemVariants}>
+                        <Link 
+                          href={item === 'Home' ? '/' : `#${item.toLowerCase().replace(' ', '-')}`} 
+                          onClick={handleLinkClick} 
+                          className={`block px-6 py-3 text-lg font-medium rounded-lg border-2 transition-all duration-300 ${
+                            isDark
+                              ? 'text-black border-black hover:bg-black hover:text-[#ff5c5c]'
+                              : 'text-white border-white hover:bg-white hover:text-blue-500'
+                          }`}
+                        >
+                          {item}
+                        </Link>
+                      </motion.div>
+                    ))}
                     <motion.div variants={itemVariants} className="pt-4">
-                      <Link
-                        href="#get-leads"
-                        onClick={handleLinkClick}
-                        className="block px-8 py-4 bg-black text-[#ff5c5c] text-lg font-semibold rounded-lg hover:bg-black/80 transition-all duration-300 text-center"
+                      <Link 
+                        href="#get-leads" 
+                        onClick={handleLinkClick} 
+                        className={`block px-8 py-4 text-lg font-semibold rounded-lg transition-all duration-300 text-center ${
+                          isDark
+                            ? 'bg-black text-[#ff5c5c] hover:bg-black/80'
+                            : 'bg-white text-blue-500 hover:bg-white/80'
+                        }`}
                       >
                         Get Leads
                       </Link>
                     </motion.div>
                   </div>
                 </motion.div>
-
-                {/* Right Side - Fixed Content */}
                 <motion.div 
-                  className="hidden lg:block lg:w-96 lg:pl-12 lg:sticky lg:top-8 lg:h-fit border-l border-black/20"
+                  className={`hidden lg:block lg:w-96 lg:pl-12 lg:sticky lg:top-8 lg:h-fit border-l ${
+                    isDark ? 'border-black/20' : 'border-white/20'
+                  }`} 
                   variants={itemVariants}
                 >
-                  <h3 className="text-2xl font-bold text-black mb-6">Start generating leads today</h3>
-                  <p className="text-black/70 mb-8">
-                    Our field sales and campaign activation solutions help you connect with potential customers and grow your automotive business. Get in touch with our team to learn more.
-                  </p>
-                  
+                  <h3 className={`text-2xl font-bold mb-6 ${
+                    isDark ? 'text-black' : 'text-white'
+                  }`}>Start generating leads today</h3>
+                  <p className={`mb-8 ${
+                    isDark ? 'text-black/70' : 'text-white/70'
+                  }`}>Our field sales and campaign activation solutions help you connect with potential customers and grow your automotive business. Get in touch with our team to learn more.</p>
                   <div className="space-y-4">
                     <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-black/10 rounded-full flex items-center justify-center">
-                        <span className="text-black font-bold">📧</span>
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                        isDark ? 'bg-black/10' : 'bg-white/10'
+                      }`}>
+                        <span className={`font-bold ${
+                          isDark ? 'text-black' : 'text-white'
+                        }`}>📧</span>
                       </div>
                       <div>
-                        <div className="font-medium text-black">Email</div>
-                        <div className="text-black/70">sales@autoreachinnovations.co.za</div>
+                        <div className={`font-medium ${
+                          isDark ? 'text-black' : 'text-white'
+                        }`}>Email</div>
+                        <div className={
+                          isDark ? 'text-black/70' : 'text-white/70'
+                        }>sales@autoreachinnovations.co.za</div>
                       </div>
                     </div>
-                    
                     <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-black/10 rounded-full flex items-center justify-center">
-                        <span className="text-black font-bold">📞</span>
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                        isDark ? 'bg-black/10' : 'bg-white/10'
+                      }`}>
+                        <span className={`font-bold ${
+                          isDark ? 'text-black' : 'text-white'
+                        }`}>📞</span>
                       </div>
                       <div>
-                        <div className="font-medium text-black">Phone</div>
-                        <div className="text-black/70">+1 (555) 987-6543</div>
+                        <div className={`font-medium ${
+                          isDark ? 'text-black' : 'text-white'
+                        }`}>Phone</div>
+                        <div className={
+                          isDark ? 'text-black/70' : 'text-white/70'
+                        }>+1 (555) 987-6543</div>
                       </div>
                     </div>
                   </div>

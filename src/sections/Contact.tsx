@@ -43,10 +43,10 @@ const Contact = () => {
   };
 
   return (
-    // Added id="contact" for navbar linking
-    <section id="contact" className="relative py-20 md:py-24 overflow-hidden bg-neutral-950">
+    // 1. Update the main section background to use neutral-100 in light mode
+    <section id="contact" className="relative py-20 md:py-24 overflow-hidden bg-neutral-100 dark:bg-neutral-950">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        {/* Section Header */}
+        {/* Section Header - Badge looks fine on its own, no changes needed */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -68,30 +68,33 @@ const Contact = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+            {/* 2. Update the headline color */}
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-900 dark:text-white mb-6">
               Let's Talk Growth
             </h2>
             
-            <p className="text-lg text-white/80 mb-8 leading-relaxed">
+            {/* 3. Update the paragraph color */}
+            <p className="text-lg text-neutral-700 dark:text-white/80 mb-8 leading-relaxed">
               Have questions about our lead generation services? Want to explore how we can help your automotive business grow? Our team is ready to assist with:
             </p>
             
+            {/* 4. Update the list text color */}
             <ul className="space-y-3 mb-8">
               <li className="flex items-start">
                 <span className="text-[#ff5c5c] mr-3">→</span>
-                <span className="text-white/80">Custom lead generation strategies for your dealership</span>
+                <span className="text-neutral-700 dark:text-white/80">Custom lead generation strategies for your dealership</span>
               </li>
               <li className="flex items-start">
                 <span className="text-[#ff5c5c] mr-3">→</span>
-                <span className="text-white/80">Regional expansion without opening new locations</span>
+                <span className="text-neutral-700 dark:text-white/80">Regional expansion without opening new locations</span>
               </li>
               <li className="flex items-start">
                 <span className="text-[#ff5c5c] mr-3">→</span>
-                <span className="text-white/80">Campaign planning and execution details</span>
+                <span className="text-neutral-700 dark:text-white/80">Campaign planning and execution details</span>
               </li>
               <li className="flex items-start">
                 <span className="text-[#ff5c5c] mr-3">→</span>
-                <span className="text-white/80">Pricing and partnership opportunities</span>
+                <span className="text-neutral-700 dark:text-white/80">Pricing and partnership opportunities</span>
               </li>
             </ul>
             
@@ -107,7 +110,7 @@ const Contact = () => {
             className="relative"
           >
             <form onSubmit={handleSubmit} className="bg-[#ff5c5c] rounded-3xl p-8 md:p-10">
-              {/* Name Field */}
+              {/* Name Field - Update input styles for better dark mode visibility */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -125,12 +128,12 @@ const Contact = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                  className="w-full px-4 py-3 bg-black/10 dark:bg-white/10 border border-black/20 dark:border-white/20 rounded-lg text-black placeholder-black/50 dark:placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-black/50 dark:focus:ring-white/50 focus:border-transparent transition-all duration-300"
                   placeholder="Your full name"
                 />
               </motion.div>
 
-              {/* Company Field */}
+              {/* Company Field - Update input styles */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -148,12 +151,12 @@ const Contact = () => {
                   value={formData.company}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                  className="w-full px-4 py-3 bg-black/10 dark:bg-white/10 border border-black/20 dark:border-white/20 rounded-lg text-black placeholder-black/50 dark:placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-black/50 dark:focus:ring-white/50 focus:border-transparent transition-all duration-300"
                   placeholder="Your company name"
                 />
               </motion.div>
 
-              {/* Email Field */}
+              {/* Email Field - Update input styles */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -171,12 +174,12 @@ const Contact = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                  className="w-full px-4 py-3 bg-black/10 dark:bg-white/10 border border-black/20 dark:border-white/20 rounded-lg text-black placeholder-black/50 dark:placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-black/50 dark:focus:ring-white/50 focus:border-transparent transition-all duration-300"
                   placeholder="your.email@example.com"
                 />
               </motion.div>
 
-              {/* Phone Field */}
+              {/* Phone Field - Update input styles */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -194,12 +197,12 @@ const Contact = () => {
                   value={formData.phone}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                  className="w-full px-4 py-3 bg-black/10 dark:bg-white/10 border border-black/20 dark:border-white/20 rounded-lg text-black placeholder-black/50 dark:placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-black/50 dark:focus:ring-white/50 focus:border-transparent transition-all duration-300"
                   placeholder="(555) 123-4567"
                 />
               </motion.div>
 
-              {/* Message Field */}
+              {/* Message Field - Update textarea styles */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -217,12 +220,12 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   rows={4}
-                  className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 resize-none"
+                  className="w-full px-4 py-3 bg-black/10 dark:bg-white/10 border border-black/20 dark:border-white/20 rounded-lg text-black placeholder-black/50 dark:placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-black/50 dark:focus:ring-white/50 focus:border-transparent transition-all duration-300 resize-none"
                   placeholder="Tell us about your needs..."
                 ></textarea>
               </motion.div>
 
-              {/* Submit Button */}
+              {/* Submit Button - No changes needed, works well on red background */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -239,13 +242,13 @@ const Contact = () => {
                 </motion.button>
               </motion.div>
 
-              {/* Social Media Text */}
+              {/* 5. Update Social Media Text color */}
               <motion.p
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: 1.1 }}
                 viewport={{ once: true }}
-                className="text-center text-black/70 text-sm mt-6"
+                className="text-center text-black/70 dark:text-white/70 text-sm mt-6"
               >
                 Social media
               </motion.p>
@@ -257,8 +260,8 @@ const Contact = () => {
         <div className="mt-16"></div>
       </div>
 
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[url('/assets/images/grid-pattern.svg')] opacity-5 pointer-events-none"></div>
+      {/* 6. Update Background Pattern opacity */}
+      <div className="absolute inset-0 bg-[url('/assets/images/grid-pattern.svg')] opacity-5 dark:opacity-10 pointer-events-none"></div>
     </section>
   );
 };

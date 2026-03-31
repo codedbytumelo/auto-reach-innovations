@@ -7,6 +7,8 @@ const config: Config = {
         "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
         "./src/sections/**/*.{js,ts,jsx,tsx,mdx}",
     ],
+    // Add this line to enable class-based dark mode
+    darkMode: 'class',
     theme: {
         container: {
             center: true,
@@ -27,4 +29,5 @@ const config: Config = {
     },
     plugins: [],
 };
+
 export default config;

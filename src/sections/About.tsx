@@ -1,3 +1,4 @@
+// components/About.tsx
 "use client";
 
 import { motion } from "framer-motion";
@@ -6,10 +7,10 @@ import Link from "next/link";
 
 const About = () => {
   return (
-    // Added the id="about" attribute to the section element
-    <section id="about" className="relative py-20 md:py-24 overflow-hidden bg-neutral-950">
+    // 1. Update the main section background for theme support
+    <section id="about" className="relative py-20 md:py-24 overflow-hidden bg-white dark:bg-neutral-950">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        {/* Section Header */}
+        {/* Section Header - Badge looks fine on its own, no changes needed */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -18,17 +19,17 @@ const About = () => {
           className="text-center mb-12"
         >
           <div className="inline-block px-4 py-2 mb-4 text-sm font-medium text-[#ff5c5c] bg-[#ff5c5c]/10 backdrop-blur-sm rounded-full border border-[#ff5c5c]/20">
-            ABOUT SECTION
+            ABOUT US
           </div>
         </motion.div>
 
-        {/* Main Headline */}
+        {/* 2. Update the main headline color */}
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           viewport={{ once: true }}
-          className="text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center mb-16"
+          className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900 dark:text-white text-center mb-16"
         >
           Driving Automotive Growth Through Real-World Connections
         </motion.h2>
@@ -49,10 +50,10 @@ const About = () => {
             viewport={{ once: true }}
             className="relative"
           >
-            {/* Main Image - Woman at Desk */}
+            {/* Main Image - Woman at Desk - No changes needed */}
             <div className="relative aspect-[4/5] rounded-2xl overflow-hidden">
               <Image
-                src="/assets/images/woman-at-desk.jpg"
+                src="/assets/images/man-in-office.jpg"
                 alt="Woman working at wooden desk with laptop"
                 fill
                 className="object-cover"
@@ -60,16 +61,16 @@ const About = () => {
               />
             </div>
             
-            {/* Secondary Image - Person with Tablet */}
+            {/* 3. Update the border of the secondary image */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.6 }}
               viewport={{ once: true }}
-              className="absolute -bottom-8 -right-8 w-1/2 aspect-[3/4] rounded-2xl overflow-hidden border-4 border-black shadow-xl"
+              className="absolute -bottom-8 -right-8 w-1/2 aspect-[3/4] rounded-2xl overflow-hidden border-4 border-neutral-900 dark:border-white shadow-xl"
             >
               <Image
-                src="/assets/images/person-with-tablet.jpg"
+                src="/assets/images/woman-with-tablet.jpg"
                 alt="Person holding tablet"
                 fill
                 className="object-cover"
@@ -85,27 +86,27 @@ const About = () => {
             viewport={{ once: true }}
             className="relative"
           >
-            {/* Black Background Container */}
-            <div className="bg-black rounded-3xl p-8 md:p-12 lg:p-16 border border-white/10">
-              {/* Title */}
+            {/* 4. Update the Background Container */}
+            <div className="bg-neutral-100 dark:bg-black rounded-3xl p-8 md:p-12 lg:p-16 border border-neutral-200 dark:border-white/10">
+              {/* 5. Update the Title color */}
               <motion.h3
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.6 }}
                 viewport={{ once: true }}
-                className="text-3xl md:text-4xl font-bold text-white mb-6"
+                className="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white mb-6"
               >
                 ABOUT THE BRAND.
               </motion.h3>
 
-              {/* Body Content */}
+              {/* 6. Update Body Content text colors */}
               <div className="space-y-6">
                 <motion.p
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.7 }}
                   viewport={{ once: true }}
-                  className="text-lg text-white/80 leading-relaxed"
+                  className="text-lg text-neutral-700 dark:text-white/80 leading-relaxed"
                 >
                   Auto Reach Innovations was born from a simple observation: in an increasingly digital world, the automotive industry was losing the power of human connection. While competitors chased online clicks and digital leads, we saw an untapped opportunity in real-world engagement.
                 </motion.p>
@@ -115,15 +116,13 @@ const About = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.8 }}
                   viewport={{ once: true }}
-                  className="text-lg text-white/80 leading-relaxed"
+                  className="text-lg text-neutral-700 dark:text-white/80 leading-relaxed"
                 >
                   Our approach combines strategic location targeting, professionally trained field agents, and real-time data qualification to create a lead generation system that delivers 3x higher conversion rates than traditional digital methods. We don't just capture contacts—we capture intent.
                 </motion.p>
-                
-               
               </div>
 
-              {/* CTA Button */}
+              {/* CTA Button - No changes needed, red on black/white works well */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -151,8 +150,8 @@ const About = () => {
         <div className="mt-16"></div>
       </div>
 
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[url('/assets/images/grid-pattern.svg')] opacity-5 pointer-events-none"></div>
+      {/* 7. Update Background Pattern opacity */}
+      <div className="absolute inset-0 bg-[url('/assets/images/grid-pattern.svg')] opacity-5 dark:opacity-10 pointer-events-none"></div>
     </section>
   );
 };

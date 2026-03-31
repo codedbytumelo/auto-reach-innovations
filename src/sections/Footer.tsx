@@ -1,3 +1,4 @@
+// components/Footer.tsx
 "use client";
 
 import { motion } from "framer-motion";
@@ -6,9 +7,10 @@ import Image from "next/image";
 
 const Footer = () => {
   return (
-    <footer className="relative bg-neutral-950 text-white">
+    // 1. Update the footer background to be slightly lighter in dark mode
+    <footer className="relative bg-neutral-950 dark:bg-neutral-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-        {/* Footer Content Grid */}
+        {/* Footer Content Grid - No changes needed here */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Column 1 - Brand + Positioning */}
           <motion.div
@@ -20,10 +22,10 @@ const Footer = () => {
           >
             <div className="flex items-center">
               <Image 
-                src="/assets/images/ari-logo.png"
+                src="/assets/images/logos/Logo-dark.png"
                 alt="Auto Reach Innovations" 
                 width={180}
-                height={60}
+                height={160}
                 className="h-10 w-auto"
               />
             </div>
@@ -121,8 +123,9 @@ const Footer = () => {
                 <span className="text-[#ff5c5c] mr-2">📧</span>
                 <div>
                   <p className="text-sm text-white/70">Email:</p>
-                  <a href="mailto:autoreachinnovations@gmail.com" className="text-sm text-white hover:text-[#ff5c5c] transition-colors duration-300">
-                    autoreachinnovations@gmail.com
+                  {/* 2. Update the email address and link */}
+                  <a href="mailto:sales@autoreachinnovations.co.za" className="text-sm text-white hover:text-[#ff5c5c] transition-colors duration-300">
+                    sales@autoreachinnovations.co.za
                   </a>
                 </div>
               </div>
@@ -146,7 +149,7 @@ const Footer = () => {
               </div>
             </div>
             
-            {/* CTA Button */}
+            {/* CTA Button - No changes needed */}
             <motion.div
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -163,7 +166,7 @@ const Footer = () => {
           </motion.div>
         </div>
 
-        {/* Bottom Section - Copyright and Social Links */}
+        {/* Bottom Section - Copyright and Social Links - No changes needed */}
         <div className="border-t border-white/10 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             {/* Copyright */}

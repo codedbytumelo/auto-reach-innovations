@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "./context/ThemeContext"; // 1. Import the ThemeProvider
 
 const inter = Inter({
     variable: "--font-inter",
@@ -23,11 +24,18 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        // 3. Add suppressHydrationWarning to prevent a mismatch error
+        // between server and client rendering when the theme is determined.
+        <html lang="en" suppressHydrationWarning>
             <body
-                className={`${inter.variable} font-sans antialiased bg-neutral-950 text-white`}
+                // 2. Update the body classes to support both light and dark themes
+                // The 'dark:' prefix will apply when the <html> element has the 'dark' class.
+                className={`${inter.variable} font-sans antialiased bg-white text-neutral-900 dark:bg-neutral-950 dark:text-white`}
             >
-                {children}
+                {/* 1. Wrap the entire application with the ThemeProvider */}
+                <ThemeProvider>
+                    {children}
+                </ThemeProvider>
             </body>
         </html>
     );

@@ -1,3 +1,4 @@
+// components/Hero.tsx
 "use client";
 
 import { useState } from "react";
@@ -19,20 +20,26 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        {/* Red Background Container with Rounded Edges */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="relative bg-[#ff5c5c] rounded-3xl p-8 md:p-12 lg:p-16 overflow-hidden"
-        >
-          {/* Decorative Elements */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-red-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 -translate-y-32 translate-x-32"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-red-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 translate-y-32 -translate-x-32"></div>
-          
-          <div className="relative z-10 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+    // Added rounded corners to the main section
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-24 mx-4 lg:mx-8">
+      {/* Container with rounded corners for the background image */}
+      <div className="relative w-full h-full rounded-3xl lg:rounded-4xl overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/assets/images/building-hero.jpg" // Replace with your actual background image
+            alt="Auto Reach Innovations Background"
+            fill
+            className="object-cover rounded-3xl lg:rounded-4xl"
+            priority
+          />
+        </div>
+        
+        {/* Dark Overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/40 z-10 rounded-3xl lg:rounded-4xl"></div>
+        
+        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 w-full">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Left Content */}
             <div className="text-center lg:text-left">
               {/* Badge */}
@@ -40,9 +47,9 @@ const Hero = () => {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="inline-flex items-center px-4 py-2 mb-6 text-sm font-medium text-black bg-black/10 backdrop-blur-sm rounded-full border border-black/20"
+                className="inline-flex items-center px-3 sm:px-4 py-2 mb-6 text-xs sm:text-sm font-medium text-white bg-white/20 backdrop-blur-sm rounded-full border border-white/30"
               >
-                <span className="w-2 h-2 bg-black rounded-full mr-2 animate-pulse"></span>
+                <span className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></span>
                 Trusted by forward-thinking dealerships and automotive brands
               </motion.div>
 
@@ -51,10 +58,10 @@ const Hero = () => {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
-                className="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-6 leading-tight"
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight"
               >
-                Drive More Car Sales <br className="hidden md:block" />
-                with Real-World <br className="hidden md:block" />
+                Drive More Car Sales <br className="hidden sm:block" />
+                with Real-World <br className="hidden sm:block" />
                 Lead Generation
               </motion.h1>
 
@@ -63,7 +70,7 @@ const Hero = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.5 }}
-                className="text-lg md:text-xl text-black/80 mb-8 leading-relaxed"
+                className="text-base sm:text-lg md:text-xl text-white/90 mb-8 leading-relaxed"
               >
                 We help dealerships and automotive brands generate qualified leads through trained field sales teams that engage customers where they are.
               </motion.p>
@@ -73,129 +80,86 @@ const Hero = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.7 }}
-                className="flex flex-col sm:flex-row gap-4 lg:justify-start justify-center"
+                className="flex flex-col sm:flex-row gap-3 sm:gap-4 lg:justify-start justify-center"
               >
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
                   <Link
                     href="/get-started"
                     onClick={handleGetStarted}
-                    className="px-8 py-4 bg-black text-[#ff5c5c] font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-base md:text-lg"
+                    className="block w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-[#ff5c5c] text-black font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-base sm:text-lg text-center"
                   >
                     Get Started
                   </Link>
                 </motion.div>
                 
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
                   <Link
                     href="/book-a-call"
                     onClick={handleBookCall}
-                    className="px-8 py-4 bg-transparent text-black font-semibold rounded-lg border-2 border-black hover:bg-black hover:text-[#ff5c5c] transition-all duration-300 text-base md:text-lg"
+                    className="block w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-transparent text-white font-semibold rounded-lg border-2 border-white hover:bg-white hover:text-black transition-all duration-300 text-base sm:text-lg text-center"
                   >
                     Book a Call
                   </Link>
                 </motion.div>
               </motion.div>
-
-              {/* Trust Indicators */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 1 }}
-                className="mt-12 pt-8 border-t border-black/20"
-              >
-                <p className="text-sm text-black/60 mb-6">Partnered with leading automotive brands</p>
-                <div className="flex flex-wrap justify-center lg:justify-start items-center gap-8 md:gap-12">
-                  {/* Brand Logos */}
-                  <div className="relative w-20 h-8">
-                    <Image 
-                      src="/assets/images/ari-logo.png"
-                      alt="Auto Reach Innovations" 
-                      fill
-                      className="object-contain"
-                      priority
-                    />
-                  </div>
-                  <div className="relative w-20 h-8">
-                    <Image 
-                      src="/assets/images/ari-logo.png"
-                      alt="Auto Reach Innovations" 
-                      fill
-                      className="object-contain"
-                      priority
-                    />
-                  </div>
-                  <div className="relative w-20 h-8">
-                    <Image 
-                      src="/assets/images/ari-logo.png"
-                      alt="Auto Reach Innovations" 
-                      fill
-                      className="object-contain"
-                      priority
-                    />
-                  </div>
-                  <div className="relative w-20 h-8">
-                    <Image 
-                      src="/assets/images/ari-logo.png"
-                      alt="Auto Reach Innovations" 
-                      fill
-                      className="object-contain"
-                      priority
-                    />
-                  </div>
-                </div>
-              </motion.div>
             </div>
 
-            {/* Right Logo/Image */}
+            {/* Right Side - Metrics */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="relative flex items-center justify-center"
+              className="relative flex justify-center lg:justify-end mt-8 lg:mt-0"
             >
-              <div className="relative w-full h-64 lg:h-80 flex items-center justify-center">
-                {/* Logo Container with Background */}
-                <div className="relative bg-black/10 rounded-2xl p-8 md:p-12 w-full h-full flex items-center justify-center">
-                  <Image 
-                    src="/assets/images/ari-logo.png"
-                    alt="Auto Reach Innovations" 
-                    width={180}
-                    height={60}
-                    className="w-auto h-auto max-w-full max-h-full"
-                    priority
-                  />
-                </div>
-                
-                {/* Floating Elements - Lead Metrics */}
+              <div className="grid grid-cols-2 gap-4 w-full max-w-md">
+                {/* Metric 1 */}
                 <motion.div
-                  animate={{ y: [-10, 10, -10] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute top-4 right-4 bg-white rounded-lg p-3 shadow-lg"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.5 }}
+                  className="bg-white/10 backdrop-blur-md rounded-lg p-4 text-center"
                 >
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-black">42%</div>
-                    <div className="text-xs text-black/70">Higher Conversion</div>
-                  </div>
+                  <div className="text-3xl font-bold text-white mb-1">42%</div>
+                  <div className="text-sm text-white/80">Higher Conversion</div>
                 </motion.div>
                 
+                {/* Metric 2 */}
                 <motion.div
-                  animate={{ y: [10, -10, 10] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                  className="absolute bottom-4 left-4 bg-white rounded-lg p-3 shadow-lg"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.7 }}
+                  className="bg-white/10 backdrop-blur-md rounded-lg p-4 text-center"
                 >
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-black">3.5x</div>
-                    <div className="text-xs text-black/70">ROI Increase</div>
-                  </div>
+                  <div className="text-3xl font-bold text-white mb-1">3.5x</div>
+                  <div className="text-sm text-white/80">ROI Increase</div>
+                </motion.div>
+                
+                {/* Metric 3 */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.8 }}
+                  className="bg-white/10 backdrop-blur-md rounded-lg p-4 text-center"
+                >
+                  <div className="text-3xl font-bold text-white mb-1">500+</div>
+                  <div className="text-sm text-white/80">Dealerships</div>
+                </motion.div>
+                
+                {/* Metric 4 */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.9 }}
+                  className="bg-white/10 backdrop-blur-md rounded-lg p-4 text-center"
+                >
+                  <div className="text-3xl font-bold text-white mb-1">24/7</div>
+                  <div className="text-sm text-white/80">Support</div>
                 </motion.div>
               </div>
             </motion.div>
           </div>
-        </motion.div>
+        </div>
       </div>
-
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[url('/assets/images/grid-pattern.svg')] opacity-5 pointer-events-none"></div>
     </section>
   );
 };
