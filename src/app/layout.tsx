@@ -10,8 +10,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-    title: "Drive More Car Sales with Real-World Lead Generation ",
-    description: "Discover how real-world lead generation can drive more car sales for your dealership. Learn effective strategies to attract and convert potential buyers in the automotive industry.",
+    title: "Find Your Next Car Without the Hassle | Auto Reach ",
+    description: "Auto Reach Innovations is your free, no-pressure car buying service. We connect you with trusted dealerships, so you can find the right car at the right price — without the runaround.",
     icons: {
         icon: "/favicon.ico",
     }
