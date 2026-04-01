@@ -6,17 +6,19 @@ import Link from "next/link";
 import Image from "next/image";
 
 const CallToAction = () => {
-  // The handleGetStarted function is no longer needed since we're removing the button
+  const handleFindMyCar = () => {
+    // Handle Find My Car action
+    console.log("Find My Car clicked");
+  };
+
+  const handleHowItWorks = () => {
+    // Handle How It Works action
+    console.log("How It Works clicked");
+  };
 
   return (
-    // 1. Update the main section background for theme support
-    <section className="relative py-20 md:py-24 overflow-hidden bg-white dark:bg-black">
+    <section className="relative py-20 md:py-24 overflow-hidden bg-white">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        {/* 2. Removed the "CALL TO ACTION" badge since it's no longer a CTA section */}
-
-        {/* 3. Removed the redundant headline outside the red container */}
-        {/* The headline inside the container is stronger and more specific */}
-
         {/* Red Background Container with Rounded Edges */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -25,14 +27,14 @@ const CallToAction = () => {
           viewport={{ once: true }}
           className="relative bg-[#ff5c5c] rounded-3xl p-8 md:p-12 lg:p-16 overflow-hidden"
         >
-          {/* Decorative Elements - No changes needed */}
+          {/* Decorative Elements */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-red-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 -translate-y-32 translate-x-32"></div>
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-red-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 translate-y-32 -translate-x-32"></div>
           
           <div className="relative z-10 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left Content */}
             <div>
-              {/* Main Headline - No changes needed, works well on red background */}
+              {/* Main Headline */}
               <motion.h3
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -40,11 +42,11 @@ const CallToAction = () => {
                 viewport={{ once: true }}
                 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-6 leading-tight"
               >
-                We Don't Just Generate Leads <br className="hidden md:block" />
-                — We Deliver Buyers
+                Stop Searching. <br className="hidden md:block" />
+                Start Driving.
               </motion.h3>
 
-              {/* Body - No changes needed, works well on red background */}
+              {/* Body */}
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -52,11 +54,11 @@ const CallToAction = () => {
                 viewport={{ once: true }}
                 className="text-lg md:text-xl text-black/80 mb-8 leading-relaxed"
               >
-                Auto Reach Innovations connects your dealership with real, interested customers through strategic, on-the-ground engagement. Our field sales teams operate in high-traffic areas, events, and targeted zones to capture quality leads ready to convert.
+                Tell us what you're looking for, and we'll connect you with dealerships that already have the right options — simple, fast, and built around you.
               </motion.p>
 
-              {/* 4. CTA Button Removed */}
-              {/* <motion.div
+              {/* CTA Buttons */}
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.7 }}
@@ -65,14 +67,34 @@ const CallToAction = () => {
               >
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Link
-                    href="/get-started"
-                    onClick={handleGetStarted}
-                    className="px-8 py-4 bg-black text-[#ff5c5c] font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-base md:text-lg"
+                    href="/find-my-car"
+                    onClick={handleFindMyCar}
+                    className="block px-8 py-4 bg-black text-[#ff5c5c] font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-base md:text-lg text-center"
                   >
-                    Get Started
+                    Find My Car
                   </Link>
                 </motion.div>
-              </motion.div> */}
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Link
+                    href="/how-it-works"
+                    onClick={handleHowItWorks}
+                    className="block px-8 py-4 bg-white text-black font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-base md:text-lg text-center"
+                  >
+                    How It Works
+                  </Link>
+                </motion.div>
+              </motion.div>
+
+              {/* Closing Line */}
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.9 }}
+                viewport={{ once: true }}
+                className="text-base md:text-lg text-black/90 mt-8 leading-relaxed font-medium"
+              >
+                The smarter, easier way to find your next car starts here.
+              </motion.p>
             </div>
 
             {/* Right Content - Key Points */}
@@ -83,12 +105,11 @@ const CallToAction = () => {
               viewport={{ once: true }}
               className="relative"
             >
-              {/* 5. Update the background and text of the key points container */}
-              <div className="bg-black/10 dark:bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8">
-                <h3 className="text-xl md:text-2xl font-bold text-black dark:text-white mb-6">Why Choose Auto Reach Innovations</h3>
+              <div className="bg-black/10 backdrop-blur-sm rounded-2xl p-6 md:p-8">
+                <h3 className="text-xl md:text-2xl font-bold text-black mb-6">Why Use Auto Reach</h3>
                 
                 <div className="space-y-4">
-                  {/* Key Point 1 - Update text colors */}
+                  {/* Key Point 1 */}
                   <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -102,12 +123,12 @@ const CallToAction = () => {
                       </svg>
                     </div>
                     <div>
-                      <h4 className="text-lg font-semibold text-black dark:text-white">Human-first engagement</h4>
-                      <p className="text-black/70 dark:text-white/70">Not cold clicks - our teams build real connections with potential buyers</p>
+                      <h4 className="text-lg font-semibold text-black">No endless browsing</h4>
+                      <p className="text-black/70">Skip hundreds of listings and get straight to real options.</p>
                     </div>
                   </motion.div>
 
-                  {/* Key Point 2 - Update text colors */}
+                  {/* Key Point 2 */}
                   <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -121,12 +142,12 @@ const CallToAction = () => {
                       </svg>
                     </div>
                     <div>
-                      <h4 className="text-lg font-semibold text-black dark:text-white">Real-time lead capture</h4>
-                      <p className="text-black/70 dark:text-white/70">Instant qualification and delivery of leads to your sales team</p>
+                      <h4 className="text-lg font-semibold text-black">Matched to your needs</h4>
+                      <p className="text-black/70">We connect you with cars that fit your budget and preferences.</p>
                     </div>
                   </motion.div>
 
-                  {/* Key Point 3 - Update text colors */}
+                  {/* Key Point 3 */}
                   <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -140,12 +161,12 @@ const CallToAction = () => {
                       </svg>
                     </div>
                     <div>
-                      <h4 className="text-lg font-semibold text-black dark:text-white">Qualified, intent-driven prospects</h4>
-                      <p className="text-black/70 dark:text-white/70">We filter for serious buyers, not just casual browsers</p>
+                      <h4 className="text-lg font-semibold text-black">Trusted dealerships only</h4>
+                      <p className="text-black/70">Work with verified dealers you can rely on.</p>
                     </div>
                   </motion.div>
 
-                  {/* Key Point 4 - Update text colors */}
+                  {/* Key Point 4 */}
                   <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -159,8 +180,8 @@ const CallToAction = () => {
                       </svg>
                     </div>
                     <div>
-                      <h4 className="text-lg font-semibold text-black dark:text-white">Scalable campaigns across regions</h4>
-                      <p className="text-black/70 dark:text-white/70">Expand your reach without opening new locations</p>
+                      <h4 className="text-lg font-semibold text-black">100% free to use</h4>
+                      <p className="text-black/70">No fees, no pressure — just a better way to buy.</p>
                     </div>
                   </motion.div>
                 </div>
@@ -170,8 +191,8 @@ const CallToAction = () => {
         </motion.div>
       </div>
 
-      {/* 6. Update Background Pattern opacity */}
-      <div className="absolute inset-0 bg-[url('/assets/images/grid-pattern.svg')] opacity-5 dark:opacity-10 pointer-events-none"></div>
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-[url('/assets/images/grid-pattern.svg')] opacity-5 pointer-events-none"></div>
     </section>
   );
 };

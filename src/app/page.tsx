@@ -4,10 +4,9 @@ import LogoTicker from '@/sections/LogoTicker';
 import About from '@/sections/About';
 import HowItWorks from '@/sections/HowItWorks';
 import CallToAction from '@/sections/CallToAction';
-import Services from '@/sections/Services';
-import Industries from '@/sections/Industries';
+import Deals from '@/sections/Deals';
 import Teams from '@/sections/Teams';
-import CTA from '@/sections/CTA';
+import Dealers from '@/sections/Dealers';
 import Contact from '@/sections/Contact';
 import Footer from '@/sections/Footer';
 
@@ -16,14 +15,13 @@ export default function Home() {
         <div>
             <Navbar />
             <Hero />
-            <LogoTicker />
             <About />
             <HowItWorks/>
             <CallToAction />
-            <Services />
-            <Industries />
+            <Deals />
             <Teams />
-            <CTA />
+            <Dealers />
+             <LogoTicker />
             <Contact />
             <Footer />
         </div>

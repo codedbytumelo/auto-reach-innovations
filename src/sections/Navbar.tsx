@@ -6,7 +6,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { SVGProps } from "react";
-import { useTheme } from "../app/context/ThemeContext";
 
 // Icon components
 const MenuIcon = (props: SVGProps<SVGSVGElement>) => (
@@ -18,18 +17,6 @@ const MenuIcon = (props: SVGProps<SVGSVGElement>) => (
 const CloseIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} className={`w-6 h-6 ${props.className ?? ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-  </svg>
-);
-
-const SunIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg {...props} className={`w-5 h-5 ${props.className ?? ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-  </svg>
-);
-
-const MoonIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg {...props} className={`w-5 h-5 ${props.className ?? ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
   </svg>
 );
 
@@ -68,7 +55,6 @@ const itemVariants = {
 };
 
 export default function Navbar() {
-  const { theme, toggleTheme } = useTheme();
   const [hasScrolled, setHasScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -92,21 +78,23 @@ export default function Navbar() {
   const closeMenu = () => setIsMenuOpen(false);
   const handleLinkClick = () => closeMenu();
   
-  const isDark = theme === 'dark';
-  const logoSrc = isDark 
-    ? "/assets/images/logos/Logo-dark.png" 
-    : "/assets/images/logos/Logo-light.png";
+  // Using only the light mode logo
+  const logoSrc = "/assets/images/logos/Logo-light.png";
+
+  // New navigation items
+  const navItems = [
+    { name: 'How It Works', href: '#how-it-works' },
+    { name: 'Find My Car', href: '#find-my-car' },
+    { name: 'Browse Deals', href: '#browse-deals' },
+    { name: 'For Dealers', href: '#for-dealers' },
+  ];
 
   return (
     <>
       <nav className={`sticky top-0 z-40 transition-all duration-300 ${
         hasScrolled 
-          ? isDark 
-            ? 'bg-black/80 backdrop-blur-xl shadow-lg border-b border-neutral-800/50' 
-            : 'bg-white/80 backdrop-blur-xl shadow-lg border-b border-neutral-200/50'
-          : isDark 
-            ? 'bg-transparent border-b border-neutral-900'
-            : 'bg-transparent border-b border-neutral-200'
+          ? 'bg-white/80 backdrop-blur-xl shadow-lg border-b border-neutral-200/50'
+          : 'bg-transparent border-b border-neutral-200'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
@@ -122,25 +110,37 @@ export default function Navbar() {
                 />
               </Link>
             </div>
-            <div className="flex items-center space-x-3">
-              <button
-                onClick={toggleTheme}
-                className={`inline-flex items-center justify-center p-2 rounded-lg transition-all duration-300 ${
-                  isDark 
-                    ? 'border border-[#ff5c5c] text-[#ff5c5c] hover:bg-[#ff5c5c] hover:text-black'
-                    : 'border border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-white'
-                }`}
-                aria-label="Toggle theme"
+            
+            {/* Desktop Navigation - Hidden for now, but can be added back if needed */}
+            <div className="hidden lg:flex items-center space-x-8">
+              {navItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="text-gray-700 hover:text-[#ff5c5c] font-medium transition-colors duration-200"
+                >
+                  {item.name}
+                </Link>
+              ))}
+              <Link
+                href="#get-started"
+                className="px-4 py-2 text-[#ff5c5c] border border-[#ff5c5c] rounded-full font-medium hover:bg-[#ff5c5c] hover:text-white transition-colors duration-200"
               >
-                {isDark ? <SunIcon /> : <MoonIcon />}
-              </button>
+                Get Started
+              </Link>
+              <Link
+                href="#sign-in"
+                className="px-4 py-2 text-gray-700 border border-gray-700 rounded-full font-medium hover:bg-gray-700 hover:text-white transition-colors duration-200"
+              >
+                Sign In
+              </Link>
+            </div>
+            
+            {/* Mobile Menu Button */}
+            <div className="flex items-center space-x-3 lg:hidden">
               <button 
                 onClick={toggleMenu} 
-                className={`inline-flex items-center justify-center p-2 rounded-lg transition-all duration-300 ${
-                  isDark 
-                    ? 'border border-[#ff5c5c] text-[#ff5c5c] hover:bg-[#ff5c5c] hover:text-black' 
-                    : 'border border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-white'
-                }`}
+                className="inline-flex items-center justify-center p-2 rounded-lg transition-all duration-300 border border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-white"
               >
                 {isMenuOpen ? <CloseIcon /> : <MenuIcon />}
               </button>
@@ -152,9 +152,7 @@ export default function Navbar() {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div 
-            className={`fixed inset-0 z-50 overflow-hidden ${
-              isDark ? 'bg-[#ff5c5c]' : 'bg-[#ff5c5c]' // Changed from blue to brand red
-            }`} 
+            className="fixed inset-0 z-50 overflow-hidden bg-white" 
             initial="hidden" 
             animate="visible" 
             exit="exit" 
@@ -164,72 +162,62 @@ export default function Navbar() {
               <div className="flex justify-end mb-8">
                 <button 
                   onClick={closeMenu} 
-                  className={`inline-flex items-center justify-center p-3 rounded-lg transition-all duration-300 ${
-                    isDark 
-                      ? 'bg-black text-[#ff5c5c] hover:bg-black/80' 
-                      : 'bg-black text-[#ff5c5c] hover:bg-black/80' // Changed from white to black for light mode
-                  }`}
+                  className="inline-flex items-center justify-center p-3 rounded-lg transition-all duration-300 bg-gray-100 text-gray-800 hover:bg-gray-200"
                 >
                   <CloseIcon />
                 </button>
               </div>
-              <div className="flex flex-col lg:flex-row h-full">
+              <div className="flex flex-col h-full">
                 <motion.div 
-                  className="flex-1 lg:pr-12 overflow-y-auto scrollbar-thin scrollbar-thumb-black/30 scrollbar-track-black/10" 
+                  className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100" 
                   variants={itemVariants}
                 >
                   <div className="space-y-4 pb-8">
-                    {['Home', 'How It Works', 'Services', 'Industries', 'About', 'Contact'].map((item) => (
-                      <motion.div key={item} variants={itemVariants}>
+                    {navItems.map((item) => (
+                      <motion.div key={item.name} variants={itemVariants}>
                         <Link 
-                          href={item === 'Home' ? '/' : `#${item.toLowerCase().replace(' ', '-')}`} 
+                          href={item.href} 
                           onClick={handleLinkClick} 
-                          className={`block px-6 py-3 text-lg font-medium rounded-lg border-2 transition-all duration-300 ${
-                            isDark
-                              ? 'text-black border-black hover:bg-black hover:text-[#ff5c5c]'
-                              : 'text-black border-black hover:bg-black hover:text-[#ff5c5c]' // Changed from white to black for light mode
-                          }`}
+                          className="block px-6 py-3 text-lg font-medium rounded-lg border-2 transition-all duration-300 text-gray-700 border-gray-300 hover:border-[#ff5c5c] hover:text-[#ff5c5c]"
                         >
-                          {item}
+                          {item.name}
                         </Link>
                       </motion.div>
                     ))}
-                    <motion.div variants={itemVariants} className="pt-4">
+                    
+                    <motion.div variants={itemVariants} className="pt-4 space-y-4">
                       <Link 
-                        href="#get-leads" 
+                        href="#get-started" 
                         onClick={handleLinkClick} 
-                        className={`block px-8 py-4 text-lg font-semibold rounded-lg transition-all duration-300 text-center ${
-                          isDark
-                            ? 'bg-black text-[#ff5c5c] hover:bg-black/80'
-                            : 'bg-black text-[#ff5c5c] hover:bg-black/80' // Changed from white to black for light mode
-                        }`}
+                        className="block px-6 py-3 text-lg font-semibold rounded-lg transition-all duration-300 text-center bg-[#ff5c5c] text-white hover:bg-[#e74c3c]"
                       >
-                        Get Leads
+                        Get Started
+                      </Link>
+                      <Link 
+                        href="#sign-in" 
+                        onClick={handleLinkClick} 
+                        className="block px-6 py-3 text-lg font-semibold rounded-lg transition-all duration-300 text-center border-2 border-gray-700 text-gray-700 hover:bg-gray-700 hover:text-white"
+                      >
+                        Sign In
                       </Link>
                     </motion.div>
                   </div>
                 </motion.div>
+                
                 <motion.div 
-                  className={`hidden lg:block lg:w-96 lg:pl-12 lg:sticky lg:top-8 lg:h-fit border-l ${
-                    isDark ? 'border-black/20' : 'border-black/20' // Changed from white/20 to black/20 for consistency
-                  }`} 
+                  className="mt-8 pt-8 border-t border-gray-200" 
                   variants={itemVariants}
                 >
-                  <h3 className={`text-2xl font-bold mb-6 ${isDark ? 'text-black' : 'text-black'}`}>Start generating leads today</h3>
-                  <p className={`mb-8 ${isDark ? 'text-black/70' : 'text-black/70'}`}>Our field sales and campaign activation solutions help you connect with potential customers and grow your automotive business. Get in touch with our team to learn more.</p>
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-3">
-                      <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                        isDark ? 'bg-black/10' : 'bg-black/10' // Changed from white/10 to black/10 for consistency
-                      }`}>
-                        <span className={`font-bold ${isDark ? 'text-black' : 'text-black'}`}>📧</span>
-                      </div>
-                      <div>
-                        <div className={`font-medium ${isDark ? 'text-black' : 'text-black'}`}>Email</div>
-                        <div className={isDark ? 'text-black/70' : 'text-black/70'}>sales@autoreachinnovations.co.za</div>
-                      </div>
+                  <h3 className="text-xl font-bold mb-4 text-gray-900">Find your perfect car</h3>
+                  <p className="mb-6 text-gray-600">Tell us what you're looking for, and we'll connect you with trusted dealerships that have exactly what you need.</p>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center bg-[#ff5c5c]/10">
+                      <span className="text-[#ff5c5c]">📞</span>
                     </div>
-                    
+                    <div>
+                      <div className="font-medium text-gray-900">Need help?</div>
+                      <div className="text-gray-600">Contact our support team</div>
+                    </div>
                   </div>
                 </motion.div>
               </div>

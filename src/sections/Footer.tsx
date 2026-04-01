@@ -7,10 +7,9 @@ import Image from "next/image";
 
 const Footer = () => {
   return (
-    // 1. Update the footer background to be slightly lighter in dark mode
-    <footer className="relative bg-neutral-950 dark:bg-neutral-900 text-white">
+    <footer className="relative bg-neutral-950 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-        {/* Footer Content Grid - No changes needed here */}
+        {/* Footer Content Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Column 1 - Brand + Positioning */}
           <motion.div
@@ -18,7 +17,7 @@ const Footer = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="space-y-4"
+            className="space-y-4 lg:col-span-1"
           >
             <div className="flex items-center">
               <Image 
@@ -31,12 +30,26 @@ const Footer = () => {
             </div>
             
             <h3 className="text-lg font-semibold text-white">
-              Driving Real Leads for the Automotive Industry
+              Find Your Next Car, Without the Hassle
             </h3>
             
             <p className="text-sm text-white/70 leading-relaxed">
-              We help dealerships and automotive brands generate qualified leads through real-world engagement powered by trained field sales teams.
+              Auto Reach connects you with trusted dealerships that have the right cars for your needs — no endless searching, no guesswork.
             </p>
+            
+            {/* Primary Footer CTA */}
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="mt-6"
+            >
+              <Link
+                href="/find-my-car"
+                className="inline-flex items-center px-6 py-3 bg-[#ff5c5c] text-black font-semibold rounded-lg hover:bg-[#ff5c5c]/90 transition-all duration-300"
+              >
+                Find My Car
+              </Link>
+            </motion.div>
           </motion.div>
 
           {/* Column 2 - Company */}
@@ -64,8 +77,62 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300">
-                  Services
+                <Link href="/contact" className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300">
+                  Contact
+                </Link>
+              </li>
+            </ul>
+          </motion.div>
+
+          {/* Column 3 - For Buyers */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            <h3 className="text-lg font-semibold text-white mb-4">For Buyers</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link href="/find-my-car" className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300">
+                  Find My Car
+                </Link>
+              </li>
+              <li>
+                <Link href="/how-it-works" className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300">
+                  How It Works
+                </Link>
+              </li>
+              <li>
+                <Link href="/faqs" className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300">
+                  FAQs
+                </Link>
+              </li>
+            </ul>
+          </motion.div>
+
+          {/* Column 4 - For Dealers */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            viewport={{ once: true }}
+          >
+            <h3 className="text-lg font-semibold text-white mb-4">For Dealers</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link href="/for-dealers" className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300">
+                  For Dealers
+                </Link>
+              </li>
+              <li>
+                <Link href="/partner-with-us" className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300">
+                  Partner With Us
+                </Link>
+              </li>
+              <li>
+                <Link href="/dealer-overview" className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300">
+                  Dealer Overview
                 </Link>
               </li>
               <li>
@@ -75,88 +142,55 @@ const Footer = () => {
               </li>
             </ul>
           </motion.div>
+        </div>
 
-          {/* Column 3 - Services */}
+        {/* Contact Information Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          {/* Email */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
             viewport={{ once: true }}
+            className="flex items-start"
           >
-            <h3 className="text-lg font-semibold text-white mb-4">Services</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/services/field-lead-generation" className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300">
-                  Field Lead Generation
-                </Link>
-              </li>
-              <li>
-                <Link href="/services/campaign-activation" className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300">
-                  Campaign Activation
-                </Link>
-              </li>
-              <li>
-                <Link href="/services/data-collection-qualification" className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300">
-                  Data Collection & Qualification
-                </Link>
-              </li>
-              <li>
-                <Link href="/services/regional-expansion-campaigns" className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300">
-                  Regional Expansion Campaigns
-                </Link>
-              </li>
-            </ul>
-          </motion.div>
-
-          {/* Column 4 - Contact */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            viewport={{ once: true }}
-            className="space-y-4"
-          >
-            <h3 className="text-lg font-semibold text-white mb-4">Contact</h3>
-            
-            <div className="space-y-2">
-              <div className="flex items-start">
-                <span className="text-[#ff5c5c] mr-2">📧</span>
-                <div>
-                  <p className="text-sm text-white/70">Email:</p>
-                  {/* 2. Update the email address and link */}
-                  <a href="mailto:sales@autoreachinnovations.co.za" className="text-sm text-white hover:text-[#ff5c5c] transition-colors duration-300">
-                    sales@autoreachinnovations.co.za
-                  </a>
-                </div>
-              </div>
-              
-              <div className="flex items-start">
-                <span className="text-[#ff5c5c] mr-2">📍</span>
-                <div>
-                  <p className="text-sm text-white/70">Location:</p>
-                  <p className="text-sm text-white">Johannesburg, South Africa</p>
-                </div>
-              </div>
+            <span className="text-[#ff5c5c] mr-3 text-xl">📧</span>
+            <div>
+              <p className="text-sm text-white/70">Email:</p>
+              <a href="mailto:hello@autoreachinnovations.co.za" className="text-sm text-white hover:text-[#ff5c5c] transition-colors duration-300">
+                sales@autoreachinnovations.co.za
+              </a>
             </div>
-            
-            {/* CTA Button - No changes needed */}
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="mt-6"
-            >
-              <Link
-                href="/get-leads"
-                className="inline-flex items-center px-6 py-3 bg-[#ff5c5c] text-black font-semibold rounded-lg hover:bg-[#ff5c5c]/90 transition-all duration-300"
-              >
-                <span className="mr-2">👉</span>
-                Get Leads Now
-              </Link>
-            </motion.div>
+          </motion.div>
+          
+          {/* Location */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            viewport={{ once: true }}
+            className="flex items-start"
+          >
+            <span className="text-[#ff5c5c] mr-3 text-xl">📍</span>
+            <div>
+              <p className="text-sm text-white/70">Location:</p>
+              <p className="text-sm text-white">Johannesburg, South Africa</p>
+            </div>
           </motion.div>
         </div>
 
-        {/* Bottom Section - Copyright and Social Links - No changes needed */}
+        {/* Secondary (Subtle Dealer CTA) */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
+         
+        </motion.div>
+
+        {/* Bottom Section - Copyright and Social Links */}
         <div className="border-t border-white/10 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             {/* Copyright */}
@@ -168,7 +202,7 @@ const Footer = () => {
               className="mb-4 md:mb-0"
             >
               <p className="text-sm text-white/50">
-                © {new Date().getFullYear()} Auto Reach Innovations. All rights reserved.
+                © 2026 Auto Reach Innovations. All rights reserved.
               </p>
             </motion.div>
 
