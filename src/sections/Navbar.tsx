@@ -1,4 +1,3 @@
-// components/Navbar.tsx
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -76,17 +75,39 @@ export default function Navbar() {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
-  const handleLinkClick = () => closeMenu();
+  
+  // Smooth scroll function for anchor links
+  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    closeMenu();
+    
+    // Get the target element
+    const targetId = href.replace('#', '');
+    const targetElement = document.getElementById(targetId);
+    
+    if (targetElement) {
+      // Get navbar height for offset
+      const navbarHeight = document.querySelector('nav')?.offsetHeight || 80;
+      
+      // Calculate scroll position with offset
+      const targetPosition = targetElement.offsetTop - navbarHeight;
+      
+      // Smooth scroll to target
+      window.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
   
   // Using only the light mode logo
   const logoSrc = "/assets/images/logos/Logo-light.png";
 
-  // New navigation items
+  // Navigation items
   const navItems = [
     { name: 'How It Works', href: '#how-it-works' },
     { name: 'Find My Car', href: '#find-my-car' },
-    { name: 'Browse Deals', href: '#browse-deals' },
-    { name: 'For Dealers', href: '#for-dealers' },
+    { name: 'For Dealerships', href: '#for-dealerships' },
   ];
 
   return (
@@ -111,29 +132,18 @@ export default function Navbar() {
               </Link>
             </div>
             
-            {/* Desktop Navigation - Hidden for now, but can be added back if needed */}
+            {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-8">
               {navItems.map((item) => (
-                <Link
+                <a
                   key={item.name}
                   href={item.href}
+                  onClick={(e) => handleAnchorClick(e, item.href)}
                   className="text-gray-700 hover:text-[#ff5c5c] font-medium transition-colors duration-200"
                 >
                   {item.name}
-                </Link>
+                </a>
               ))}
-              <Link
-                href="#get-started"
-                className="px-4 py-2 text-[#ff5c5c] border border-[#ff5c5c] rounded-full font-medium hover:bg-[#ff5c5c] hover:text-white transition-colors duration-200"
-              >
-                Get Started
-              </Link>
-              <Link
-                href="#sign-in"
-                className="px-4 py-2 text-gray-700 border border-gray-700 rounded-full font-medium hover:bg-gray-700 hover:text-white transition-colors duration-200"
-              >
-                Sign In
-              </Link>
             </div>
             
             {/* Mobile Menu Button */}
@@ -175,32 +185,15 @@ export default function Navbar() {
                   <div className="space-y-4 pb-8">
                     {navItems.map((item) => (
                       <motion.div key={item.name} variants={itemVariants}>
-                        <Link 
+                        <a 
                           href={item.href} 
-                          onClick={handleLinkClick} 
+                          onClick={(e) => handleAnchorClick(e, item.href)}
                           className="block px-6 py-3 text-lg font-medium rounded-lg border-2 transition-all duration-300 text-gray-700 border-gray-300 hover:border-[#ff5c5c] hover:text-[#ff5c5c]"
                         >
                           {item.name}
-                        </Link>
+                        </a>
                       </motion.div>
                     ))}
-                    
-                    <motion.div variants={itemVariants} className="pt-4 space-y-4">
-                      <Link 
-                        href="#get-started" 
-                        onClick={handleLinkClick} 
-                        className="block px-6 py-3 text-lg font-semibold rounded-lg transition-all duration-300 text-center bg-[#ff5c5c] text-white hover:bg-[#e74c3c]"
-                      >
-                        Get Started
-                      </Link>
-                      <Link 
-                        href="#sign-in" 
-                        onClick={handleLinkClick} 
-                        className="block px-6 py-3 text-lg font-semibold rounded-lg transition-all duration-300 text-center border-2 border-gray-700 text-gray-700 hover:bg-gray-700 hover:text-white"
-                      >
-                        Sign In
-                      </Link>
-                    </motion.div>
                   </div>
                 </motion.div>
                 

@@ -9,12 +9,12 @@ const HowItWorks = () => {
     {
       number: "/1",
       title: "Tell Us What You Need",
-      description: "Share what you're looking for — your budget, preferred car type, and any must-haves. No long forms, just the essentials to get started."
+      description: "Share what you're looking for, your budget, preferred car type, and any must-haves. No long forms, just the essentials to get started."
     },
     {
       number: "/2",
       title: "We Find Your Matches",
-      description: "We match you with trusted dealerships that have options aligned with your needs. No endless browsing or guessing — just relevant choices."
+      description: "We match you with trusted dealerships that have options aligned with your needs. No endless browsing or guessing just relevant choices."
     },
     {
       number: "/3",
@@ -24,7 +24,7 @@ const HowItWorks = () => {
     {
       number: "/4",
       title: "Drive It Home",
-      description: "Schedule a viewing, book a test drive, or arrange delivery — whatever suits you. From first search to final decision, everything moves at your pace."
+      description: "Schedule a viewing, book a test drive, or arrange delivery whatever suits you. From first search to final decision, everything moves at your pace."
     }
   ];
 

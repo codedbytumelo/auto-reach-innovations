@@ -44,15 +44,15 @@ const teamMembers: TeamMember[] = [
   {
     id: "jeminah",
     name: "Jeminah",
-    role: "CMO",
-    description: "A creative marketing strategist with over 8 years of experience in brand development and digital campaigns. She drives our marketing efforts, building the Auto Reach Innovations brand and generating client interest.",
+    role: "Sales Manager",
+    description: "Leads dealership partnerships at Auto Reach, working closely with automotive businesses to connect them with real, ready-to-buy customers with a strong understanding of both customer behavior and dealership needs, they focus on building relationships that drive consistent sales opportunities and long-term growth.",
     imageSrc: "/assets/images/team/profile.jpg",
   },
   {
     id: "palesa",
     name: "Palesa",
-    role: "Head of People",
-    description: "An HR professional with over 7 years of experience in talent management and organizational culture. She fosters a positive work environment, attracts top talent, and ensures our team is motivated and empowered.",
+    role: "Sales Manager",
+    description: "Oversees regional dealer relationships and ensures a seamless connection between buyers and dealerships across key markets,focused on delivering quality matches and supporting dealership success, they help partners get the most value from the Auto Reach platform.",
     imageSrc: "/assets/images/team/profile.jpg",
   },
 ];

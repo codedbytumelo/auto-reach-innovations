@@ -1,11 +1,32 @@
-// components/Footer.tsx
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
 import Image from "next/image";
 
 const Footer = () => {
+  // Smooth scroll function for anchor links
+  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    
+    // Get the target element
+    const targetId = href.replace('#', '');
+    const targetElement = document.getElementById(targetId);
+    
+    if (targetElement) {
+      // Get navbar height for offset
+      const navbarHeight = document.querySelector('nav')?.offsetHeight || 80;
+      
+      // Calculate scroll position with offset
+      const targetPosition = targetElement.offsetTop - navbarHeight;
+      
+      // Smooth scroll to target
+      window.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
     <footer className="relative bg-neutral-950 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
@@ -43,12 +64,13 @@ const Footer = () => {
               whileTap={{ scale: 0.98 }}
               className="mt-6"
             >
-              <Link
-                href="/find-my-car"
+              <a
+                href="#find-my-car"
+                onClick={(e) => handleAnchorClick(e, '#find-my-car')}
                 className="inline-flex items-center px-6 py-3 bg-[#ff5c5c] text-black font-semibold rounded-lg hover:bg-[#ff5c5c]/90 transition-all duration-300"
               >
                 Find My Car
-              </Link>
+              </a>
             </motion.div>
           </motion.div>
 
@@ -62,24 +84,34 @@ const Footer = () => {
             <h3 className="text-lg font-semibold text-white mb-4">Company</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/" className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300">
-                  Home
-                </Link>
+                <a 
+                  href="about-us" 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300"
+                >
+                  About Us
+                </a>
               </li>
               <li>
-                <Link href="/about" className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300">
-                  About
-                </Link>
+                <a 
+                  href="#for-dealerships" 
+                  onClick={(e) => handleAnchorClick(e, '#for-dealerships')}
+                  className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300"
+                >
+                  For Dealerships
+                </a>
               </li>
               <li>
-                <Link href="/how-it-works" className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300">
-                  How It Works
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300">
+                <a 
+                  href="#contact" 
+                  onClick={(e) => handleAnchorClick(e, '#contact')}
+                  className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300"
+                >
                   Contact
-                </Link>
+                </a>
               </li>
             </ul>
           </motion.div>
@@ -94,19 +126,22 @@ const Footer = () => {
             <h3 className="text-lg font-semibold text-white mb-4">For Buyers</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/find-my-car" className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300">
+                <a 
+                  href="#find-my-car" 
+                  onClick={(e) => handleAnchorClick(e, '#find-my-car')}
+                  className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300"
+                >
                   Find My Car
-                </Link>
+                </a>
               </li>
               <li>
-                <Link href="/how-it-works" className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300">
-                  How It Works
-                </Link>
-              </li>
-              <li>
-                <Link href="/faqs" className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300">
+                <a 
+                  href="#faqs" 
+                  onClick={(e) => handleAnchorClick(e, '#faqs')}
+                  className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300"
+                >
                   FAQs
-                </Link>
+                </a>
               </li>
             </ul>
           </motion.div>
@@ -121,24 +156,22 @@ const Footer = () => {
             <h3 className="text-lg font-semibold text-white mb-4">For Dealers</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/for-dealers" className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300">
-                  For Dealers
-                </Link>
-              </li>
-              <li>
-                <Link href="/partner-with-us" className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300">
+                <a 
+                  href="#for-dealerships" 
+                  onClick={(e) => handleAnchorClick(e, '#for-dealerships')}
+                  className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300"
+                >
                   Partner With Us
-                </Link>
+                </a>
               </li>
               <li>
-                <Link href="/dealer-overview" className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300">
-                  Dealer Overview
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300">
+                <a 
+                  href="#contact" 
+                  onClick={(e) => handleAnchorClick(e, '#contact')}
+                  className="text-sm text-white/70 hover:text-[#ff5c5c] transition-colors duration-300"
+                >
                   Contact
-                </Link>
+                </a>
               </li>
             </ul>
           </motion.div>

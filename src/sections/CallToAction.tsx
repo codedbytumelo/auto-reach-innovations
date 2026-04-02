@@ -54,36 +54,10 @@ const CallToAction = () => {
                 viewport={{ once: true }}
                 className="text-lg md:text-xl text-black/80 mb-8 leading-relaxed"
               >
-                Tell us what you're looking for, and we'll connect you with dealerships that already have the right options — simple, fast, and built around you.
+                Tell us what you're looking for, and we'll connect you with dealerships that already have the right options,its simple, fast, and built around you.
               </motion.p>
 
-              {/* CTA Buttons */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.7 }}
-                viewport={{ once: true }}
-                className="flex flex-col sm:flex-row gap-4"
-              >
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link
-                    href="/find-my-car"
-                    onClick={handleFindMyCar}
-                    className="block px-8 py-4 bg-black text-[#ff5c5c] font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-base md:text-lg text-center"
-                  >
-                    Find My Car
-                  </Link>
-                </motion.div>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link
-                    href="/how-it-works"
-                    onClick={handleHowItWorks}
-                    className="block px-8 py-4 bg-white text-black font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-base md:text-lg text-center"
-                  >
-                    How It Works
-                  </Link>
-                </motion.div>
-              </motion.div>
+            
 
               {/* Closing Line */}
               <motion.p

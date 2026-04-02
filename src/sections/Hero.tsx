@@ -68,48 +68,10 @@ const Hero = () => {
               transition={{ duration: 0.8, delay: 0.5 }}
               className="text-base sm:text-lg md:text-xl text-gray-800 mb-8 leading-relaxed max-w-3xl drop-shadow-md bg-white/60 backdrop-blur-sm rounded-lg p-4"
             >
-              Tell us what you're looking for, and we'll connect you with trusted dealerships that have exactly what you need — no endless searching, no pressure, just real options from real sellers.
+              Tell us what you're looking for, and we'll connect you with trusted dealerships that have exactly what you need, no endless searching, no pressure, just real options from real sellers.
             </motion.p>
 
-            {/* CTA Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
-              className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center"
-            >
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
-                <Link
-                  href="/find-my-car"
-                  onClick={handleFindMyCar}
-                  className="block w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 text-base sm:text-lg text-center"
-                  style={{ backgroundColor: "#ff5c5c" }}
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#e74c3c"}
-                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#ff5c5c"}
-                >
-                  Find My Car
-                </Link>
-              </motion.div>
-              
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
-                <Link
-                  href="/how-it-works"
-                  onClick={handleHowItWorks}
-                  className="block w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-white/90 font-semibold rounded-full border-2 transition-all duration-300 text-base sm:text-lg text-center backdrop-blur-sm"
-                  style={{ color: "#ff5c5c", borderColor: "#ff5c5c" }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = "#ff5c5c";
-                    e.currentTarget.style.color = "white";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
-                    e.currentTarget.style.color = "#ff5c5c";
-                  }}
-                >
-                  How It Works
-                </Link>
-              </motion.div>
-            </motion.div>
+           
           </div>
         </div>
       </div>

@@ -1,22 +1,71 @@
-// components/Dealers.tsx
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
 
 const Dealers = () => {
-  const handleForDealers = () => {
-    // Handle For Dealers action
-    console.log("For Dealers clicked");
+  const [formData, setFormData] = useState({
+    dealershipName: "",
+    contactPerson: "",
+    email: "",
+    phone: "",
+    location: "",
+    dealershipType: "new",
+    brands: "",
+    salesVolume: "",
+    lookingFor: "",
+    message: ""
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
-  const handleLearnMore = () => {
-    // Handle Learn More action
-    console.log("Learn More clicked");
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Create mailto link with form data
+    const dealershipTypeText = formData.dealershipType === "new" ? "New Cars" : 
+                             formData.dealershipType === "used" ? "Used Cars" : "Both";
+    const salesVolumeText = formData.salesVolume === "0-10" ? "0–10 cars" :
+                           formData.salesVolume === "10-30" ? "10–30 cars" :
+                           formData.salesVolume === "30-50" ? "30–50 cars" : "50+ cars";
+    const lookingForText = formData.lookingFor === "buyers" ? "More qualified buyers" :
+                          formData.lookingFor === "sales" ? "Increase monthly sales" :
+                          formData.lookingFor === "expand" ? "Expand into new areas" : "Other";
+    
+    const subject = `Partnership Application: ${formData.dealershipName}`;
+    const body = `Dealership Name: ${formData.dealershipName}\nContact Person: ${formData.contactPerson}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nLocation: ${formData.location}\nType of Dealership: ${dealershipTypeText}\nBrands: ${formData.brands}\nAverage Monthly Sales: ${salesVolumeText}\nLooking For: ${lookingForText}\n\nMessage:\n${formData.message}`;
+    const mailtoLink = `mailto:partnerships@autoreach.co.za?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    
+    // Open email client with pre-filled information
+    window.location.href = mailtoLink;
+    
+    // Reset form after submission
+    setFormData({
+      dealershipName: "",
+      contactPerson: "",
+      email: "",
+      phone: "",
+      location: "",
+      dealershipType: "new",
+      brands: "",
+      salesVolume: "",
+      lookingFor: "",
+      message: ""
+    });
   };
 
   return (
-    <section id="dealers" className="relative py-16 sm:py-20 md:py-24 overflow-hidden bg-white">
+    // Add scroll-margin-top to account for fixed navbar height
+    <section 
+      id="for-dealerships" 
+      className="relative py-16 sm:py-20 md:py-24 overflow-hidden bg-white scroll-mt-20"
+    >
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Section Header */}
         <motion.div
@@ -27,11 +76,11 @@ const Dealers = () => {
           className="text-center mb-8 sm:mb-12"
         >
           <div className="inline-flex items-center px-3 sm:px-4 py-2 mb-4 text-xs sm:text-sm font-medium text-[#ff5c5c] bg-[#ff5c5c]/10 backdrop-blur-sm rounded-full border border-[#ff5c5c]/20">
-            WANT TO PARTNER WITH US?
+            PARTNER WITH US
           </div>
         </motion.div>
 
-        {/* Red Background Container */}
+        {/* Red Background Container with Form */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -43,57 +92,290 @@ const Dealers = () => {
           <div className="absolute top-0 right-0 w-32 sm:w-48 md:w-64 h-32 sm:h-48 md:h-64 bg-red-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 -translate-y-16 sm:-translate-y-24 md:-translate-y-32 translate-x-16 sm:translate-x-24 md:translate-x-32"></div>
           <div className="absolute bottom-0 left-0 w-32 sm:w-48 md:w-64 h-32 sm:h-48 md:h-64 bg-red-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 translate-y-16 sm:translate-y-24 md:translate-y-32 translate-x-16 sm:translate-x-24 md:translate-x-32"></div>
           
-          <div className="relative z-10 text-center">
+          <div className="relative z-10">
             {/* Main Headline */}
             <motion.h2
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               viewport={{ once: true }}
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-4 sm:mb-6"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-4 sm:mb-6 text-center"
             >
-              Are You a Dealership?
+              Partner With Auto Reach
             </motion.h2>
 
-            {/* Body */}
+            {/* Intro Text */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
               viewport={{ once: true }}
-              className="text-base sm:text-lg md:text-xl text-black/80 mb-8 sm:mb-10 max-w-2xl sm:max-w-3xl mx-auto leading-relaxed"
+              className="text-base sm:text-lg md:text-xl text-black/80 mb-8 sm:mb-10 max-w-2xl sm:max-w-3xl mx-auto leading-relaxed text-center"
             >
-              Connect with real buyers in your area who are actively looking for cars like yours — without relying on listings or cold leads.
+              Connect with real car buyers in your area who are actively looking for vehicles like yours. Tell us about your dealership and we'll get you set up.
             </motion.p>
 
-            {/* CTA Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              viewport={{ once: true }}
-              className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-stretch sm:items-center max-w-md mx-auto sm:max-w-none"
-            >
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full sm:w-auto">
-                <Link
-                  href="/for-dealers"
-                  onClick={handleForDealers}
-                  className="block w-full px-8 py-4 sm:px-10 bg-black text-[#ff5c5c] font-bold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 text-lg sm:text-xl text-center transform hover:scale-105"
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="max-w-2xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Dealership Name */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.5 }}
+                  viewport={{ once: true }}
+                  className="md:col-span-2"
                 >
-                  For Dealers
-                </Link>
-              </motion.div>
-              
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full sm:w-auto">
-                <Link
-                  href="/learn-more"
-                  onClick={handleLearnMore}
-                  className="block w-full px-8 py-4 sm:px-10 bg-white text-black font-bold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 text-lg sm:text-xl text-center border-2 border-black/20 hover:border-black transform hover:scale-105"
+                  <label htmlFor="dealershipName" className="block text-sm font-medium text-black mb-2">
+                    Dealership Name
+                  </label>
+                  <input
+                    type="text"
+                    id="dealershipName"
+                    name="dealershipName"
+                    value={formData.dealershipName}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    placeholder="Your dealership name"
+                  />
+                </motion.div>
+
+                {/* Contact Person */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.6 }}
+                  viewport={{ once: true }}
                 >
-                  Learn More
-                </Link>
+                  <label htmlFor="contactPerson" className="block text-sm font-medium text-black mb-2">
+                    Contact Person
+                  </label>
+                  <input
+                    type="text"
+                    id="contactPerson"
+                    name="contactPerson"
+                    value={formData.contactPerson}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    placeholder="Full name"
+                  />
+                </motion.div>
+
+                {/* Email Address */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.7 }}
+                  viewport={{ once: true }}
+                >
+                  <label htmlFor="email" className="block text-sm font-medium text-black mb-2">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    placeholder="your@email.com"
+                  />
+                </motion.div>
+
+                {/* Phone Number */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.8 }}
+                  viewport={{ once: true }}
+                >
+                  <label htmlFor="phone" className="block text-sm font-medium text-black mb-2">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    placeholder="Your contact number"
+                  />
+                </motion.div>
+
+                {/* Location */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.9 }}
+                  viewport={{ once: true }}
+                >
+                  <label htmlFor="location" className="block text-sm font-medium text-black mb-2">
+                    Location
+                  </label>
+                  <input
+                    type="text"
+                    id="location"
+                    name="location"
+                    value={formData.location}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    placeholder="City / Region (e.g. Johannesburg, Pretoria, Cape Town)"
+                  />
+                </motion.div>
+
+                {/* Type of Dealership */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 1.0 }}
+                  viewport={{ once: true }}
+                >
+                  <label htmlFor="dealershipType" className="block text-sm font-medium text-black mb-2">
+                    Type of Dealership
+                  </label>
+                  <select
+                    id="dealershipType"
+                    name="dealershipType"
+                    value={formData.dealershipType}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                  >
+                    <option value="new">New Cars</option>
+                    <option value="used">Used Cars</option>
+                    <option value="both">Both</option>
+                  </select>
+                </motion.div>
+
+                {/* Brands You Sell */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 1.1 }}
+                  viewport={{ once: true }}
+                  className="md:col-span-2"
+                >
+                  <label htmlFor="brands" className="block text-sm font-medium text-black mb-2">
+                    Brands You Sell (Optional)
+                  </label>
+                  <input
+                    type="text"
+                    id="brands"
+                    name="brands"
+                    value={formData.brands}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    placeholder="e.g. Toyota, VW, BMW"
+                  />
+                </motion.div>
+
+                {/* Average Monthly Sales Volume */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 1.2 }}
+                  viewport={{ once: true }}
+                >
+                  <label htmlFor="salesVolume" className="block text-sm font-medium text-black mb-2">
+                    Average Monthly Sales Volume (Optional)
+                  </label>
+                  <select
+                    id="salesVolume"
+                    name="salesVolume"
+                    value={formData.salesVolume}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                  >
+                    <option value="">Select volume</option>
+                    <option value="0-10">0–10 cars</option>
+                    <option value="10-30">10–30 cars</option>
+                    <option value="30-50">30–50 cars</option>
+                    <option value="50+">50+ cars</option>
+                  </select>
+                </motion.div>
+
+                {/* What Are You Looking For */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 1.3 }}
+                  viewport={{ once: true }}
+                >
+                  <label htmlFor="lookingFor" className="block text-sm font-medium text-black mb-2">
+                    What Are You Looking For?
+                  </label>
+                  <select
+                    id="lookingFor"
+                    name="lookingFor"
+                    value={formData.lookingFor}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                  >
+                    <option value="">Select an option</option>
+                    <option value="buyers">More qualified buyers</option>
+                    <option value="sales">Increase monthly sales</option>
+                    <option value="expand">Expand into new areas</option>
+                    <option value="other">Other</option>
+                  </select>
+                </motion.div>
+
+                {/* Message */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 1.4 }}
+                  viewport={{ once: true }}
+                  className="md:col-span-2"
+                >
+                  <label htmlFor="message" className="block text-sm font-medium text-black mb-2">
+                    Message (Optional)
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    rows={4}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 resize-none"
+                    placeholder="Tell us anything else about your dealership or goals…"
+                  ></textarea>
+                </motion.div>
+              </div>
+
+              {/* CTA Button */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 1.5 }}
+                viewport={{ once: true }}
+                className="mt-8 text-center"
+              >
+                <motion.button
+                  type="submit"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="px-8 py-4 bg-black text-[#ff5c5c] font-bold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 text-lg"
+                >
+                  Apply to Partner
+                </motion.button>
               </motion.div>
-            </motion.div>
+
+              {/* Support Line */}
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 1.6 }}
+                viewport={{ once: true }}
+                className="text-center text-black/70 text-sm mt-6"
+              >
+                We'll review your application and get back to you shortly.
+              </motion.p>
+            </form>
           </div>
         </motion.div>
 
