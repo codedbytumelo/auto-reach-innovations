@@ -1,3 +1,4 @@
+// components/Dealers.tsx
 "use client";
 
 import { useState } from "react";
@@ -16,6 +17,10 @@ const Dealers = () => {
     lookingFor: "",
     message: ""
   });
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -25,39 +30,51 @@ const Dealers = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Create mailto link with form data
-    const dealershipTypeText = formData.dealershipType === "new" ? "New Cars" : 
-                             formData.dealershipType === "used" ? "Used Cars" : "Both";
-    const salesVolumeText = formData.salesVolume === "0-10" ? "0–10 cars" :
-                           formData.salesVolume === "10-30" ? "10–30 cars" :
-                           formData.salesVolume === "30-50" ? "30–50 cars" : "50+ cars";
-    const lookingForText = formData.lookingFor === "buyers" ? "More qualified buyers" :
-                          formData.lookingFor === "sales" ? "Increase monthly sales" :
-                          formData.lookingFor === "expand" ? "Expand into new areas" : "Other";
-    
-    const subject = `Partnership Application: ${formData.dealershipName}`;
-    const body = `Dealership Name: ${formData.dealershipName}\nContact Person: ${formData.contactPerson}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nLocation: ${formData.location}\nType of Dealership: ${dealershipTypeText}\nBrands: ${formData.brands}\nAverage Monthly Sales: ${salesVolumeText}\nLooking For: ${lookingForText}\n\nMessage:\n${formData.message}`;
-    const mailtoLink = `mailto:partnerships@autoreach.co.za?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    
-    // Open email client with pre-filled information
-    window.location.href = mailtoLink;
-    
-    // Reset form after submission
-    setFormData({
-      dealershipName: "",
-      contactPerson: "",
-      email: "",
-      phone: "",
-      location: "",
-      dealershipType: "new",
-      brands: "",
-      salesVolume: "",
-      lookingFor: "",
-      message: ""
-    });
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+    setErrorMessage('');
+
+    try {
+      // Submit to Formspree
+      const response = await fetch('https://formspree.io/f/mvzvlqeg', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          subject: `Partnership Application: ${formData.dealershipName}`,
+          _subject: `New Partnership Application from ${formData.dealershipName}`
+        }),
+      });
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        // Reset form after successful submission
+        setFormData({
+          dealershipName: "",
+          contactPerson: "",
+          email: "",
+          phone: "",
+          location: "",
+          dealershipType: "new",
+          brands: "",
+          salesVolume: "",
+          lookingFor: "",
+          message: ""
+        });
+      } else {
+        throw new Error('Failed to submit form');
+      }
+    } catch (error) {
+      setSubmitStatus('error');
+      setErrorMessage('Something went wrong. Please try again or contact us directly.');
+      console.error('Form submission error:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -104,6 +121,27 @@ const Dealers = () => {
               Partner With Auto Reach
             </motion.h2>
 
+            {/* Success/Error Messages */}
+            {submitStatus === 'success' && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg text-center"
+              >
+                ✓ Thank you for your application! We'll be in touch within 24 hours.
+              </motion.div>
+            )}
+            
+            {submitStatus === 'error' && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg text-center"
+              >
+                ✗ {errorMessage}
+              </motion.div>
+            )}
+
             {/* Intro Text */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -127,7 +165,7 @@ const Dealers = () => {
                   className="md:col-span-2"
                 >
                   <label htmlFor="dealershipName" className="block text-sm font-medium text-black mb-2">
-                    Dealership Name
+                    Dealership Name *
                   </label>
                   <input
                     type="text"
@@ -136,7 +174,8 @@ const Dealers = () => {
                     value={formData.dealershipName}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                     placeholder="Your dealership name"
                   />
                 </motion.div>
@@ -149,7 +188,7 @@ const Dealers = () => {
                   viewport={{ once: true }}
                 >
                   <label htmlFor="contactPerson" className="block text-sm font-medium text-black mb-2">
-                    Contact Person
+                    Contact Person *
                   </label>
                   <input
                     type="text"
@@ -158,7 +197,8 @@ const Dealers = () => {
                     value={formData.contactPerson}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                     placeholder="Full name"
                   />
                 </motion.div>
@@ -171,7 +211,7 @@ const Dealers = () => {
                   viewport={{ once: true }}
                 >
                   <label htmlFor="email" className="block text-sm font-medium text-black mb-2">
-                    Email Address
+                    Email Address *
                   </label>
                   <input
                     type="email"
@@ -180,7 +220,8 @@ const Dealers = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                     placeholder="your@email.com"
                   />
                 </motion.div>
@@ -193,7 +234,7 @@ const Dealers = () => {
                   viewport={{ once: true }}
                 >
                   <label htmlFor="phone" className="block text-sm font-medium text-black mb-2">
-                    Phone Number
+                    Phone Number *
                   </label>
                   <input
                     type="tel"
@@ -202,7 +243,8 @@ const Dealers = () => {
                     value={formData.phone}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                     placeholder="Your contact number"
                   />
                 </motion.div>
@@ -215,7 +257,7 @@ const Dealers = () => {
                   viewport={{ once: true }}
                 >
                   <label htmlFor="location" className="block text-sm font-medium text-black mb-2">
-                    Location
+                    Location *
                   </label>
                   <input
                     type="text"
@@ -224,7 +266,8 @@ const Dealers = () => {
                     value={formData.location}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                     placeholder="City / Region (e.g. Johannesburg, Pretoria, Cape Town)"
                   />
                 </motion.div>
@@ -244,7 +287,8 @@ const Dealers = () => {
                     name="dealershipType"
                     value={formData.dealershipType}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                   >
                     <option value="new">New Cars</option>
                     <option value="used">Used Cars</option>
@@ -269,7 +313,8 @@ const Dealers = () => {
                     name="brands"
                     value={formData.brands}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                     placeholder="e.g. Toyota, VW, BMW"
                   />
                 </motion.div>
@@ -289,7 +334,8 @@ const Dealers = () => {
                     name="salesVolume"
                     value={formData.salesVolume}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                   >
                     <option value="">Select volume</option>
                     <option value="0-10">0–10 cars</option>
@@ -314,7 +360,8 @@ const Dealers = () => {
                     name="lookingFor"
                     value={formData.lookingFor}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                   >
                     <option value="">Select an option</option>
                     <option value="buyers">More qualified buyers</option>
@@ -341,7 +388,8 @@ const Dealers = () => {
                     value={formData.message}
                     onChange={handleChange}
                     rows={4}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 resize-none"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 resize-none disabled:opacity-50"
                     placeholder="Tell us anything else about your dealership or goals…"
                   ></textarea>
                 </motion.div>
@@ -357,11 +405,12 @@ const Dealers = () => {
               >
                 <motion.button
                   type="submit"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="px-8 py-4 bg-black text-[#ff5c5c] font-bold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 text-lg"
+                  disabled={isSubmitting}
+                  whileHover={!isSubmitting ? { scale: 1.02 } : {}}
+                  whileTap={!isSubmitting ? { scale: 0.98 } : {}}
+                  className="px-8 py-4 bg-black text-[#ff5c5c] font-bold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Apply to Partner
+                  {isSubmitting ? 'Submitting...' : 'Apply to Partner'}
                 </motion.button>
               </motion.div>
 

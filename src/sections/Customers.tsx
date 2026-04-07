@@ -81,6 +81,10 @@ const Customers = () => {
     // Consent
     consent: false
   });
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const brandOptions: string[] = [
     "Audi", "Isuzu", "VW", "BYD", "Mazda", "Suzuki", "Ford"
@@ -99,7 +103,8 @@ const Customers = () => {
       // Handle multi-select for brands
       const selectedBrand = value;
       setFormData(prev => {
-        const brands = [...prev.preferredBrands];
+        // Ensure preferredBrands is always an array
+        const brands = Array.isArray(prev.preferredBrands) ? [...prev.preferredBrands] : [];
         if (brands.includes(selectedBrand)) {
           // Remove brand if already selected
           return {
@@ -123,50 +128,66 @@ const Customers = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Create mailto link with form data
-    const vehicleTypeText = formData.vehicleType;
-    const conditionText = formData.condition === "new" ? "Brand New" : "Pre-owned";
-    const budgetText = formData.budgetRange === "under-150k" ? "Under R150,000" :
-                      formData.budgetRange === "150k-300k" ? "R150,000 – R300,000" :
-                      formData.budgetRange === "300k-500k" ? "R300,000 – R500,000" : "Above R500,000";
-    const whenToBuyText = formData.whenToBuy === "immediately" ? "Immediately" :
-                         formData.whenToBuy === "1-month" ? "Within 1 Month" :
-                         formData.whenToBuy === "1-3-months" ? "1–3 Months" : "Just Exploring";
-    const paymentText = formData.paymentMethod === "cash" ? "Cash" :
-                       formData.paymentMethod === "finance" ? "Bank Finance" : "Not Sure";
-    const contactText = formData.contactMethod === "call" ? "Call" :
-                       formData.contactMethod === "whatsapp" ? "WhatsApp" : "Email";
-    const seriousnessText = formData.seriousness === "ready" ? "Ready to buy" :
-                           formData.seriousness === "comparing" ? "Comparing options" : "Just browsing";
-    const hasTradeInText = formData.hasTradeIn === "yes" ? "Yes" : "No";
-    
-    const subject = `Car Request: ${formData.fullName}`;
-    let body = `Full Name: ${formData.fullName}\nPhone Number: ${formData.phoneNumber}\nEmail Address: ${formData.emailAddress}\n\n`;
-    body += `Vehicle Type: ${vehicleTypeText}\nPreferred Brands: ${formData.preferredBrands.join(", ")}\nCondition: ${conditionText}\n\n`;
-    body += `Budget Range: ${budgetText}\nWhen to Buy: ${whenToBuyText}\nPayment Method: ${paymentText}\n\n`;
-    body += `Preferred Contact Method: ${contactText}\nHow Serious: ${seriousnessText}\n\n`;
-    body += `Notes: ${formData.notes}\n\n`;
-    body += `Has Trade-In: ${hasTradeInText}`;
-    
-    if (formData.hasTradeIn === "yes") {
-      body += `\nTrade-In Make & Model: ${formData.tradeInMakeModel}\nMileage: ${formData.tradeInMileage} km\nCondition: ${formData.tradeInCondition}\nHas Finance: ${formData.hasFinance}`;
-      
-      if (formData.hasFinance === "yes") {
-        body += `\nFinance House: ${formData.financeHouse}\nSettlement Amount: ${formData.settlementAmount}`;
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+    setErrorMessage('');
+
+    try {
+      // Submit to Formspree
+      const response = await fetch('https://formspree.io/f/mlgozlya', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          subject: `Car Request: ${formData.fullName}`,
+          _subject: `New Car Request from ${formData.fullName}`,
+          preferredBrands: Array.isArray(formData.preferredBrands) ? formData.preferredBrands.join(", ") : ""
+        }),
+      });
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        // Reset form after successful submission
+        setFormData({
+          fullName: "",
+          phoneNumber: "",
+          emailAddress: "",
+          vehicleType: "",
+          preferredBrands: [],
+          condition: "",
+          budgetRange: "",
+          whenToBuy: "",
+          paymentMethod: "",
+          contactMethod: "",
+          seriousness: "",
+          notes: "",
+          hasTradeIn: "",
+          tradeInMakeModel: "",
+          tradeInMileage: "",
+          tradeInCondition: "",
+          hasFinance: "",
+          financeHouse: "",
+          settlementAmount: "",
+          consent: false
+        });
+      } else {
+        throw new Error('Failed to submit form');
       }
+    } catch (error) {
+      setSubmitStatus('error');
+      setErrorMessage('Something went wrong. Please try again or contact us directly.');
+      console.error('Form submission error:', error);
+    } finally {
+      setIsSubmitting(false);
     }
-    
-    const mailtoLink = `mailto:info@autoreach.co.za?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    
-    // Open email client with pre-filled information
-    window.location.href = mailtoLink;
   };
 
   return (
-    <section id="find-my-car" className="relative py-20 md:py-24 overflow-hidden">
+    <section id="find-my-car" className="relative py-20 md:py-24 overflow-hidden scroll-mt-20">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Section Header */}
         <motion.div
@@ -228,6 +249,27 @@ const Customers = () => {
             viewport={{ once: true }}
             className="relative"
           >
+            {/* Success/Error Messages */}
+            {submitStatus === 'success' && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg text-center"
+              >
+                ✓ Thank you for your request! We'll match you with suitable dealerships and get back to you soon.
+              </motion.div>
+            )}
+            
+            {submitStatus === 'error' && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg text-center"
+              >
+                ✗ {errorMessage}
+              </motion.div>
+            )}
+            
             <form onSubmit={handleSubmit} className="bg-[#ff5c5c] rounded-3xl p-8 md:p-10 max-h-[80vh] overflow-y-auto">
               {/* Your Details Section */}
               <div className="mb-6">
@@ -251,7 +293,8 @@ const Customers = () => {
                     value={formData.fullName}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                     placeholder="Your full name"
                   />
                 </motion.div>
@@ -274,7 +317,8 @@ const Customers = () => {
                     value={formData.phoneNumber}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                     placeholder="Your contact number"
                   />
                 </motion.div>
@@ -297,7 +341,8 @@ const Customers = () => {
                     value={formData.emailAddress}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                     placeholder="your.email@example.com"
                   />
                 </motion.div>
@@ -324,7 +369,8 @@ const Customers = () => {
                     value={formData.vehicleType}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                   >
                     <option value="">Select vehicle type</option>
                     <option value="sedan">Sedan</option>
@@ -353,9 +399,10 @@ const Customers = () => {
                           type="checkbox"
                           name="preferredBrands"
                           value={brand}
-                          checked={formData.preferredBrands.includes(brand)}
+                          // Fixed: Check if array exists before using includes()
+                          checked={Array.isArray(formData.preferredBrands) && formData.preferredBrands.includes(brand)}
                           onChange={handleChange}
-                          disabled={!formData.preferredBrands.includes(brand) && formData.preferredBrands.length >= 3}
+                          disabled={isSubmitting || (!Array.isArray(formData.preferredBrands) || (!formData.preferredBrands.includes(brand) && formData.preferredBrands.length >= 3))}
                           className="w-4 h-4 text-black bg-black/20 border-black/30 rounded focus:ring-black/50"
                         />
                         <span className="text-sm text-black">{brand}</span>
@@ -381,7 +428,8 @@ const Customers = () => {
                     value={formData.condition}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                   >
                     <option value="">Select condition</option>
                     <option value="new">Brand New</option>
@@ -411,7 +459,8 @@ const Customers = () => {
                     value={formData.budgetRange}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                   >
                     <option value="">Select budget range</option>
                     <option value="under-150k">Under R150,000</option>
@@ -438,7 +487,8 @@ const Customers = () => {
                     value={formData.whenToBuy}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                   >
                     <option value="">Select timeframe</option>
                     <option value="immediately">Immediately</option>
@@ -465,7 +515,8 @@ const Customers = () => {
                     value={formData.paymentMethod}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                   >
                     <option value="">Select payment method</option>
                     <option value="cash">Cash</option>
@@ -496,7 +547,8 @@ const Customers = () => {
                     value={formData.contactMethod}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                   >
                     <option value="">Select contact method</option>
                     <option value="call">Call</option>
@@ -527,7 +579,8 @@ const Customers = () => {
                     value={formData.seriousness}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                   >
                     <option value="">Select option</option>
                     <option value="ready">Ready to buy</option>
@@ -553,7 +606,8 @@ const Customers = () => {
                     value={formData.notes}
                     onChange={handleChange}
                     rows={3}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 resize-none"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 resize-none disabled:opacity-50"
                     placeholder="Tell us anything specific you're looking for…"
                   ></textarea>
                 </motion.div>
@@ -582,6 +636,7 @@ const Customers = () => {
                         value="yes"
                         checked={formData.hasTradeIn === "yes"}
                         onChange={handleChange}
+                        disabled={isSubmitting}
                         className="w-4 h-4 text-black bg-black/20 border-black/30 focus:ring-black/50"
                       />
                       <span className="ml-2 text-sm text-black">Yes</span>
@@ -593,6 +648,7 @@ const Customers = () => {
                         value="no"
                         checked={formData.hasTradeIn === "no"}
                         onChange={handleChange}
+                        disabled={isSubmitting}
                         className="w-4 h-4 text-black bg-black/20 border-black/30 focus:ring-black/50"
                       />
                       <span className="ml-2 text-sm text-black">No</span>
@@ -619,7 +675,8 @@ const Customers = () => {
                         name="tradeInMakeModel"
                         value={formData.tradeInMakeModel}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                        disabled={isSubmitting}
+                        className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                         placeholder="e.g. Toyota Corolla"
                       />
                     </motion.div>
@@ -640,7 +697,8 @@ const Customers = () => {
                         name="tradeInMileage"
                         value={formData.tradeInMileage}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                        disabled={isSubmitting}
+                        className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                         placeholder="e.g. 85000"
                       />
                     </motion.div>
@@ -660,7 +718,8 @@ const Customers = () => {
                         name="tradeInCondition"
                         value={formData.tradeInCondition}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                        disabled={isSubmitting}
+                        className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                       >
                         <option value="">Select condition</option>
                         <option value="excellent">Excellent</option>
@@ -688,6 +747,7 @@ const Customers = () => {
                             value="yes"
                             checked={formData.hasFinance === "yes"}
                             onChange={handleChange}
+                            disabled={isSubmitting}
                             className="w-4 h-4 text-black bg-black/20 border-black/30 focus:ring-black/50"
                           />
                           <span className="ml-2 text-sm text-black">Yes</span>
@@ -699,6 +759,7 @@ const Customers = () => {
                             value="no"
                             checked={formData.hasFinance === "no"}
                             onChange={handleChange}
+                            disabled={isSubmitting}
                             className="w-4 h-4 text-black bg-black/20 border-black/30 focus:ring-black/50"
                           />
                           <span className="ml-2 text-sm text-black">No</span>
@@ -725,7 +786,8 @@ const Customers = () => {
                             name="financeHouse"
                             value={formData.financeHouse}
                             onChange={handleChange}
-                            className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                            disabled={isSubmitting}
+                            className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                             placeholder="e.g. WesBank"
                           />
                         </motion.div>
@@ -746,7 +808,8 @@ const Customers = () => {
                             name="settlementAmount"
                             value={formData.settlementAmount}
                             onChange={handleChange}
-                            className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300"
+                            disabled={isSubmitting}
+                            className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                             placeholder="e.g. R120,000"
                           />
                         </motion.div>
@@ -772,6 +835,7 @@ const Customers = () => {
                       checked={formData.consent}
                       onChange={handleChange}
                       required
+                      disabled={isSubmitting}
                       className="w-4 h-4 mt-1 text-black bg-black/20 border-black/30 rounded focus:ring-black/50"
                     />
                     <span className="ml-2 text-sm text-black">
@@ -790,11 +854,12 @@ const Customers = () => {
               >
                 <motion.button
                   type="submit"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full px-6 py-3 bg-black text-[#ff5c5c] font-semibold rounded-lg hover:bg-black/90 transition-all duration-300"
+                  disabled={isSubmitting}
+                  whileHover={!isSubmitting ? { scale: 1.02 } : {}}
+                  whileTap={!isSubmitting ? { scale: 0.98 } : {}}
+                  className="w-full px-6 py-3 bg-black text-[#ff5c5c] font-semibold rounded-lg hover:bg-black/90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Find My Car
+                  {isSubmitting ? 'Submitting...' : 'Find My Car'}
                 </motion.button>
               </motion.div>
             </form>
