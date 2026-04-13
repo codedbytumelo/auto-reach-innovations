@@ -42,10 +42,10 @@ const teamMembers: TeamMember[] = [
     imageSrc: "/assets/images/team/profile.jpg",
   },
   {
-    id: "jeminah",
-    name: "Jeminah",
+    id: "jeminah tau",
+    name: "Jeminah Tau",
     role: "Sales Manager",
-    description: "Leads dealership partnerships at Auto Reach, working closely with automotive businesses to connect them with real, ready-to-buy customers with a strong understanding of both customer behavior and dealership needs, they focus on building relationships that drive consistent sales opportunities and long-term growth.",
+    description: "With over 4 years of experience in sales and client relationship management, Jeminah is responsible for overseeing regional dealer relationships, customers and team management. She ensures a seamless connection between buyers and dealerships across key markets, focused on delivering quality matches and supporting dealership success, they help partners get the most value from the Auto Reach platform.",
     imageSrc: "/assets/images/team/profile.jpg",
   },
   {
@@ -64,11 +64,18 @@ const teamMembers: TeamMember[] = [
   },
   {
     id: "morena-dhlamini",
-    name: "Morena Dhlamini",
+    name: "Morena Innoncent Dhlamini",
     role: "Regional Manager Free State",
-    description: "Oversees regional dealer relationships and ensures a seamless connection between buyers and dealerships across key markets,focused on delivering quality matches and supporting dealership success, they help partners get the most value from the Auto Reach platform.",
+    description: "3+ years of experience of managerial experince within the agricultural industry, Morena brings a strong background in team leadership, client relationship management, and strategic planning. He excels at driving sales growth and building long-term partnerships with dealerships. Morena is passionate about delivering exceptional service and results for our clients in the Free State region.",
     imageSrc: "/assets/images/team/profile.jpg",
   },
+  {
+    id: "Katlego Molewa",
+    name: "Katlego Molewa",
+    role: "Regional Manager Pretoria",
+    description: "With 4 years of experience in sales and marketing, Katlego brings a strong track record of driving revenue growth  and building client relationships. He excels at identifying opprtunities, meeting targets, and leading teams to success. Katlego brings a result-driven mindset and a passion for delivering business growth in highly paced environments",
+    imageSrc: "/assets/images/team/profile.jpg",
+  }
 ];
 
 // Create a reusable card component for cleaner code
