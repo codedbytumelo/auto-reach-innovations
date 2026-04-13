@@ -55,6 +55,20 @@ const teamMembers: TeamMember[] = [
     description: "Oversees regional dealer relationships and ensures a seamless connection between buyers and dealerships across key markets,focused on delivering quality matches and supporting dealership success, they help partners get the most value from the Auto Reach platform.",
     imageSrc: "/assets/images/team/profile.jpg",
   },
+  {
+    id: "mavundle-adile-mshunqane",
+    name: "Mavundle-Adile Mshunqane",
+    role: "Regional Manager",
+    description: "Oversees regional dealer relationships and ensures a seamless connection between buyers and dealerships across key markets,focused on delivering quality matches and supporting dealership success, they help partners get the most value from the Auto Reach platform.",
+    imageSrc: "/assets/images/team/profile.jpg",
+  },
+  {
+    id: "morena-dhlamini",
+    name: "Morena Dhlamini",
+    role: "Regional Manager Free State",
+    description: "Oversees regional dealer relationships and ensures a seamless connection between buyers and dealerships across key markets,focused on delivering quality matches and supporting dealership success, they help partners get the most value from the Auto Reach platform.",
+    imageSrc: "/assets/images/team/profile.jpg",
+  },
 ];
 
 // Create a reusable card component for cleaner code
@@ -92,7 +106,7 @@ export default function Teams() {
           The Experts Driving Your Success
         </h2>
 
-        {/* Team Members Grid - All 6 in a single row */}
+        {/* Team Members Grid - All 8 in a single row */}
         <div className="flex flex-wrap justify-center gap-4 md:gap-6">
           {teamMembers.map((member) => (
             <TeamCard key={member.id} member={member} />
