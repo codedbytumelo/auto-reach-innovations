@@ -73,7 +73,7 @@ const teamMembers: TeamMember[] = [
     id: "Katlego Molewa",
     name: "Katlego Molewa",
     role: "Regional Manager Pretoria",
-    description: "With 4 years of experience in sales and marketing, Katlego brings a strong track record of driving revenue growth  and building client relationships. He excels at identifying opprtunities, meeting targets, and leading teams to success. Katlego brings a result-driven mindset and a passion for delivering business growth in highly paced environments",
+    description: "With 4 years of experience in sales and marketing, Katlego brings a strong track record of driving revenue growth  and building client relationships. She excels at identifying opprtunities, meeting targets, and leading teams to success. Katlego brings a result-driven mindset and a passion for delivering business growth in highly paced environments",
     imageSrc: "/assets/images/team/profile.jpg",
   }
 ];
