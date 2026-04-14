@@ -35,13 +35,6 @@ const teamMembers: TeamMember[] = [
     imageSrc: "/assets/images/team/profile.jpg",
   },
   {
-    id: "tumelo-mokalane",
-    name: "Tumelo Mokalane",
-    role: "CTO",
-    description: "An experienced software engineer with over 5 years of experience in full-stack development and system architecture. He leads our technology stack, ensuring our lead capture and data systems are robust and scalable.",
-    imageSrc: "/assets/images/team/profile.jpg",
-  },
-  {
     id: "jeminah tau",
     name: "Jeminah Tau",
     role: "Sales Manager",
