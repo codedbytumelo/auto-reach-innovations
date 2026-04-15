@@ -1,4 +1,5 @@
-
+//Customers.tsx
+// components/Customers.tsx
 "use client";
 
 import { useState } from "react";
@@ -874,4 +875,3 @@ const Customers = () => {
 };
 
 export default Customers;
-
