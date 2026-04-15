@@ -35,6 +35,13 @@ const teamMembers: TeamMember[] = [
     imageSrc: "/assets/images/team/profile.jpg",
   },
   {
+    id: "Tumelo Mokalane",
+    name: "Tumelo Mokalane",
+    role: "Chief Information Officer",
+    description: "With a strong background in IT and over 10 years of experience in technology management, Tumelo oversees our IT infrastructure and ensures our platform remains secure, efficient, and innovative.",
+    imageSrc: "/assets/images/team/profile.jpg",
+  },
+  {
     id: "jeminah tau",
     name: "Jeminah Tau",
     role: "Sales Manager",
