@@ -71,18 +71,7 @@ const CallToAction = () => {
                 viewport={{ once: true }}
                 className="flex flex-col sm:flex-row gap-4"
               >
-                <button
-                  onClick={handleFindMyCar}
-                  className="px-8 py-3 bg-[#ff5c5c] text-white font-medium rounded-lg hover:bg-red-600 transition-colors shadow-lg"
-                >
-                  Find My Car
-                </button>
-                <button
-                  onClick={handleHowItWorks}
-                  className="px-8 py-3 bg-white/20 text-white font-medium rounded-lg border border-white/30 hover:bg-white/30 transition-colors"
-                >
-                  How It Works
-                </button>
+                
               </motion.div>
 
               {/* Closing Line */}
