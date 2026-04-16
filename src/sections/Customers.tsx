@@ -1,4 +1,3 @@
-
 // components/Customers.tsx
 "use client";
 
@@ -129,100 +128,64 @@ const Customers = () => {
     }
   };
 
- const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setIsSubmitting(true);
-  setSubmitStatus('idle');
-  setErrorMessage('');
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+    setErrorMessage('');
 
-  try {
-    // Submit to Next.js API route
-    const response = await fetch('/api/customer-form', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
+    try {
+      // Submit to Formspree
+      const response = await fetch('https://formspree.io/f/mlgozlya', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          subject: `Car Request: ${formData.fullName}`,
+          _subject: `New Car Request from ${formData.fullName}`,
+          preferredBrands: Array.isArray(formData.preferredBrands) ? formData.preferredBrands.join(", ") : ""
+        }),
+      });
 
-    // Check if response is OK
-    if (!response.ok) {
-      // Try to get error message from response
-      let errorMessage = 'Failed to submit form';
-      let errorDetails = '';
-      
-      try {
-        // Clone the response to avoid consuming it twice
-        const responseClone = response.clone();
-        const errorData = await responseClone.json();
-        errorMessage = errorData.message || errorMessage;
-        errorDetails = errorData.details || '';
-      } catch (e) {
-        // If we can't parse JSON, get the response as text
-        try {
-          const responseClone = response.clone();
-          const errorText = await responseClone.text();
-          console.error('Error response text:', errorText);
-          // Check if it's HTML (like an error page)
-          if (errorText.includes('<!DOCTYPE')) {
-            errorMessage = 'Server returned an error page. The API route may not exist.';
-          } else {
-            errorMessage = response.statusText || errorMessage;
-          }
-        } catch (textError) {
-          errorMessage = response.statusText || errorMessage;
-        }
+      if (response.ok) {
+        setSubmitStatus('success');
+        // Reset form after successful submission
+        setFormData({
+          fullName: "",
+          phoneNumber: "",
+          emailAddress: "",
+          vehicleType: "",
+          preferredBrands: [],
+          condition: "",
+          budgetRange: "",
+          whenToBuy: "",
+          paymentMethod: "",
+          contactMethod: "",
+          seriousness: "",
+          notes: "",
+          hasTradeIn: "",
+          tradeInMakeModel: "",
+          tradeInMileage: "",
+          tradeInCondition: "",
+          hasFinance: "",
+          financeHouse: "",
+          settlementAmount: "",
+          consent: false
+        });
+      } else {
+        throw new Error('Failed to submit form');
       }
-      
-      console.error('API Error:', {
-        status: response.status,
-        statusText: response.statusText,
-        errorMessage,
-        errorDetails
-      });
-      
-      throw new Error(errorMessage);
+    } catch (error) {
+      setSubmitStatus('error');
+      setErrorMessage('Something went wrong. Please try again or contact us directly.');
+      console.error('Form submission error:', error);
+    } finally {
+      setIsSubmitting(false);
     }
+  };
 
-    // Parse JSON response
-    const result = await response.json();
-
-    if (result.success) {
-      setSubmitStatus('success');
-      // Reset form after successful submission
-      setFormData({
-        fullName: "",
-        phoneNumber: "",
-        emailAddress: "",
-        vehicleType: "",
-        preferredBrands: [],
-        condition: "",
-        budgetRange: "",
-        whenToBuy: "",
-        paymentMethod: "",
-        contactMethod: "",
-        seriousness: "",
-        notes: "",
-        hasTradeIn: "",
-        tradeInMakeModel: "",
-        tradeInMileage: "",
-        tradeInCondition: "",
-        hasFinance: "",
-        financeHouse: "",
-        settlementAmount: "",
-        consent: false
-      });
-    } else {
-      throw new Error(result.message || 'Failed to submit form');
-    }
-  } catch (error: any) {
-    setSubmitStatus('error');
-    setErrorMessage(error.message || 'Something went wrong. Please try again.');
-    console.error('Form submission error:', error);
-  } finally {
-    setIsSubmitting(false);
-  }
-};
   return (
     <section id="find-my-car" className="relative py-20 md:py-24 overflow-hidden scroll-mt-20">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
