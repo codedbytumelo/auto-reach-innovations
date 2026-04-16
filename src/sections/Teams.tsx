@@ -82,14 +82,7 @@ const teamMembers: TeamMember[] = [
 const TeamCard = ({ member }: { member: TeamMember }) => (
   <div className="flex-shrink-0 w-80 bg-white rounded-2xl shadow-lg border border-neutral-200 p-6 mx-2">
     <div className="flex flex-col items-center text-center">
-      <div className="relative w-32 h-32 rounded-full overflow-hidden mb-4 bg-neutral-200">
-        <Image
-          src={member.imageSrc}
-          alt={member.name}
-          fill
-          className="object-cover"
-        />
-      </div>
+      
       <h3 className="text-xl font-bold text-neutral-900 mb-1">{member.name}</h3>
       <p className="text-sm font-semibold text-[#ff5c5c] mb-3">{member.role}</p>
       <p className="text-sm text-neutral-600 leading-relaxed">{member.description}</p>
