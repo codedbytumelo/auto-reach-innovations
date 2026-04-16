@@ -18,7 +18,7 @@ const About = () => {
           className="text-center mb-12"
         >
           <div className="inline-block px-4 py-2 mb-4 text-sm font-medium text-[#ff5c5c] bg-[#ff5c5c]/10 backdrop-blur-sm rounded-full border border-[#ff5c5c]/20">
-            ABOUT AUTO REACH
+            ABOUT AUTO REACH INNOVATIONS
           </div>
         </motion.div>
 

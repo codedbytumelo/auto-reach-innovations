@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const Dealers = () => {
   const [formData, setFormData] = useState({
@@ -81,8 +82,18 @@ const Dealers = () => {
     // Add scroll-margin-top to account for fixed navbar height
     <section 
       id="for-dealerships" 
-      className="relative py-16 sm:py-20 md:py-24 overflow-hidden bg-white scroll-mt-20"
+      className="relative py-16 sm:py-20 md:py-24 overflow-hidden scroll-mt-20"
     >
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <div 
+          className="w-full h-full bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/assets/images/dealerships-showcase.jpg')" }}
+        />
+        {/* Overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/60"></div>
+      </div>
+      
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Section Header */}
         <motion.div
@@ -92,23 +103,19 @@ const Dealers = () => {
           viewport={{ once: true }}
           className="text-center mb-8 sm:mb-12"
         >
-          <div className="inline-flex items-center px-3 sm:px-4 py-2 mb-4 text-xs sm:text-sm font-medium text-[#ff5c5c] bg-[#ff5c5c]/10 backdrop-blur-sm rounded-full border border-[#ff5c5c]/20">
+          <div className="inline-flex items-center px-3 sm:px-4 py-2 mb-4 text-xs sm:text-sm font-medium text-[#ff5c5c] bg-white/80 backdrop-blur-sm rounded-full border border-[#ff5c5c]/20">
             PARTNER WITH US
           </div>
         </motion.div>
 
-        {/* Red Background Container with Form */}
+        {/* Content Container with Form */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           viewport={{ once: true }}
-          className="relative bg-[#ff5c5c] rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 lg:p-16 overflow-hidden"
+          className="relative bg-black/30 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 lg:p-16 overflow-hidden"
         >
-          {/* Decorative Elements */}
-          <div className="absolute top-0 right-0 w-32 sm:w-48 md:w-64 h-32 sm:h-48 md:h-64 bg-red-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 -translate-y-16 sm:-translate-y-24 md:-translate-y-32 translate-x-16 sm:translate-x-24 md:translate-x-32"></div>
-          <div className="absolute bottom-0 left-0 w-32 sm:w-48 md:w-64 h-32 sm:h-48 md:h-64 bg-red-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 translate-y-16 sm:translate-y-24 md:translate-y-32 translate-x-16 sm:translate-x-24 md:translate-x-32"></div>
-          
           <div className="relative z-10">
             {/* Main Headline */}
             <motion.h2
@@ -116,7 +123,7 @@ const Dealers = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               viewport={{ once: true }}
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-4 sm:mb-6 text-center"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 text-center"
             >
               Partner With Auto Reach
             </motion.h2>
@@ -148,7 +155,7 @@ const Dealers = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
               viewport={{ once: true }}
-              className="text-base sm:text-lg md:text-xl text-black/80 mb-8 sm:mb-10 max-w-2xl sm:max-w-3xl mx-auto leading-relaxed text-center"
+              className="text-base sm:text-lg md:text-xl text-white/90 mb-8 sm:mb-10 max-w-2xl sm:max-w-3xl mx-auto leading-relaxed text-center"
             >
               Connect with real car buyers in your area who are actively looking for vehicles like yours. Tell us about your dealership and we'll get you set up.
             </motion.p>
@@ -164,7 +171,7 @@ const Dealers = () => {
                   viewport={{ once: true }}
                   className="md:col-span-2"
                 >
-                  <label htmlFor="dealershipName" className="block text-sm font-medium text-black mb-2">
+                  <label htmlFor="dealershipName" className="block text-sm font-medium text-white mb-2">
                     Dealership Name *
                   </label>
                   <input
@@ -175,7 +182,7 @@ const Dealers = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                     placeholder="Your dealership name"
                   />
                 </motion.div>
@@ -187,7 +194,7 @@ const Dealers = () => {
                   transition={{ duration: 0.6, delay: 0.6 }}
                   viewport={{ once: true }}
                 >
-                  <label htmlFor="contactPerson" className="block text-sm font-medium text-black mb-2">
+                  <label htmlFor="contactPerson" className="block text-sm font-medium text-white mb-2">
                     Contact Person *
                   </label>
                   <input
@@ -198,7 +205,7 @@ const Dealers = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                     placeholder="Full name"
                   />
                 </motion.div>
@@ -210,7 +217,7 @@ const Dealers = () => {
                   transition={{ duration: 0.6, delay: 0.7 }}
                   viewport={{ once: true }}
                 >
-                  <label htmlFor="email" className="block text-sm font-medium text-black mb-2">
+                  <label htmlFor="email" className="block text-sm font-medium text-white mb-2">
                     Email Address *
                   </label>
                   <input
@@ -221,7 +228,7 @@ const Dealers = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                     placeholder="your@email.com"
                   />
                 </motion.div>
@@ -233,7 +240,7 @@ const Dealers = () => {
                   transition={{ duration: 0.6, delay: 0.8 }}
                   viewport={{ once: true }}
                 >
-                  <label htmlFor="phone" className="block text-sm font-medium text-black mb-2">
+                  <label htmlFor="phone" className="block text-sm font-medium text-white mb-2">
                     Phone Number *
                   </label>
                   <input
@@ -244,7 +251,7 @@ const Dealers = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                     placeholder="Your contact number"
                   />
                 </motion.div>
@@ -256,7 +263,7 @@ const Dealers = () => {
                   transition={{ duration: 0.6, delay: 0.9 }}
                   viewport={{ once: true }}
                 >
-                  <label htmlFor="location" className="block text-sm font-medium text-black mb-2">
+                  <label htmlFor="location" className="block text-sm font-medium text-white mb-2">
                     Location *
                   </label>
                   <input
@@ -267,7 +274,7 @@ const Dealers = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                     placeholder="City / Region (e.g. Johannesburg, Pretoria, Cape Town)"
                   />
                 </motion.div>
@@ -279,7 +286,7 @@ const Dealers = () => {
                   transition={{ duration: 0.6, delay: 1.0 }}
                   viewport={{ once: true }}
                 >
-                  <label htmlFor="dealershipType" className="block text-sm font-medium text-black mb-2">
+                  <label htmlFor="dealershipType" className="block text-sm font-medium text-white mb-2">
                     Type of Dealership
                   </label>
                   <select
@@ -288,7 +295,7 @@ const Dealers = () => {
                     value={formData.dealershipType}
                     onChange={handleChange}
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                   >
                     <option value="new">New Cars</option>
                     <option value="used">Used Cars</option>
@@ -304,7 +311,7 @@ const Dealers = () => {
                   viewport={{ once: true }}
                   className="md:col-span-2"
                 >
-                  <label htmlFor="brands" className="block text-sm font-medium text-black mb-2">
+                  <label htmlFor="brands" className="block text-sm font-medium text-white mb-2">
                     Brands You Sell (Optional)
                   </label>
                   <input
@@ -314,7 +321,7 @@ const Dealers = () => {
                     value={formData.brands}
                     onChange={handleChange}
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                     placeholder="e.g. Toyota, VW, BMW"
                   />
                 </motion.div>
@@ -326,7 +333,7 @@ const Dealers = () => {
                   transition={{ duration: 0.6, delay: 1.2 }}
                   viewport={{ once: true }}
                 >
-                  <label htmlFor="salesVolume" className="block text-sm font-medium text-black mb-2">
+                  <label htmlFor="salesVolume" className="block text-sm font-medium text-white mb-2">
                     Average Monthly Sales Volume (Optional)
                   </label>
                   <select
@@ -335,7 +342,7 @@ const Dealers = () => {
                     value={formData.salesVolume}
                     onChange={handleChange}
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                   >
                     <option value="">Select volume</option>
                     <option value="0-10">0–10 cars</option>
@@ -352,7 +359,7 @@ const Dealers = () => {
                   transition={{ duration: 0.6, delay: 1.3 }}
                   viewport={{ once: true }}
                 >
-                  <label htmlFor="lookingFor" className="block text-sm font-medium text-black mb-2">
+                  <label htmlFor="lookingFor" className="block text-sm font-medium text-white mb-2">
                     What Are You Looking For?
                   </label>
                   <select
@@ -361,7 +368,7 @@ const Dealers = () => {
                     value={formData.lookingFor}
                     onChange={handleChange}
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                   >
                     <option value="">Select an option</option>
                     <option value="buyers">More qualified buyers</option>
@@ -379,7 +386,7 @@ const Dealers = () => {
                   viewport={{ once: true }}
                   className="md:col-span-2"
                 >
-                  <label htmlFor="message" className="block text-sm font-medium text-black mb-2">
+                  <label htmlFor="message" className="block text-sm font-medium text-white mb-2">
                     Message (Optional)
                   </label>
                   <textarea
@@ -389,7 +396,7 @@ const Dealers = () => {
                     onChange={handleChange}
                     rows={4}
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 resize-none disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all duration-300 resize-none disabled:opacity-50"
                     placeholder="Tell us anything else about your dealership or goals…"
                   ></textarea>
                 </motion.div>
@@ -408,7 +415,7 @@ const Dealers = () => {
                   disabled={isSubmitting}
                   whileHover={!isSubmitting ? { scale: 1.02 } : {}}
                   whileTap={!isSubmitting ? { scale: 0.98 } : {}}
-                  className="px-8 py-4 bg-black text-[#ff5c5c] font-bold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-8 py-4 bg-[#ff5c5c] text-white font-bold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? 'Submitting...' : 'Apply to Partner'}
                 </motion.button>
@@ -420,7 +427,7 @@ const Dealers = () => {
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: 1.6 }}
                 viewport={{ once: true }}
-                className="text-center text-black/70 text-sm mt-6"
+                className="text-center text-white/70 text-sm mt-6"
               >
                 We'll review your application and get back to you shortly.
               </motion.p>
@@ -431,9 +438,6 @@ const Dealers = () => {
         {/* Bottom spacing */}
         <div className="mt-12 sm:mt-16"></div>
       </div>
-
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[url('/assets/images/grid-pattern.svg')] opacity-5 pointer-events-none"></div>
     </section>
   );
 };

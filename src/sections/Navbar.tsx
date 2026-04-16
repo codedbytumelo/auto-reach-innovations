@@ -115,7 +115,7 @@ export default function Navbar() {
       <nav className={`sticky top-0 z-40 transition-all duration-300 ${
         hasScrolled 
           ? 'bg-white/80 backdrop-blur-xl shadow-lg border-b border-neutral-200/50'
-          : 'bg-transparent border-b border-neutral-200'
+          : 'bg-transparent'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
