@@ -1,12 +1,23 @@
-// components/Dealers.tsx
 "use client";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
+
+interface DealerFormData {
+  dealershipName: string;
+  contactPerson: string;
+  email: string;
+  phone: string;
+  location: string;
+  dealershipType: string;
+  brands: string;
+  salesVolume: string;
+  lookingFor: string;
+  message: string;
+}
 
 const Dealers = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<DealerFormData>({
     dealershipName: "",
     contactPerson: "",
     email: "",
@@ -33,53 +44,78 @@ const Dealers = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Basic validation
+    const requiredFields = [
+      'dealershipName', 'contactPerson', 'email', 'phone', 
+      'location', 'lookingFor'
+    ];
+    
+    const missingFields = requiredFields.filter(field => !formData[field as keyof DealerFormData]);
+    
+    if (missingFields.length > 0) {
+      setErrorMessage(`Please fill in all required fields: ${missingFields.join(', ')}`);
+      setSubmitStatus('error');
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitStatus('idle');
     setErrorMessage('');
 
     try {
-      // Submit to Formspree
-      const response = await fetch('https://formspree.io/f/mvzvlqeg', {
+      console.log('Submitting form data:', formData);
+      
+      const response = await fetch('/api/dealers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...formData,
-          subject: `Partnership Application: ${formData.dealershipName}`,
-          _subject: `New Partnership Application from ${formData.dealershipName}`
-        }),
+        body: JSON.stringify(formData),
       });
 
-      if (response.ok) {
-        setSubmitStatus('success');
-        // Reset form after successful submission
-        setFormData({
-          dealershipName: "",
-          contactPerson: "",
-          email: "",
-          phone: "",
-          location: "",
-          dealershipType: "new",
-          brands: "",
-          salesVolume: "",
-          lookingFor: "",
-          message: ""
-        });
-      } else {
-        throw new Error('Failed to submit form');
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
+
+      let result;
+      try {
+        result = await response.json();
+      } catch (jsonError) {
+        console.error('Failed to parse JSON response:', jsonError);
+        const text = await response.text();
+        throw new Error(`Server returned non-JSON response: ${text.substring(0, 100)}...`);
       }
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to submit form');
+      }
+
+      // Success case
+      setSubmitStatus('success');
+      // Reset form
+      setFormData({
+        dealershipName: "",
+        contactPerson: "",
+        email: "",
+        phone: "",
+        location: "",
+        dealershipType: "new",
+        brands: "",
+        salesVolume: "",
+        lookingFor: "",
+        message: ""
+      });
+
     } catch (error) {
-      setSubmitStatus('error');
-      setErrorMessage('Something went wrong. Please try again or contact us directly.');
       console.error('Form submission error:', error);
+      setSubmitStatus('error');
+      setErrorMessage(error instanceof Error ? error.message : 'Something went wrong. Please try again or contact us directly.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    // Add scroll-margin-top to account for fixed navbar height
     <section 
       id="for-dealerships" 
       className="relative py-16 sm:py-20 md:py-24 overflow-hidden scroll-mt-20"
@@ -90,7 +126,6 @@ const Dealers = () => {
           className="w-full h-full bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: "url('/assets/images/dealerships-showcase.jpg')" }}
         />
-        {/* Overlay for better text readability */}
         <div className="absolute inset-0 bg-black/60"></div>
       </div>
       
@@ -295,11 +330,11 @@ const Dealers = () => {
                     value={formData.dealershipType}
                     onChange={handleChange}
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/20 border border-white/40 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all duration-300 disabled:opacity-50 appearance-none"
                   >
-                    <option value="new">New Cars</option>
-                    <option value="used">Used Cars</option>
-                    <option value="both">Both</option>
+                    <option value="new" className="bg-gray-800">New Cars</option>
+                    <option value="used" className="bg-gray-800">Used Cars</option>
+                    <option value="both" className="bg-gray-800">Both</option>
                   </select>
                 </motion.div>
 
@@ -342,13 +377,13 @@ const Dealers = () => {
                     value={formData.salesVolume}
                     onChange={handleChange}
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/20 border border-white/40 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all duration-300 disabled:opacity-50 appearance-none"
                   >
-                    <option value="">Select volume</option>
-                    <option value="0-10">0–10 cars</option>
-                    <option value="10-30">10–30 cars</option>
-                    <option value="30-50">30–50 cars</option>
-                    <option value="50+">50+ cars</option>
+                    <option value="" className="bg-gray-800">Select volume</option>
+                    <option value="0-10" className="bg-gray-800">0–10 cars</option>
+                    <option value="10-30" className="bg-gray-800">10–30 cars</option>
+                    <option value="30-50" className="bg-gray-800">30–50 cars</option>
+                    <option value="50+" className="bg-gray-800">50+ cars</option>
                   </select>
                 </motion.div>
 
@@ -360,21 +395,22 @@ const Dealers = () => {
                   viewport={{ once: true }}
                 >
                   <label htmlFor="lookingFor" className="block text-sm font-medium text-white mb-2">
-                    What Are You Looking For?
+                    What Are You Looking For? *
                   </label>
                   <select
                     id="lookingFor"
                     name="lookingFor"
                     value={formData.lookingFor}
                     onChange={handleChange}
+                    required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/20 border border-white/40 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all duration-300 disabled:opacity-50 appearance-none"
                   >
-                    <option value="">Select an option</option>
-                    <option value="buyers">More qualified buyers</option>
-                    <option value="sales">Increase monthly sales</option>
-                    <option value="expand">Expand into new areas</option>
-                    <option value="other">Other</option>
+                    <option value="" className="bg-gray-800">Select an option</option>
+                    <option value="buyers" className="bg-gray-800">More qualified buyers</option>
+                    <option value="sales" className="bg-gray-800">Increase monthly sales</option>
+                    <option value="expand" className="bg-gray-800">Expand into new areas</option>
+                    <option value="other" className="bg-gray-800">Other</option>
                   </select>
                 </motion.div>
 

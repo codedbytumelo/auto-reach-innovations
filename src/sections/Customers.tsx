@@ -1,4 +1,3 @@
-// components/Customers.tsx
 "use client";
 
 import { useState } from "react";
@@ -6,31 +5,18 @@ import { motion } from "framer-motion";
 
 // Define a type for the form data
 interface FormData {
-  // Your Details
   fullName: string;
   phoneNumber: string;
   emailAddress: string;
-  
-  // Car Preferences
   vehicleType: string;
   preferredBrands: string[];
   condition: string;
-  
-  // Budget & Timeline
   budgetRange: string;
   whenToBuy: string;
   paymentMethod: string;
-  
-  // Contact Preferences
   contactMethod: string;
-  
-  // Buying Intent
   seriousness: string;
-  
-  // Notes
   notes: string;
-  
-  // Trade-In
   hasTradeIn: string;
   tradeInMakeModel: string;
   tradeInMileage: string;
@@ -38,38 +24,23 @@ interface FormData {
   hasFinance: string;
   financeHouse: string;
   settlementAmount: string;
-  
-  // Consent
   consent: boolean;
 }
 
 const Customers = () => {
   const [formData, setFormData] = useState<FormData>({
-    // Your Details
     fullName: "",
     phoneNumber: "",
     emailAddress: "",
-    
-    // Car Preferences
     vehicleType: "",
     preferredBrands: [],
     condition: "",
-    
-    // Budget & Timeline
     budgetRange: "",
     whenToBuy: "",
     paymentMethod: "",
-    
-    // Contact Preferences
     contactMethod: "",
-    
-    // Buying Intent
     seriousness: "",
-    
-    // Notes
     notes: "",
-    
-    // Trade-In
     hasTradeIn: "",
     tradeInMakeModel: "",
     tradeInMileage: "",
@@ -77,11 +48,9 @@ const Customers = () => {
     hasFinance: "",
     financeHouse: "",
     settlementAmount: "",
-    
-    // Consent
     consent: false
   });
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
@@ -95,15 +64,12 @@ const Customers = () => {
     
     if (type === "checkbox") {
       const checked = (e.target as HTMLInputElement).checked;
-      const name = (e.target as HTMLInputElement).name;
       
       if (name === "preferredBrands") {
         const selectedBrand = value;
         setFormData(prev => {
-          // Ensure preferredBrands is always an array
           const brands = Array.isArray(prev.preferredBrands) ? [...prev.preferredBrands] : [];
           if (checked) {
-            // Add brand if checked and less than 3 selected
             if (brands.length < 3) {
               return {
                 ...prev,
@@ -111,7 +77,6 @@ const Customers = () => {
               };
             }
           } else {
-            // Remove brand if unchecked
             return {
               ...prev,
               preferredBrands: brands.filter(brand => brand !== selectedBrand)
@@ -120,7 +85,6 @@ const Customers = () => {
           return prev;
         });
       } else {
-        // Handle other checkboxes (like consent)
         setFormData(prev => ({
           ...prev,
           [name]: checked
@@ -145,7 +109,6 @@ const Customers = () => {
         return prev;
       });
     } else {
-      // Handle regular inputs and selects
       setFormData(prev => ({
         ...prev,
         [name]: value
@@ -160,51 +123,61 @@ const Customers = () => {
     setErrorMessage('');
 
     try {
-      // Submit to Formspree
-      const response = await fetch('https://formspree.io/f/mlgozlya', {
+      // Submit to your API endpoint
+      const response = await fetch('/api/customers', { // Changed from '/api/send-email'
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           ...formData,
-          subject: `Car Request: ${formData.fullName}`,
-          _subject: `New Car Request from ${formData.fullName}`,
           preferredBrands: Array.isArray(formData.preferredBrands) ? formData.preferredBrands.join(", ") : ""
         }),
       });
 
-      if (response.ok) {
-        setSubmitStatus('success');
-        // Reset form after successful submission
-        setFormData({
-          fullName: "",
-          phoneNumber: "",
-          emailAddress: "",
-          vehicleType: "",
-          preferredBrands: [],
-          condition: "",
-          budgetRange: "",
-          whenToBuy: "",
-          paymentMethod: "",
-          contactMethod: "",
-          seriousness: "",
-          notes: "",
-          hasTradeIn: "",
-          tradeInMakeModel: "",
-          tradeInMileage: "",
-          tradeInCondition: "",
-          hasFinance: "",
-          financeHouse: "",
-          settlementAmount: "",
-          consent: false
-        });
-      } else {
-        throw new Error('Failed to submit form');
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
+
+      let result;
+      try {
+        result = await response.json();
+      } catch (jsonError) {
+        console.error('Failed to parse JSON response:', jsonError);
+        const text = await response.text();
+        throw new Error(`Server returned non-JSON response: ${text.substring(0, 100)}...`);
       }
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to submit form');
+      }
+
+      setSubmitStatus('success');
+      // Reset form after successful submission
+      setFormData({
+        fullName: "",
+        phoneNumber: "",
+        emailAddress: "",
+        vehicleType: "",
+        preferredBrands: [],
+        condition: "",
+        budgetRange: "",
+        whenToBuy: "",
+        paymentMethod: "",
+        contactMethod: "",
+        seriousness: "",
+        notes: "",
+        hasTradeIn: "",
+        tradeInMakeModel: "",
+        tradeInMileage: "",
+        tradeInCondition: "",
+        hasFinance: "",
+        financeHouse: "",
+        settlementAmount: "",
+        consent: false
+      });
     } catch (error) {
       setSubmitStatus('error');
-      setErrorMessage('Something went wrong. Please try again or contact us directly.');
+      setErrorMessage(error instanceof Error ? error.message : 'Something went wrong. Please try again or contact us directly.');
       console.error('Form submission error:', error);
     } finally {
       setIsSubmitting(false);
@@ -433,13 +406,13 @@ const Customers = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/20 border border-white/40 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50 appearance-none"
                   >
-                    <option value="">Select vehicle type</option>
-                    <option value="sedan">Sedan</option>
-                    <option value="suv">SUV</option>
-                    <option value="hatchback">Hatchback</option>
-                    <option value="bakkie">Bakkie</option>
+                    <option value="" className="bg-gray-800">Select vehicle type</option>
+                    <option value="sedan" className="bg-gray-800">Sedan</option>
+                    <option value="suv" className="bg-gray-800">SUV</option>
+                    <option value="hatchback" className="bg-gray-800">Hatchback</option>
+                    <option value="bakkie" className="bg-gray-800">Bakkie</option>
                   </select>
                 </motion.div>
 
@@ -491,11 +464,11 @@ const Customers = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/20 border border-white/40 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50 appearance-none"
                   >
-                    <option value="">Select condition</option>
-                    <option value="new">Brand New</option>
-                    <option value="pre-owned">Pre-owned</option>
+                    <option value="" className="bg-gray-800">Select condition</option>
+                    <option value="new" className="bg-gray-800">Brand New</option>
+                    <option value="pre-owned" className="bg-gray-800">Pre-owned</option>
                   </select>
                 </motion.div>
               </div>
@@ -527,13 +500,13 @@ const Customers = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/20 border border-white/40 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50 appearance-none"
                   >
-                    <option value="">Select budget range</option>
-                    <option value="under-150k">Under R150,000</option>
-                    <option value="150k-300k">R150,000 – R300,000</option>
-                    <option value="300k-500k">R300,000 – R500,000</option>
-                    <option value="above-500k">Above R500,000</option>
+                    <option value="" className="bg-gray-800">Select budget range</option>
+                    <option value="under-150k" className="bg-gray-800">Under R150,000</option>
+                    <option value="150k-300k" className="bg-gray-800">R150,000 – R300,000</option>
+                    <option value="300k-500k" className="bg-gray-800">R300,000 – R500,000</option>
+                    <option value="above-500k" className="bg-gray-800">Above R500,000</option>
                   </select>
                 </motion.div>
 
@@ -555,13 +528,13 @@ const Customers = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/20 border border-white/40 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50 appearance-none"
                   >
-                    <option value="">Select timeframe</option>
-                    <option value="immediately">Immediately</option>
-                    <option value="1-month">Within 1 Month</option>
-                    <option value="1-3-months">1–3 Months</option>
-                    <option value="exploring">Just Exploring</option>
+                    <option value="" className="bg-gray-800">Select timeframe</option>
+                    <option value="immediately" className="bg-gray-800">Immediately</option>
+                    <option value="1-month" className="bg-gray-800">Within 1 Month</option>
+                    <option value="1-3-months" className="bg-gray-800">1–3 Months</option>
+                    <option value="exploring" className="bg-gray-800">Just Exploring</option>
                   </select>
                 </motion.div>
 
@@ -583,12 +556,12 @@ const Customers = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/20 border border-white/40 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50 appearance-none"
                   >
-                    <option value="">Select payment method</option>
-                    <option value="cash">Cash</option>
-                    <option value="finance">Bank Finance</option>
-                    <option value="not-sure">Not Sure</option>
+                    <option value="" className="bg-gray-800">Select payment method</option>
+                    <option value="cash" className="bg-gray-800">Cash</option>
+                    <option value="finance" className="bg-gray-800">Bank Finance</option>
+                    <option value="not-sure" className="bg-gray-800">Not Sure</option>
                   </select>
                 </motion.div>
               </div>
@@ -620,12 +593,12 @@ const Customers = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/20 border border-white/40 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50 appearance-none"
                   >
-                    <option value="">Select contact method</option>
-                    <option value="call">Call</option>
-                    <option value="whatsapp">WhatsApp</option>
-                    <option value="email">Email</option>
+                    <option value="" className="bg-gray-800">Select contact method</option>
+                    <option value="call" className="bg-gray-800">Call</option>
+                    <option value="whatsapp" className="bg-gray-800">WhatsApp</option>
+                    <option value="email" className="bg-gray-800">Email</option>
                   </select>
                 </motion.div>
               </div>
@@ -657,12 +630,12 @@ const Customers = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/20 border border-white/40 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50 appearance-none"
                   >
-                    <option value="">Select option</option>
-                    <option value="ready">Ready to buy</option>
-                    <option value="comparing">Comparing options</option>
-                    <option value="browsing">Just browsing</option>
+                    <option value="" className="bg-gray-800">Select option</option>
+                    <option value="ready" className="bg-gray-800">Ready to buy</option>
+                    <option value="comparing" className="bg-gray-800">Comparing options</option>
+                    <option value="browsing" className="bg-gray-800">Just browsing</option>
                   </select>
                 </motion.div>
 
@@ -801,13 +774,13 @@ const Customers = () => {
                         value={formData.tradeInCondition}
                         onChange={handleChange}
                         disabled={isSubmitting}
-                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                        className="w-full px-4 py-3 bg-white/20 border border-white/40 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50 appearance-none"
                       >
-                        <option value="">Select condition</option>
-                        <option value="excellent">Excellent</option>
-                        <option value="good">Good</option>
-                        <option value="fair">Fair</option>
-                        <option value="poor">Poor</option>
+                        <option value="" className="bg-gray-800">Select condition</option>
+                        <option value="excellent" className="bg-gray-800">Excellent</option>
+                        <option value="good" className="bg-gray-800">Good</option>
+                        <option value="fair" className="bg-gray-800">Fair</option>
+                        <option value="poor" className="bg-gray-800">Poor</option>
                       </select>
                     </motion.div>
 
