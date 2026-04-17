@@ -95,32 +95,57 @@ const Customers = () => {
     
     if (type === "checkbox") {
       const checked = (e.target as HTMLInputElement).checked;
-      setFormData(prev => ({
-        ...prev,
-        [name]: checked
-      }));
+      const name = (e.target as HTMLInputElement).name;
+      
+      if (name === "preferredBrands") {
+        const selectedBrand = value;
+        setFormData(prev => {
+          // Ensure preferredBrands is always an array
+          const brands = Array.isArray(prev.preferredBrands) ? [...prev.preferredBrands] : [];
+          if (checked) {
+            // Add brand if checked and less than 3 selected
+            if (brands.length < 3) {
+              return {
+                ...prev,
+                preferredBrands: [...brands, selectedBrand]
+              };
+            }
+          } else {
+            // Remove brand if unchecked
+            return {
+              ...prev,
+              preferredBrands: brands.filter(brand => brand !== selectedBrand)
+            };
+          }
+          return prev;
+        });
+      } else {
+        // Handle other checkboxes (like consent)
+        setFormData(prev => ({
+          ...prev,
+          [name]: checked
+        }));
+      }
     } else if (name === "preferredBrands") {
-      // Handle multi-select for brands
+      // This should not be reached for checkboxes, but kept for safety
       const selectedBrand = value;
       setFormData(prev => {
-        // Ensure preferredBrands is always an array
         const brands = Array.isArray(prev.preferredBrands) ? [...prev.preferredBrands] : [];
         if (brands.includes(selectedBrand)) {
-          // Remove brand if already selected
           return {
             ...prev,
             preferredBrands: brands.filter(brand => brand !== selectedBrand)
           };
         } else if (brands.length < 3) {
-          // Add brand if less than 3 selected
           return {
             ...prev,
             preferredBrands: [...brands, selectedBrand]
           };
         }
-        return prev; // Don't add if already 3 selected
+        return prev;
       });
     } else {
+      // Handle regular inputs and selects
       setFormData(prev => ({
         ...prev,
         [name]: value
