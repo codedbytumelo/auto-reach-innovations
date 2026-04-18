@@ -1,3 +1,4 @@
+// components/Customers.tsx
 "use client";
 
 import { useState } from "react";
@@ -5,18 +6,31 @@ import { motion } from "framer-motion";
 
 // Define a type for the form data
 interface FormData {
+  // Your Details
   fullName: string;
   phoneNumber: string;
   emailAddress: string;
+  
+  // Car Preferences
   vehicleType: string;
   preferredBrands: string[];
   condition: string;
+  
+  // Budget & Timeline
   budgetRange: string;
   whenToBuy: string;
   paymentMethod: string;
+  
+  // Contact Preferences
   contactMethod: string;
+  
+  // Buying Intent
   seriousness: string;
+  
+  // Notes
   notes: string;
+  
+  // Trade-In
   hasTradeIn: string;
   tradeInMakeModel: string;
   tradeInMileage: string;
@@ -24,23 +38,38 @@ interface FormData {
   hasFinance: string;
   financeHouse: string;
   settlementAmount: string;
+  
+  // Consent
   consent: boolean;
 }
 
 const Customers = () => {
   const [formData, setFormData] = useState<FormData>({
+    // Your Details
     fullName: "",
     phoneNumber: "",
     emailAddress: "",
+    
+    // Car Preferences
     vehicleType: "",
     preferredBrands: [],
     condition: "",
+    
+    // Budget & Timeline
     budgetRange: "",
     whenToBuy: "",
     paymentMethod: "",
+    
+    // Contact Preferences
     contactMethod: "",
+    
+    // Buying Intent
     seriousness: "",
+    
+    // Notes
     notes: "",
+    
+    // Trade-In
     hasTradeIn: "",
     tradeInMakeModel: "",
     tradeInMileage: "",
@@ -48,9 +77,11 @@ const Customers = () => {
     hasFinance: "",
     financeHouse: "",
     settlementAmount: "",
+    
+    // Consent
     consent: false
   });
-
+  
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
@@ -90,24 +121,6 @@ const Customers = () => {
           [name]: checked
         }));
       }
-    } else if (name === "preferredBrands") {
-      // This should not be reached for checkboxes, but kept for safety
-      const selectedBrand = value;
-      setFormData(prev => {
-        const brands = Array.isArray(prev.preferredBrands) ? [...prev.preferredBrands] : [];
-        if (brands.includes(selectedBrand)) {
-          return {
-            ...prev,
-            preferredBrands: brands.filter(brand => brand !== selectedBrand)
-          };
-        } else if (brands.length < 3) {
-          return {
-            ...prev,
-            preferredBrands: [...brands, selectedBrand]
-          };
-        }
-        return prev;
-      });
     } else {
       setFormData(prev => ({
         ...prev,
@@ -123,61 +136,51 @@ const Customers = () => {
     setErrorMessage('');
 
     try {
-      // Submit to your API endpoint
-      const response = await fetch('/api/customers', { // Changed from '/api/send-email'
+      // Submit to Formspree
+      const response = await fetch('https://formspree.io/f/mlgozlya', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           ...formData,
+          subject: `Car Request: ${formData.fullName}`,
+          _subject: `New Car Request from ${formData.fullName}`,
           preferredBrands: Array.isArray(formData.preferredBrands) ? formData.preferredBrands.join(", ") : ""
         }),
       });
 
-      console.log('Response status:', response.status);
-      console.log('Response headers:', response.headers);
-
-      let result;
-      try {
-        result = await response.json();
-      } catch (jsonError) {
-        console.error('Failed to parse JSON response:', jsonError);
-        const text = await response.text();
-        throw new Error(`Server returned non-JSON response: ${text.substring(0, 100)}...`);
+      if (response.ok) {
+        setSubmitStatus('success');
+        // Reset form after successful submission
+        setFormData({
+          fullName: "",
+          phoneNumber: "",
+          emailAddress: "",
+          vehicleType: "",
+          preferredBrands: [],
+          condition: "",
+          budgetRange: "",
+          whenToBuy: "",
+          paymentMethod: "",
+          contactMethod: "",
+          seriousness: "",
+          notes: "",
+          hasTradeIn: "",
+          tradeInMakeModel: "",
+          tradeInMileage: "",
+          tradeInCondition: "",
+          hasFinance: "",
+          financeHouse: "",
+          settlementAmount: "",
+          consent: false
+        });
+      } else {
+        throw new Error('Failed to submit form');
       }
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to submit form');
-      }
-
-      setSubmitStatus('success');
-      // Reset form after successful submission
-      setFormData({
-        fullName: "",
-        phoneNumber: "",
-        emailAddress: "",
-        vehicleType: "",
-        preferredBrands: [],
-        condition: "",
-        budgetRange: "",
-        whenToBuy: "",
-        paymentMethod: "",
-        contactMethod: "",
-        seriousness: "",
-        notes: "",
-        hasTradeIn: "",
-        tradeInMakeModel: "",
-        tradeInMileage: "",
-        tradeInCondition: "",
-        hasFinance: "",
-        financeHouse: "",
-        settlementAmount: "",
-        consent: false
-      });
     } catch (error) {
       setSubmitStatus('error');
-      setErrorMessage(error instanceof Error ? error.message : 'Something went wrong. Please try again or contact us directly.');
+      setErrorMessage('Something went wrong. Please try again or contact us directly.');
       console.error('Form submission error:', error);
     } finally {
       setIsSubmitting(false);
@@ -209,7 +212,7 @@ const Customers = () => {
             FIND YOUR CAR
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-            Stop Searching. Start Driving.
+            Find Your Perfect Car
           </h2>
           <p className="text-lg text-white max-w-3xl mx-auto">
             Tell us what you're looking for, and we'll connect you with trusted dealerships that have exactly what you need — no endless searching, no pressure, just real options from real sellers.

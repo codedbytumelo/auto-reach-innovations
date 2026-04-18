@@ -1,23 +1,11 @@
+// components/Dealers.tsx
 "use client";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
 
-interface DealerFormData {
-  dealershipName: string;
-  contactPerson: string;
-  email: string;
-  phone: string;
-  location: string;
-  dealershipType: string;
-  brands: string;
-  salesVolume: string;
-  lookingFor: string;
-  message: string;
-}
-
 const Dealers = () => {
-  const [formData, setFormData] = useState<DealerFormData>({
+  const [formData, setFormData] = useState({
     dealershipName: "",
     contactPerson: "",
     email: "",
@@ -44,78 +32,53 @@ const Dealers = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Basic validation
-    const requiredFields = [
-      'dealershipName', 'contactPerson', 'email', 'phone', 
-      'location', 'lookingFor'
-    ];
-    
-    const missingFields = requiredFields.filter(field => !formData[field as keyof DealerFormData]);
-    
-    if (missingFields.length > 0) {
-      setErrorMessage(`Please fill in all required fields: ${missingFields.join(', ')}`);
-      setSubmitStatus('error');
-      return;
-    }
-
     setIsSubmitting(true);
     setSubmitStatus('idle');
     setErrorMessage('');
 
     try {
-      console.log('Submitting form data:', formData);
-      
-      const response = await fetch('/api/dealers', {
+      // Submit to Formspree
+      const response = await fetch('https://formspree.io/f/mvzvlqeg', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          subject: `Partnership Application: ${formData.dealershipName}`,
+          _subject: `New Partnership Application from ${formData.dealershipName}`
+        }),
       });
 
-      console.log('Response status:', response.status);
-      console.log('Response headers:', response.headers);
-
-      let result;
-      try {
-        result = await response.json();
-      } catch (jsonError) {
-        console.error('Failed to parse JSON response:', jsonError);
-        const text = await response.text();
-        throw new Error(`Server returned non-JSON response: ${text.substring(0, 100)}...`);
+      if (response.ok) {
+        setSubmitStatus('success');
+        // Reset form after successful submission
+        setFormData({
+          dealershipName: "",
+          contactPerson: "",
+          email: "",
+          phone: "",
+          location: "",
+          dealershipType: "new",
+          brands: "",
+          salesVolume: "",
+          lookingFor: "",
+          message: ""
+        });
+      } else {
+        throw new Error('Failed to submit form');
       }
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to submit form');
-      }
-
-      // Success case
-      setSubmitStatus('success');
-      // Reset form
-      setFormData({
-        dealershipName: "",
-        contactPerson: "",
-        email: "",
-        phone: "",
-        location: "",
-        dealershipType: "new",
-        brands: "",
-        salesVolume: "",
-        lookingFor: "",
-        message: ""
-      });
-
     } catch (error) {
-      console.error('Form submission error:', error);
       setSubmitStatus('error');
-      setErrorMessage(error instanceof Error ? error.message : 'Something went wrong. Please try again or contact us directly.');
+      setErrorMessage('Something went wrong. Please try again or contact us directly.');
+      console.error('Form submission error:', error);
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
+    // Add scroll-margin-top to account for fixed navbar height
     <section 
       id="for-dealerships" 
       className="relative py-16 sm:py-20 md:py-24 overflow-hidden scroll-mt-20"
@@ -149,7 +112,7 @@ const Dealers = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           viewport={{ once: true }}
-          className="relative bg-black/30 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 lg:p-16 overflow-hidden"
+          className="relative bg-black/30 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 lg:p-16 overflow-hidden border border-white/10"
         >
           <div className="relative z-10">
             {/* Main Headline */}
@@ -474,6 +437,9 @@ const Dealers = () => {
         {/* Bottom spacing */}
         <div className="mt-12 sm:mt-16"></div>
       </div>
+
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-[url('/assets/images/grid-pattern.svg')] opacity-5 pointer-events-none"></div>
     </section>
   );
 };
