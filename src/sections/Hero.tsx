@@ -1,78 +1,109 @@
 // components/Hero.tsx
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import Image from "next/image";
+import { ChevronDown } from "lucide-react";
 
 const Hero = () => {
-  const [email, setEmail] = useState("");
-
-  const handleFindMyCar = () => {
-    // Handle Find My Car action
-    console.log("Find My Car clicked");
-  };
-
-  const handleHowItWorks = () => {
-    // Handle How It Works action
-    console.log("How It Works clicked");
+  const handleScrollDown = () => {
+    window.scrollTo({
+      top: window.innerHeight,
+      behavior: "smooth",
+    });
   };
 
   return (
-    // Added rounded corners to the main section
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-24 mx-4 lg:mx-8">
-      {/* Container with rounded corners for the background image */}
-      <div className="relative w-full h-full rounded-3xl lg:rounded-4xl overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/assets/images/car-hero.jpg" // Replace with your actual background image
-            alt="Auto Reach Innovations Background"
-            fill
-            className="object-cover rounded-3xl lg:rounded-4xl"
-            priority
-          />
-        </div>
-        
-        {/* Subtle white overlay for better text readability (instead of black) */}
-        <div className="absolute inset-0 bg-white/30 z-10 rounded-3xl lg:rounded-4xl"></div>
-        
-        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 w-full">
-          <div className="flex flex-col items-center justify-center text-center">
-            {/* Top Label */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="inline-flex items-center px-3 sm:px-4 py-2 mb-6 text-xs sm:text-sm font-medium text-gray-700 bg-white/80 backdrop-blur-sm rounded-full border border-white/50 shadow-sm"
-            >
+    <section className="relative h-screen w-full flex flex-col overflow-hidden">
+      
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/assets/images/hero-bg.jpg"
+          alt="Background Texture"
+          fill
+          className="object-cover"
+          priority
+        />
+        {/* Dark overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/40" />
+      </div>
+
+      {/* Hero Content */}
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-start pt-32 md:pt-40 px-4 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+        >
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight leading-[1.1] uppercase">
+            Find the Right Car<br />
+            <span className="text-[#ff5c5c]">Without the Runaround</span>
+          </h1>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.3 }}
+          >
+            <p className="mt-6 max-w-2xl mx-auto text-lg md:text-xl text-white/90 font-light">
               100% free. No pressure. Just better car buying.
-            </motion.div>
+            </p>
+          </motion.div>
 
-            {/* Main Headline */}
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight drop-shadow-lg"
-            >
-              Find the Right Car <br className="hidden sm:block" />
-              <span style={{ color: "#ff5c5c" }}>Without the Runaround</span>
-            </motion.h1>
-
-            {/* Subheadline */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="text-base sm:text-lg md:text-xl text-gray-800 mb-8 leading-relaxed max-w-3xl drop-shadow-md bg-white/60 backdrop-blur-sm rounded-lg p-4"
-            >
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.6 }}
+          >
+            <p className="mt-4 max-w-2xl mx-auto text-base md:text-lg text-white/80">
               Tell us what you're looking for, and we'll connect you with trusted dealerships that have exactly what you need, no endless searching, no pressure, just real options from real sellers.
-            </motion.p>
+            </p>
+          </motion.div>
+        </motion.div>
 
-           
-          </div>
+        {/* Floating Car Image */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          className="relative w-full max-w-6xl mt-12"
+        >
+          <Image
+            src="/assets/images/et7-car.png" 
+            alt="NIO ET7"
+            width={1200}
+            height={600}
+            className="object-contain mx-auto"
+          />
+        </motion.div>
+      </div>
+
+      {/* Bottom Scoop & Button */}
+      <div className="absolute bottom-0 w-full z-20">
+        <div className="relative h-24 w-full flex justify-center">
+          
+          {/* Custom SVG Path for the smooth "Inverted Wave" notch */}
+          <svg 
+            viewBox="0 0 1440 120" 
+            className="absolute bottom-0 w-full h-full preserve-3d"
+            preserveAspectRatio="none"
+          >
+            <path 
+              d="M0,120 L1440,120 L1440,20 C1300,20 1200,20 1000,20 C850,20 800,100 720,100 C640,100 590,20 440,20 C240,20 140,20 0,20 Z" 
+              fill="white" 
+            />
+          </svg>
+
+          {/* Large Scroll Button */}
+          <motion.button
+            onClick={handleScrollDown}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="absolute bottom-6 w-20 h-20 md:w-24 md:h-24 bg-[#ff5c5c] rounded-full flex items-center justify-center hover:bg-[#ff5c5c]/90 transition-all duration-300 shadow-2xl z-30"
+          >
+            <ChevronDown className="text-white w-8 h-8 md:w-10 md:h-10" strokeWidth={1.5} />
+          </motion.button>
         </div>
       </div>
     </section>

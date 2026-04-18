@@ -18,63 +18,63 @@ const teamMembers: TeamMember[] = [
     name: "Xolani Zimba",
     role: "CEO",
     description: "An accountant by profession with over 15 years of experience in financial management and strategic planning. He leads our vision and ensures fiscal responsibility and sustainable growth.",
-    imageSrc: "/assets/images/team/profile.jpg",
+    imageSrc: "",
   },
   {
     id: "jerry-malukeke",
     name: "Jerry Malukeke",
     role: "Operations Director",
     description: "A car specialist with over 20 years in the automotive industry. Jerry oversees all field operations, ensuring our campaigns run smoothly and deliver exceptional results for our clients.",
-    imageSrc: "/assets/images/team/profile.jpg",
+    imageSrc: "",
   },
   {
     id: "keleabetswe-mahuma",
     name: "Keleabetswe Mahuma",
     role: "CFO",
     description: "An experienced mathematician and financial analyst with over 5 years of experience in corporate finance and data modeling. She manages our financial strategy and provides critical insights for business decisions.",
-    imageSrc: "/assets/images/team/profile.jpg",
+    imageSrc: "",
   },
   {
-    id: "tumelo-mokalane",
+    id: "Tumelo Mokalane",
     name: "Tumelo Mokalane",
-    role: "CTO",
-    description: "An experienced software engineer with over 5 years of experience in full-stack development and system architecture. He leads our technology stack, ensuring our lead capture and data systems are robust and scalable.",
-    imageSrc: "/assets/images/team/profile.jpg",
+    role: "Chief Information Officer",
+    description: "With a strong background in IT and over 10 years of experience in technology management, Tumelo oversees our IT infrastructure and ensures our platform remains secure, efficient, and innovative.",
+    imageSrc: "",
   },
   {
     id: "jeminah tau",
     name: "Jeminah Tau",
     role: "Sales Manager",
     description: "With over 4 years of experience in sales and client relationship management, Jeminah is responsible for overseeing regional dealer relationships, customers and team management. She ensures a seamless connection between buyers and dealerships across key markets, focused on delivering quality matches and supporting dealership success, they help partners get the most value from the Auto Reach platform.",
-    imageSrc: "/assets/images/team/profile.jpg",
+    imageSrc: "",
   },
   {
     id: "palesa",
     name: "Palesa",
     role: "Sales Manager",
     description: "Oversees regional dealer relationships and ensures a seamless connection between buyers and dealerships across key markets,focused on delivering quality matches and supporting dealership success, they help partners get the most value from the Auto Reach platform.",
-    imageSrc: "/assets/images/team/profile.jpg",
+    imageSrc: "",
   },
   {
     id: "mavundle-adile-mshunqane",
     name: "Mavundle-Adile Mshunqane",
     role: "Regional Manager",
     description: "Oversees regional dealer relationships and ensures a seamless connection between buyers and dealerships across key markets,focused on delivering quality matches and supporting dealership success, they help partners get the most value from the Auto Reach platform.",
-    imageSrc: "/assets/images/team/profile.jpg",
+    imageSrc: "",
   },
   {
     id: "morena-dhlamini",
     name: "Morena Innoncent Dhlamini",
     role: "Regional Manager Free State",
     description: "3+ years of experience of managerial experince within the agricultural industry, Morena brings a strong background in team leadership, client relationship management, and strategic planning. He excels at driving sales growth and building long-term partnerships with dealerships. Morena is passionate about delivering exceptional service and results for our clients in the Free State region.",
-    imageSrc: "/assets/images/team/profile.jpg",
+    imageSrc: "",
   },
   {
     id: "Katlego Molewa",
     name: "Katlego Molewa",
     role: "Regional Manager Pretoria",
     description: "With 4 years of experience in sales and marketing, Katlego brings a strong track record of driving revenue growth  and building client relationships. She excels at identifying opprtunities, meeting targets, and leading teams to success. Katlego brings a result-driven mindset and a passion for delivering business growth in highly paced environments",
-    imageSrc: "/assets/images/team/profile.jpg",
+    imageSrc: "",
   }
 ];
 
@@ -82,14 +82,7 @@ const teamMembers: TeamMember[] = [
 const TeamCard = ({ member }: { member: TeamMember }) => (
   <div className="flex-shrink-0 w-80 bg-white rounded-2xl shadow-lg border border-neutral-200 p-6 mx-2">
     <div className="flex flex-col items-center text-center">
-      <div className="relative w-32 h-32 rounded-full overflow-hidden mb-4 bg-neutral-200">
-        <Image
-          src={member.imageSrc}
-          alt={member.name}
-          fill
-          className="object-cover"
-        />
-      </div>
+      
       <h3 className="text-xl font-bold text-neutral-900 mb-1">{member.name}</h3>
       <p className="text-sm font-semibold text-[#ff5c5c] mb-3">{member.role}</p>
       <p className="text-sm text-neutral-600 leading-relaxed">{member.description}</p>

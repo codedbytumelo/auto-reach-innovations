@@ -95,31 +95,32 @@ const Customers = () => {
     
     if (type === "checkbox") {
       const checked = (e.target as HTMLInputElement).checked;
-      setFormData(prev => ({
-        ...prev,
-        [name]: checked
-      }));
-    } else if (name === "preferredBrands") {
-      // Handle multi-select for brands
-      const selectedBrand = value;
-      setFormData(prev => {
-        // Ensure preferredBrands is always an array
-        const brands = Array.isArray(prev.preferredBrands) ? [...prev.preferredBrands] : [];
-        if (brands.includes(selectedBrand)) {
-          // Remove brand if already selected
-          return {
-            ...prev,
-            preferredBrands: brands.filter(brand => brand !== selectedBrand)
-          };
-        } else if (brands.length < 3) {
-          // Add brand if less than 3 selected
-          return {
-            ...prev,
-            preferredBrands: [...brands, selectedBrand]
-          };
-        }
-        return prev; // Don't add if already 3 selected
-      });
+      
+      if (name === "preferredBrands") {
+        const selectedBrand = value;
+        setFormData(prev => {
+          const brands = Array.isArray(prev.preferredBrands) ? [...prev.preferredBrands] : [];
+          if (checked) {
+            if (brands.length < 3) {
+              return {
+                ...prev,
+                preferredBrands: [...brands, selectedBrand]
+              };
+            }
+          } else {
+            return {
+              ...prev,
+              preferredBrands: brands.filter(brand => brand !== selectedBrand)
+            };
+          }
+          return prev;
+        });
+      } else {
+        setFormData(prev => ({
+          ...prev,
+          [name]: checked
+        }));
+      }
     } else {
       setFormData(prev => ({
         ...prev,
@@ -188,18 +189,34 @@ const Customers = () => {
 
   return (
     <section id="find-my-car" className="relative py-20 md:py-24 overflow-hidden scroll-mt-20">
+      {/* Background Image and Overlay */}
+      <div className="absolute inset-0 z-0">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/assets/images/Customers-background.jpg')" }}
+        />
+        <div className="absolute inset-0 bg-black/60" />
+      </div>
+
+      {/* Content Container */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <div className="inline-block px-4 py-2 mb-4 text-sm font-medium text-[#ff5c5c] bg-[#ff5c5c]/10 backdrop-blur-sm rounded-full border border-[#ff5c5c]/20">
+          <div className="inline-block px-4 py-2 mb-4 text-sm font-medium text-white bg-[#ff5c5c]/10 backdrop-blur-sm rounded-full border border-[#ff5c5c]/20">
             FIND YOUR CAR
           </div>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+            Find Your Perfect Car
+          </h2>
+          <p className="text-lg text-white max-w-3xl mx-auto">
+            Tell us what you're looking for, and we'll connect you with trusted dealerships that have exactly what you need — no endless searching, no pressure, just real options from real sellers.
+          </p>
         </motion.div>
 
         {/* Content Container - Side by Side Layout */}
@@ -211,34 +228,46 @@ const Customers = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-900 mb-6">
-              Find Your Perfect Car
-            </h2>
-            
-            <p className="text-lg text-neutral-700 mb-8 leading-relaxed">
-              Tell us what you're looking for, and we'll connect you with trusted dealerships that have exactly what you need — no endless searching, no pressure, just real options from real sellers.
-            </p>
-            
-            <h3 className="text-xl font-semibold text-neutral-900 mb-4">Why Choose Auto Reach?</h3>
-            
-            <ul className="space-y-3 mb-8">
-              <li className="flex items-start">
-                <span className="text-[#ff5c5c] mr-3">→</span>
-                <span className="text-neutral-700">No endless browsing through hundreds of listings</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-[#ff5c5c] mr-3">→</span>
-                <span className="text-neutral-700">Get matched with cars that fit your exact needs</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-[#ff5c5c] mr-3">→</span>
-                <span className="text-neutral-700">Connect with verified dealerships you can trust</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-[#ff5c5c] mr-3">→</span>
-                <span className="text-neutral-700">100% free to use with no hidden costs</span>
-              </li>
-            </ul>
+            <div className="bg-black/30 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/10">
+              <h3 className="text-2xl font-bold text-white mb-6">Why Choose Auto Reach?</h3>
+              
+              <ul className="space-y-4 mb-8">
+                <li className="flex items-start">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#ff5c5c] flex items-center justify-center mr-4 mt-0.5">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                  <span className="text-white">No endless browsing through hundreds of listings</span>
+                </li>
+                <li className="flex items-start">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#ff5c5c] flex items-center justify-center mr-4 mt-0.5">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                  <span className="text-white">Get matched with cars that fit your exact needs</span>
+                </li>
+                <li className="flex items-start">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#ff5c5c] flex items-center justify-center mr-4 mt-0.5">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                  <span className="text-white">Connect with verified dealerships you can trust</span>
+                </li>
+                <li className="flex items-start">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#ff5c5c] flex items-center justify-center mr-4 mt-0.5">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                  <span className="text-white">100% free to use with no hidden costs</span>
+                </li>
+              </ul>
+
+              <div className="bg-[#ff5c5c]/5 rounded-xl p-6 border border-[#ff5c5c]/20">
+                <h4 className="font-semibold text-white mb-2">How It Works</h4>
+                <ol className="list-decimal list-inside space-y-2 text-white">
+                  <li>Fill out the form with your preferences</li>
+                  <li>Our system matches you with suitable dealerships</li>
+                  <li>Dealers contact you directly with options</li>
+                  <li>Choose the best deal for your needs</li>
+                </ol>
+              </div>
+            </div>
           </motion.div>
 
           {/* Right Side - Form */}
@@ -270,10 +299,15 @@ const Customers = () => {
               </motion.div>
             )}
             
-            <form onSubmit={handleSubmit} className="bg-[#ff5c5c] rounded-3xl p-8 md:p-10 max-h-[80vh] overflow-y-auto">
+            <form onSubmit={handleSubmit} className="bg-black/30 backdrop-blur-sm rounded-3xl p-8 md:p-10 max-h-[80vh] overflow-y-auto border border-white/10">
               {/* Your Details Section */}
               <div className="mb-6">
-                <h3 className="text-lg font-bold text-black mb-4">👤 Your Details</h3>
+                <div className="flex items-center mb-4">
+                  <div className="w-10 h-10 rounded-full bg-[#ff5c5c] flex items-center justify-center mr-3">
+                    <span className="text-white text-xl">👤</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white">Your Details</h3>
+                </div>
                 
                 {/* Full Name */}
                 <motion.div
@@ -283,8 +317,8 @@ const Customers = () => {
                   viewport={{ once: true }}
                   className="mb-4"
                 >
-                  <label htmlFor="fullName" className="block text-sm font-medium text-black mb-2">
-                    Full Name (Required)
+                  <label htmlFor="fullName" className="block text-sm font-medium text-white mb-2">
+                    Full Name <span className="text-[#ff5c5c]">*</span>
                   </label>
                   <input
                     type="text"
@@ -294,7 +328,7 @@ const Customers = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                     placeholder="Your full name"
                   />
                 </motion.div>
@@ -307,8 +341,8 @@ const Customers = () => {
                   viewport={{ once: true }}
                   className="mb-4"
                 >
-                  <label htmlFor="phoneNumber" className="block text-sm font-medium text-black mb-2">
-                    Phone Number (Required)
+                  <label htmlFor="phoneNumber" className="block text-sm font-medium text-white mb-2">
+                    Phone Number <span className="text-[#ff5c5c]">*</span>
                   </label>
                   <input
                     type="tel"
@@ -318,7 +352,7 @@ const Customers = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                     placeholder="Your contact number"
                   />
                 </motion.div>
@@ -331,8 +365,8 @@ const Customers = () => {
                   viewport={{ once: true }}
                   className="mb-4"
                 >
-                  <label htmlFor="emailAddress" className="block text-sm font-medium text-black mb-2">
-                    Email Address (Required)
+                  <label htmlFor="emailAddress" className="block text-sm font-medium text-white mb-2">
+                    Email Address <span className="text-[#ff5c5c]">*</span>
                   </label>
                   <input
                     type="email"
@@ -342,7 +376,7 @@ const Customers = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                     placeholder="your.email@example.com"
                   />
                 </motion.div>
@@ -350,7 +384,12 @@ const Customers = () => {
 
               {/* Car Preferences Section */}
               <div className="mb-6">
-                <h3 className="text-lg font-bold text-black mb-4">🚗 Your Car Preferences</h3>
+                <div className="flex items-center mb-4">
+                  <div className="w-10 h-10 rounded-full bg-[#ff5c5c] flex items-center justify-center mr-3">
+                    <span className="text-white text-xl">🚗</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white">Car Preferences</h3>
+                </div>
                 
                 {/* Vehicle Type */}
                 <motion.div
@@ -360,8 +399,8 @@ const Customers = () => {
                   viewport={{ once: true }}
                   className="mb-4"
                 >
-                  <label htmlFor="vehicleType" className="block text-sm font-medium text-black mb-2">
-                    Vehicle Type (Required)
+                  <label htmlFor="vehicleType" className="block text-sm font-medium text-white mb-2">
+                    Vehicle Type <span className="text-[#ff5c5c]">*</span>
                   </label>
                   <select
                     id="vehicleType"
@@ -370,13 +409,13 @@ const Customers = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/20 border border-white/40 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50 appearance-none"
                   >
-                    <option value="">Select vehicle type</option>
-                    <option value="sedan">Sedan</option>
-                    <option value="suv">SUV</option>
-                    <option value="hatchback">Hatchback</option>
-                    <option value="bakkie">Bakkie</option>
+                    <option value="" className="bg-gray-800">Select vehicle type</option>
+                    <option value="sedan" className="bg-gray-800">Sedan</option>
+                    <option value="suv" className="bg-gray-800">SUV</option>
+                    <option value="hatchback" className="bg-gray-800">Hatchback</option>
+                    <option value="bakkie" className="bg-gray-800">Bakkie</option>
                   </select>
                 </motion.div>
 
@@ -388,10 +427,10 @@ const Customers = () => {
                   viewport={{ once: true }}
                   className="mb-4"
                 >
-                  <label className="block text-sm font-medium text-black mb-2">
+                  <label className="block text-sm font-medium text-white mb-2">
                     Preferred Brands (Optional — Max 3 selections)
                   </label>
-                  <p className="text-xs text-black/70 mb-2">👉 Select up to 3 brands you prefer</p>
+                  <p className="text-xs text-white/70 mb-2">👉 Select up to 3 brands you prefer</p>
                   <div className="grid grid-cols-2 gap-2">
                     {brandOptions.map((brand: string) => (
                       <label key={brand} className="flex items-center space-x-2 cursor-pointer">
@@ -399,13 +438,12 @@ const Customers = () => {
                           type="checkbox"
                           name="preferredBrands"
                           value={brand}
-                          // Fixed: Check if array exists before using includes()
                           checked={Array.isArray(formData.preferredBrands) && formData.preferredBrands.includes(brand)}
                           onChange={handleChange}
                           disabled={isSubmitting || (!Array.isArray(formData.preferredBrands) || (!formData.preferredBrands.includes(brand) && formData.preferredBrands.length >= 3))}
-                          className="w-4 h-4 text-black bg-black/20 border-black/30 rounded focus:ring-black/50"
+                          className="w-4 h-4 text-[#ff5c5c] bg-white/20 border-white/30 rounded focus:ring-[#ff5c5c]/50"
                         />
-                        <span className="text-sm text-black">{brand}</span>
+                        <span className="text-sm text-white">{brand}</span>
                       </label>
                     ))}
                   </div>
@@ -419,8 +457,8 @@ const Customers = () => {
                   viewport={{ once: true }}
                   className="mb-4"
                 >
-                  <label htmlFor="condition" className="block text-sm font-medium text-black mb-2">
-                    Condition (Required)
+                  <label htmlFor="condition" className="block text-sm font-medium text-white mb-2">
+                    Condition <span className="text-[#ff5c5c]">*</span>
                   </label>
                   <select
                     id="condition"
@@ -429,18 +467,23 @@ const Customers = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/20 border border-white/40 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50 appearance-none"
                   >
-                    <option value="">Select condition</option>
-                    <option value="new">Brand New</option>
-                    <option value="pre-owned">Pre-owned</option>
+                    <option value="" className="bg-gray-800">Select condition</option>
+                    <option value="new" className="bg-gray-800">Brand New</option>
+                    <option value="pre-owned" className="bg-gray-800">Pre-owned</option>
                   </select>
                 </motion.div>
               </div>
 
               {/* Budget & Timeline Section */}
               <div className="mb-6">
-                <h3 className="text-lg font-bold text-black mb-4">💰 Budget & Timeline</h3>
+                <div className="flex items-center mb-4">
+                  <div className="w-10 h-10 rounded-full bg-[#ff5c5c] flex items-center justify-center mr-3">
+                    <span className="text-white text-xl">💰</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white">Budget & Timeline</h3>
+                </div>
                 
                 {/* Budget Range */}
                 <motion.div
@@ -450,8 +493,8 @@ const Customers = () => {
                   viewport={{ once: true }}
                   className="mb-4"
                 >
-                  <label htmlFor="budgetRange" className="block text-sm font-medium text-black mb-2">
-                    Budget Range (Required)
+                  <label htmlFor="budgetRange" className="block text-sm font-medium text-white mb-2">
+                    Budget Range <span className="text-[#ff5c5c]">*</span>
                   </label>
                   <select
                     id="budgetRange"
@@ -460,13 +503,13 @@ const Customers = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/20 border border-white/40 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50 appearance-none"
                   >
-                    <option value="">Select budget range</option>
-                    <option value="under-150k">Under R150,000</option>
-                    <option value="150k-300k">R150,000 – R300,000</option>
-                    <option value="300k-500k">R300,000 – R500,000</option>
-                    <option value="above-500k">Above R500,000</option>
+                    <option value="" className="bg-gray-800">Select budget range</option>
+                    <option value="under-150k" className="bg-gray-800">Under R150,000</option>
+                    <option value="150k-300k" className="bg-gray-800">R150,000 – R300,000</option>
+                    <option value="300k-500k" className="bg-gray-800">R300,000 – R500,000</option>
+                    <option value="above-500k" className="bg-gray-800">Above R500,000</option>
                   </select>
                 </motion.div>
 
@@ -478,8 +521,8 @@ const Customers = () => {
                   viewport={{ once: true }}
                   className="mb-4"
                 >
-                  <label htmlFor="whenToBuy" className="block text-sm font-medium text-black mb-2">
-                    When are you planning to buy? (Required)
+                  <label htmlFor="whenToBuy" className="block text-sm font-medium text-white mb-2">
+                    When are you planning to buy? <span className="text-[#ff5c5c]">*</span>
                   </label>
                   <select
                     id="whenToBuy"
@@ -488,13 +531,13 @@ const Customers = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/20 border border-white/40 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50 appearance-none"
                   >
-                    <option value="">Select timeframe</option>
-                    <option value="immediately">Immediately</option>
-                    <option value="1-month">Within 1 Month</option>
-                    <option value="1-3-months">1–3 Months</option>
-                    <option value="exploring">Just Exploring</option>
+                    <option value="" className="bg-gray-800">Select timeframe</option>
+                    <option value="immediately" className="bg-gray-800">Immediately</option>
+                    <option value="1-month" className="bg-gray-800">Within 1 Month</option>
+                    <option value="1-3-months" className="bg-gray-800">1–3 Months</option>
+                    <option value="exploring" className="bg-gray-800">Just Exploring</option>
                   </select>
                 </motion.div>
 
@@ -506,8 +549,8 @@ const Customers = () => {
                   viewport={{ once: true }}
                   className="mb-4"
                 >
-                  <label htmlFor="paymentMethod" className="block text-sm font-medium text-black mb-2">
-                    How will you pay? (Required)
+                  <label htmlFor="paymentMethod" className="block text-sm font-medium text-white mb-2">
+                    How will you pay? <span className="text-[#ff5c5c]">*</span>
                   </label>
                   <select
                     id="paymentMethod"
@@ -516,19 +559,24 @@ const Customers = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/20 border border-white/40 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50 appearance-none"
                   >
-                    <option value="">Select payment method</option>
-                    <option value="cash">Cash</option>
-                    <option value="finance">Bank Finance</option>
-                    <option value="not-sure">Not Sure</option>
+                    <option value="" className="bg-gray-800">Select payment method</option>
+                    <option value="cash" className="bg-gray-800">Cash</option>
+                    <option value="finance" className="bg-gray-800">Bank Finance</option>
+                    <option value="not-sure" className="bg-gray-800">Not Sure</option>
                   </select>
                 </motion.div>
               </div>
 
               {/* Contact Preferences Section */}
               <div className="mb-6">
-                <h3 className="text-lg font-bold text-black mb-4">📞 Contact Preferences</h3>
+                <div className="flex items-center mb-4">
+                  <div className="w-10 h-10 rounded-full bg-[#ff5c5c] flex items-center justify-center mr-3">
+                    <span className="text-white text-xl">📞</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white">Contact Preferences</h3>
+                </div>
                 
                 {/* Preferred Contact Method */}
                 <motion.div
@@ -538,8 +586,8 @@ const Customers = () => {
                   viewport={{ once: true }}
                   className="mb-4"
                 >
-                  <label htmlFor="contactMethod" className="block text-sm font-medium text-black mb-2">
-                    Preferred Contact Method (Required)
+                  <label htmlFor="contactMethod" className="block text-sm font-medium text-white mb-2">
+                    Preferred Contact Method <span className="text-[#ff5c5c]">*</span>
                   </label>
                   <select
                     id="contactMethod"
@@ -548,19 +596,24 @@ const Customers = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/20 border border-white/40 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50 appearance-none"
                   >
-                    <option value="">Select contact method</option>
-                    <option value="call">Call</option>
-                    <option value="whatsapp">WhatsApp</option>
-                    <option value="email">Email</option>
+                    <option value="" className="bg-gray-800">Select contact method</option>
+                    <option value="call" className="bg-gray-800">Call</option>
+                    <option value="whatsapp" className="bg-gray-800">WhatsApp</option>
+                    <option value="email" className="bg-gray-800">Email</option>
                   </select>
                 </motion.div>
               </div>
 
               {/* Buying Intent Section */}
               <div className="mb-6">
-                <h3 className="text-lg font-bold text-black mb-4">📊 Your Buying Intent</h3>
+                <div className="flex items-center mb-4">
+                  <div className="w-10 h-10 rounded-full bg-[#ff5c5c] flex items-center justify-center mr-3">
+                    <span className="text-white text-xl">📊</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white">Buying Intent</h3>
+                </div>
                 
                 {/* How Serious */}
                 <motion.div
@@ -570,8 +623,8 @@ const Customers = () => {
                   viewport={{ once: true }}
                   className="mb-4"
                 >
-                  <label htmlFor="seriousness" className="block text-sm font-medium text-black mb-2">
-                    How serious are you about buying? (Required)
+                  <label htmlFor="seriousness" className="block text-sm font-medium text-white mb-2">
+                    How serious are you about buying? <span className="text-[#ff5c5c]">*</span>
                   </label>
                   <select
                     id="seriousness"
@@ -580,12 +633,12 @@ const Customers = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/20 border border-white/40 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50 appearance-none"
                   >
-                    <option value="">Select option</option>
-                    <option value="ready">Ready to buy</option>
-                    <option value="comparing">Comparing options</option>
-                    <option value="browsing">Just browsing</option>
+                    <option value="" className="bg-gray-800">Select option</option>
+                    <option value="ready" className="bg-gray-800">Ready to buy</option>
+                    <option value="comparing" className="bg-gray-800">Comparing options</option>
+                    <option value="browsing" className="bg-gray-800">Just browsing</option>
                   </select>
                 </motion.div>
 
@@ -597,7 +650,7 @@ const Customers = () => {
                   viewport={{ once: true }}
                   className="mb-4"
                 >
-                  <label htmlFor="notes" className="block text-sm font-medium text-black mb-2">
+                  <label htmlFor="notes" className="block text-sm font-medium text-white mb-2">
                     Notes (Optional)
                   </label>
                   <textarea
@@ -607,7 +660,7 @@ const Customers = () => {
                     onChange={handleChange}
                     rows={3}
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 resize-none disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 resize-none disabled:opacity-50"
                     placeholder="Tell us anything specific you're looking for…"
                   ></textarea>
                 </motion.div>
@@ -615,7 +668,12 @@ const Customers = () => {
 
               {/* Trade-In Section */}
               <div className="mb-6">
-                <h3 className="text-lg font-bold text-black mb-4">🔁 Trade-In (Optional)</h3>
+                <div className="flex items-center mb-4">
+                  <div className="w-10 h-10 rounded-full bg-[#ff5c5c] flex items-center justify-center mr-3">
+                    <span className="text-white text-xl">🔁</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white">Trade-In (Optional)</h3>
+                </div>
                 
                 {/* Has Trade-In */}
                 <motion.div
@@ -625,8 +683,8 @@ const Customers = () => {
                   viewport={{ once: true }}
                   className="mb-4"
                 >
-                  <label className="block text-sm font-medium text-black mb-2">
-                    Do you have a vehicle to trade in? (Required)
+                  <label className="block text-sm font-medium text-white mb-2">
+                    Do you have a vehicle to trade in? <span className="text-[#ff5c5c]">*</span>
                   </label>
                   <div className="flex space-x-4">
                     <label className="flex items-center cursor-pointer">
@@ -637,9 +695,9 @@ const Customers = () => {
                         checked={formData.hasTradeIn === "yes"}
                         onChange={handleChange}
                         disabled={isSubmitting}
-                        className="w-4 h-4 text-black bg-black/20 border-black/30 focus:ring-black/50"
+                        className="w-4 h-4 text-[#ff5c5c] bg-white/20 border-white/30 focus:ring-[#ff5c5c]/50"
                       />
-                      <span className="ml-2 text-sm text-black">Yes</span>
+                      <span className="ml-2 text-sm text-white">Yes</span>
                     </label>
                     <label className="flex items-center cursor-pointer">
                       <input
@@ -649,9 +707,9 @@ const Customers = () => {
                         checked={formData.hasTradeIn === "no"}
                         onChange={handleChange}
                         disabled={isSubmitting}
-                        className="w-4 h-4 text-black bg-black/20 border-black/30 focus:ring-black/50"
+                        className="w-4 h-4 text-[#ff5c5c] bg-white/20 border-white/30 focus:ring-[#ff5c5c]/50"
                       />
-                      <span className="ml-2 text-sm text-black">No</span>
+                      <span className="ml-2 text-sm text-white">No</span>
                     </label>
                   </div>
                 </motion.div>
@@ -666,7 +724,7 @@ const Customers = () => {
                       viewport={{ once: true }}
                       className="mb-4"
                     >
-                      <label htmlFor="tradeInMakeModel" className="block text-sm font-medium text-black mb-2">
+                      <label htmlFor="tradeInMakeModel" className="block text-sm font-medium text-white mb-2">
                         Vehicle Make & Model
                       </label>
                       <input
@@ -676,7 +734,7 @@ const Customers = () => {
                         value={formData.tradeInMakeModel}
                         onChange={handleChange}
                         disabled={isSubmitting}
-                        className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                         placeholder="e.g. Toyota Corolla"
                       />
                     </motion.div>
@@ -688,7 +746,7 @@ const Customers = () => {
                       viewport={{ once: true }}
                       className="mb-4"
                     >
-                      <label htmlFor="tradeInMileage" className="block text-sm font-medium text-black mb-2">
+                      <label htmlFor="tradeInMileage" className="block text-sm font-medium text-white mb-2">
                         Mileage (km)
                       </label>
                       <input
@@ -698,7 +756,7 @@ const Customers = () => {
                         value={formData.tradeInMileage}
                         onChange={handleChange}
                         disabled={isSubmitting}
-                        className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                         placeholder="e.g. 85000"
                       />
                     </motion.div>
@@ -710,7 +768,7 @@ const Customers = () => {
                       viewport={{ once: true }}
                       className="mb-4"
                     >
-                      <label htmlFor="tradeInCondition" className="block text-sm font-medium text-black mb-2">
+                      <label htmlFor="tradeInCondition" className="block text-sm font-medium text-white mb-2">
                         Vehicle Condition
                       </label>
                       <select
@@ -719,13 +777,13 @@ const Customers = () => {
                         value={formData.tradeInCondition}
                         onChange={handleChange}
                         disabled={isSubmitting}
-                        className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                        className="w-full px-4 py-3 bg-white/20 border border-white/40 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50 appearance-none"
                       >
-                        <option value="">Select condition</option>
-                        <option value="excellent">Excellent</option>
-                        <option value="good">Good</option>
-                        <option value="fair">Fair</option>
-                        <option value="poor">Poor</option>
+                        <option value="" className="bg-gray-800">Select condition</option>
+                        <option value="excellent" className="bg-gray-800">Excellent</option>
+                        <option value="good" className="bg-gray-800">Good</option>
+                        <option value="fair" className="bg-gray-800">Fair</option>
+                        <option value="poor" className="bg-gray-800">Poor</option>
                       </select>
                     </motion.div>
 
@@ -736,7 +794,7 @@ const Customers = () => {
                       viewport={{ once: true }}
                       className="mb-4"
                     >
-                      <label className="block text-sm font-medium text-black mb-2">
+                      <label className="block text-sm font-medium text-white mb-2">
                         Is there existing finance on the vehicle?
                       </label>
                       <div className="flex space-x-4">
@@ -748,9 +806,9 @@ const Customers = () => {
                             checked={formData.hasFinance === "yes"}
                             onChange={handleChange}
                             disabled={isSubmitting}
-                            className="w-4 h-4 text-black bg-black/20 border-black/30 focus:ring-black/50"
+                            className="w-4 h-4 text-[#ff5c5c] bg-white/20 border-white/30 focus:ring-[#ff5c5c]/50"
                           />
-                          <span className="ml-2 text-sm text-black">Yes</span>
+                          <span className="ml-2 text-sm text-white">Yes</span>
                         </label>
                         <label className="flex items-center cursor-pointer">
                           <input
@@ -760,9 +818,9 @@ const Customers = () => {
                             checked={formData.hasFinance === "no"}
                             onChange={handleChange}
                             disabled={isSubmitting}
-                            className="w-4 h-4 text-black bg-black/20 border-black/30 focus:ring-black/50"
+                            className="w-4 h-4 text-[#ff5c5c] bg-white/20 border-white/30 focus:ring-[#ff5c5c]/50"
                           />
-                          <span className="ml-2 text-sm text-black">No</span>
+                          <span className="ml-2 text-sm text-white">No</span>
                         </label>
                       </div>
                     </motion.div>
@@ -777,7 +835,7 @@ const Customers = () => {
                           viewport={{ once: true }}
                           className="mb-4"
                         >
-                          <label htmlFor="financeHouse" className="block text-sm font-medium text-black mb-2">
+                          <label htmlFor="financeHouse" className="block text-sm font-medium text-white mb-2">
                             Finance House
                           </label>
                           <input
@@ -787,7 +845,7 @@ const Customers = () => {
                             value={formData.financeHouse}
                             onChange={handleChange}
                             disabled={isSubmitting}
-                            className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                             placeholder="e.g. WesBank"
                           />
                         </motion.div>
@@ -799,7 +857,7 @@ const Customers = () => {
                           viewport={{ once: true }}
                           className="mb-4"
                         >
-                          <label htmlFor="settlementAmount" className="block text-sm font-medium text-black mb-2">
+                          <label htmlFor="settlementAmount" className="block text-sm font-medium text-white mb-2">
                             Estimated Settlement Amount
                           </label>
                           <input
@@ -809,7 +867,7 @@ const Customers = () => {
                             value={formData.settlementAmount}
                             onChange={handleChange}
                             disabled={isSubmitting}
-                            className="w-full px-4 py-3 bg-black/10 border border-black/20 rounded-lg text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
                             placeholder="e.g. R120,000"
                           />
                         </motion.div>
@@ -836,9 +894,9 @@ const Customers = () => {
                       onChange={handleChange}
                       required
                       disabled={isSubmitting}
-                      className="w-4 h-4 mt-1 text-black bg-black/20 border-black/30 rounded focus:ring-black/50"
+                      className="w-4 h-4 mt-1 text-[#ff5c5c] bg-white/20 border-white/30 rounded focus:ring-[#ff5c5c]/50"
                     />
-                    <span className="ml-2 text-sm text-black">
+                    <span className="ml-2 text-sm text-white">
                       I agree to be contacted by dealerships regarding my request.
                     </span>
                   </label>
@@ -857,7 +915,7 @@ const Customers = () => {
                   disabled={isSubmitting}
                   whileHover={!isSubmitting ? { scale: 1.02 } : {}}
                   whileTap={!isSubmitting ? { scale: 0.98 } : {}}
-                  className="w-full px-6 py-3 bg-black text-[#ff5c5c] font-semibold rounded-lg hover:bg-black/90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full px-6 py-3 bg-[#ff5c5c] text-white font-semibold rounded-lg hover:bg-[#ff5c5c]/90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? 'Submitting...' : 'Find My Car'}
                 </motion.button>
@@ -876,4 +934,4 @@ const Customers = () => {
   );
 };
 
-export default Customers; 
+export default Customers;
