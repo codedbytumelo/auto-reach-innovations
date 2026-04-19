@@ -1,4 +1,3 @@
-// components/Dealers.tsx
 "use client";
 
 import { useState } from "react";
@@ -37,17 +36,22 @@ const Dealers = () => {
     setErrorMessage('');
 
     try {
-      // Submit to Formspree
-      const response = await fetch('https://formspree.io/f/mvzvlqeg', {
+      const data = new FormData();
+
+      // Append all form fields
+      Object.entries(formData).forEach(([key, value]) => {
+        if (value === null || value === undefined || value === '') return;
+        data.append(key, String(value));
+      });
+
+      // Add extra fields
+      data.append("subject", `Partnership Application: ${formData.dealershipName}`);
+      data.append("_timestamp", new Date().toISOString());
+
+      // Submit to Google Apps Script
+      const response = await fetch('https://script.google.com/macros/s/AKfycbyGsX4YUrJsDbMdyEkuqqSIR-LGmSA36AVK-QMsQcPrgv4Nuv0MOIVxn0wVA3EK8qSv/exec', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          subject: `Partnership Application: ${formData.dealershipName}`,
-          _subject: `New Partnership Application from ${formData.dealershipName}`
-        }),
+        body: data,
       });
 
       if (response.ok) {
@@ -78,7 +82,6 @@ const Dealers = () => {
   };
 
   return (
-    // Add scroll-margin-top to account for fixed navbar height
     <section 
       id="for-dealerships" 
       className="relative py-16 sm:py-20 md:py-24 overflow-hidden scroll-mt-20"
