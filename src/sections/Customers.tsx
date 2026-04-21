@@ -86,7 +86,7 @@ const Customers = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const brandOptions: string[] = [
-    "Audi", "Isuzu", "VW", "BYD", "Mazda", "Suzuki", "Ford"
+    "Audi", "BYD", "Changan", "Ford", "Isuzu", "Lepas", "Mazda", "Suzuki", "VW"
   ];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
