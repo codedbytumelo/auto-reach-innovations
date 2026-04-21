@@ -1,4 +1,3 @@
-// components/Customers.tsx
 "use client";
 
 import { useState } from "react";
@@ -136,21 +135,67 @@ const Customers = () => {
     setErrorMessage('');
 
     try {
-      // Submit to Formspree
-      const response = await fetch('https://formspree.io/f/mlgozlya', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          subject: `Car Request: ${formData.fullName}`,
-          _subject: `New Car Request from ${formData.fullName}`,
-          preferredBrands: Array.isArray(formData.preferredBrands) ? formData.preferredBrands.join(", ") : ""
-        }),
+      const data = new FormData();
+
+      // Log the raw form data before submission
+      console.log("Raw form data before submission:", formData);
+
+      // Append all form fields EXCEPT preferredBrands (handled separately below)
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key === 'preferredBrands') return; // Skip - handled below to avoid duplicates
+        
+        if (value === null || value === undefined || value === '') return;
+        data.append(key, String(value));
       });
 
-      if (response.ok) {
+      // Handle preferredBrands separately - convert array to comma-separated string
+      if (formData.preferredBrands && Array.isArray(formData.preferredBrands) && formData.preferredBrands.length > 0) {
+        const brandsString = formData.preferredBrands.join(", ");
+        data.append("preferredBrands", brandsString);
+        console.log("Converted preferredBrands:", brandsString);
+      }
+
+      // Add extra fields
+      data.append("subject", `Car Request: ${formData.fullName}`);
+      data.append("_timestamp", new Date().toISOString());
+
+      // Log FormData contents (for debugging)
+      console.log("FormData contents:");
+      for (let [key, value] of data.entries()) {
+        console.log(`${key}: ${value}`);
+      }
+
+      // Submit to Google Apps Script
+      // NOTE: Ensure this URL matches your deployed Web App URL exactly
+      const response = await fetch('https://script.google.com/macros/s/AKfycbxddrKVt0vz6Ow5KiIaZE4ctttPepkFT1YcVg6McsVrlfhhXmHTUozf_EEcy3b3OkHM8w/exec', {
+        method: 'POST',
+        body: data,
+      });
+
+      console.log("Response status:", response.status);
+      
+      // Google Apps Script might return a redirect, handle it gracefully
+      if (response.redirected) {
+        console.log("Response was redirected to:", response.url);
+      }
+
+      // Get response text
+      const responseText = await response.text();
+      console.log("Response body:", responseText);
+
+      // Try to parse as JSON, but don't fail if it's not JSON
+      let responseData;
+      try {
+        responseData = JSON.parse(responseText);
+      } catch {
+        responseData = { raw: responseText };
+      }
+
+      // Check for success
+      if (response.ok || response.redirected) {
+        if (responseData.status === 'error') {
+          throw new Error(responseData.message || 'Server returned error');
+        }
         setSubmitStatus('success');
         // Reset form after successful submission
         setFormData({
@@ -176,12 +221,12 @@ const Customers = () => {
           consent: false
         });
       } else {
-        throw new Error('Failed to submit form');
+        throw new Error(`Server error: ${response.status} - ${responseText}`);
       }
     } catch (error) {
+      console.error("Form submission error:", error);
       setSubmitStatus('error');
-      setErrorMessage('Something went wrong. Please try again or contact us directly.');
-      console.error('Form submission error:', error);
+      setErrorMessage(error instanceof Error ? error.message : 'Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
