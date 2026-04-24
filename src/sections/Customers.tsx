@@ -40,6 +40,9 @@ interface FormData {
   
   // Consent
   consent: boolean;
+  
+  // Other Brand
+  otherBrand: string;
 }
 
 const Customers = () => {
@@ -78,7 +81,10 @@ const Customers = () => {
     settlementAmount: "",
     
     // Consent
-    consent: false
+    consent: false,
+    
+    // Other Brand
+    otherBrand: ""
   });
   
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -142,18 +148,30 @@ const Customers = () => {
 
       // Append all form fields EXCEPT preferredBrands (handled separately below)
       Object.entries(formData).forEach(([key, value]) => {
-        if (key === 'preferredBrands') return; // Skip - handled below to avoid duplicates
+        if (key === 'preferredBrands' || key === 'otherBrand') return; // Skip - handled below
         
         if (value === null || value === undefined || value === '') return;
         data.append(key, String(value));
       });
 
       // Handle preferredBrands separately - convert array to comma-separated string
+      let brandsString = "";
+      
       if (formData.preferredBrands && Array.isArray(formData.preferredBrands) && formData.preferredBrands.length > 0) {
-        const brandsString = formData.preferredBrands.join(", ");
-        data.append("preferredBrands", brandsString);
-        console.log("Converted preferredBrands:", brandsString);
+        brandsString = formData.preferredBrands.join(", ");
       }
+      
+      // If otherBrand is provided, append it (and remove "Other" if it was selected)
+      if (formData.otherBrand) {
+        if (brandsString) {
+          brandsString += `, ${formData.otherBrand}`;
+        } else {
+          brandsString = formData.otherBrand;
+        }
+      }
+      
+      data.append("preferredBrands", brandsString);
+      console.log("Converted preferredBrands:", brandsString);
 
       // Add extra fields
       data.append("subject", `Car Request: ${formData.fullName}`);
@@ -166,24 +184,20 @@ const Customers = () => {
       }
 
       // Submit to Google Apps Script
-      // NOTE: Ensure this URL matches your deployed Web App URL exactly
-      const response = await fetch('https://script.google.com/macros/s/AKfycbxddrKVt0vz6Ow5KiIaZE4ctttPepkFT1YcVg6McsVrlfhhXmHTUozf_EEcy3b3OkHM8w/exec', {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbzx-IjEFVR-myi9Lm5-at79khFPWZESCtsPbrw8P68elmkTI87lUqEHLABVIZobx1s-Hg/exec', {
         method: 'POST',
         body: data,
       });
 
       console.log("Response status:", response.status);
       
-      // Google Apps Script might return a redirect, handle it gracefully
       if (response.redirected) {
         console.log("Response was redirected to:", response.url);
       }
 
-      // Get response text
       const responseText = await response.text();
       console.log("Response body:", responseText);
 
-      // Try to parse as JSON, but don't fail if it's not JSON
       let responseData;
       try {
         responseData = JSON.parse(responseText);
@@ -191,7 +205,6 @@ const Customers = () => {
         responseData = { raw: responseText };
       }
 
-      // Check for success
       if (response.ok || response.redirected) {
         if (responseData.status === 'error') {
           throw new Error(responseData.message || 'Server returned error');
@@ -218,7 +231,8 @@ const Customers = () => {
           hasFinance: "",
           financeHouse: "",
           settlementAmount: "",
-          consent: false
+          consent: false,
+          otherBrand: ""
         });
       } else {
         throw new Error(`Server error: ${response.status} - ${responseText}`);
@@ -492,6 +506,29 @@ const Customers = () => {
                       </label>
                     ))}
                   </div>
+                  
+                  {/* Show "Other" brand input if "Other" is selected */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 1.05 }}
+                    viewport={{ once: true }}
+                    className="mt-4"
+                  >
+                    <label htmlFor="otherBrand" className="block text-sm font-medium text-white mb-2">
+                      Or specify a brand not listed above
+                    </label>
+                    <input
+                      type="text"
+                      id="otherBrand"
+                      name="otherBrand"
+                      value={formData.otherBrand}
+                      onChange={handleChange}
+                      disabled={isSubmitting}
+                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#ff5c5c]/50 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                      placeholder="e.g. Toyota, BMW, etc."
+                    />
+                  </motion.div>
                 </motion.div>
 
                 {/* Condition */}
